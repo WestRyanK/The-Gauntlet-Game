@@ -6,7 +6,7 @@
 #include <string>
 #include <vector>
 
-namespace CodeMonkeys::TheGauntlet::Engine::Assets
+namespace CodeMonkeys::Engine::Assets
 {
 	struct mlVertex{
 		glm::vec3 position;

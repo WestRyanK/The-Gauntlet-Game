@@ -3,7 +3,7 @@
 #include <string>
 using namespace std;
 
-namespace CodeMonkeys::TheGauntlet::Engine::Control
+namespace CodeMonkeys::Engine::Control
 {
     class IControllable
     {

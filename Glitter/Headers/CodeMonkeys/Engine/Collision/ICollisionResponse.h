@@ -1,8 +1,10 @@
 #pragma once
 
-#include "Object3D.h"
+#include "CodeMonkeys/Engine/Objects/Object3D.h"
 
-namespace CodeMonkeys::TheGauntlet::Engine::Collision
+using namespace CodeMonkeys::Engine::Objects;
+
+namespace CodeMonkeys::Engine::Collision
 {
     class ICollisionResponse
     {

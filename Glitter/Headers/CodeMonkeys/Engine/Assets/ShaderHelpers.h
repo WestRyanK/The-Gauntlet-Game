@@ -3,18 +3,22 @@
 
 #include "glitter.hpp"
 
-// Loads GLSL vertex and fragment shaders from the provided files and checks for errors. 
-// Returns the new program ID on success or 0 on failure.
-GLuint LoadProgram(const char* vertexShaderFile, const char* fragmentShaderFile);
-
-inline void UseProgram(GLuint shaderID)
+namespace CodeMonkeys::Engine::Assets
 {
-	glUseProgram(shaderID);
-}
+	void test1();
+	// Loads GLSL vertex and fragment shaders from the provided files and checks for errors. 
+	// Returns the new program ID on success or 0 on failure.
+	GLuint LoadShaderProgram(const char* vertexShaderFile, const char* fragmentShaderFile);
 
-inline void DeleteProgram(GLuint shaderID)
-{
-	glDeleteProgram(shaderID);
+	inline void UseProgram(GLuint shaderID)
+	{
+		glUseProgram(shaderID);
+	}
+
+	inline void DeleteProgram(GLuint shaderID)
+	{
+		glDeleteProgram(shaderID);
+	}
 }
 
 #endif

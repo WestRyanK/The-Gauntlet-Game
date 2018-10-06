@@ -1,6 +1,8 @@
 #pragma once
 
-#include "BoundingBox.h"
+#include "CodeMonkeys/Engine/Collision/BoundingBox.h"
+
+using CodeMonkeys::Engine::Collision::BoundingBox;
 
 namespace CodeMonkeys::TheGauntlet::Engine::Collision
 {

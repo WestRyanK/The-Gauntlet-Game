@@ -4,7 +4,7 @@
 
 using namespace std;
 
-namespace CodeMonkeys::TheGauntlet::Engine::Assets
+namespace CodeMonkeys::Engine::Assets
 {
     class Texture
     {
@@ -21,5 +21,5 @@ namespace CodeMonkeys::TheGauntlet::Engine::Assets
         unsigned int get_height();
         unsigned int get_channel_count();
         string* get_texture_name();
-    }
-};
+    };
+}

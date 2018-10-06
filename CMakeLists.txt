@@ -18,16 +18,17 @@ option(BUILD_OPENGL3_DEMOS OFF)
 option(BUILD_UNIT_TESTS OFF)
 add_subdirectory(Glitter/Vendor/bullet)
 
-if(MSVC)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W4")
-else()
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wpedantic -std=c++11")
-    if(NOT WIN32)
-        set(GLAD_LIBRARIES dl)
-    endif()
-endif()
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 include_directories(Glitter/Headers/
+                    Glitter/Headers/CodeMonkeys/Engine/Assets/
+                    Glitter/Headers/CodeMonkeys/Engine/Collision/
+                    Glitter/Headers/CodeMonkeys/Engine/Control/
+                    Glitter/Headers/CodeMonkeys/Engine/Engine/
+                    Glitter/Headers/CodeMonkeys/Engine/Objects/
+                    Glitter/Headers/CodeMonkeys/TheGauntlet/
+                    Glitter/Headers/CodeMonkeys/TheGauntlet/GameObjects/
                     Glitter/Vendor/assimp/include/
                     Glitter/Vendor/bullet/src/
                     Glitter/Vendor/glad/include/
@@ -37,8 +38,24 @@ include_directories(Glitter/Headers/
 
 file(GLOB VENDORS_SOURCES Glitter/Vendor/glad/src/glad.c)
 file(GLOB PROJECT_HEADERS Glitter/Headers/*.hpp
-                          Glitter/Headers/*.h)
-file(GLOB PROJECT_SOURCES Glitter/Sources/*.cpp)
+                          Glitter/Headers/*.h
+                          Glitter/Headers/CodeMonkeys/Engine/Assets/
+                          Glitter/Headers/CodeMonkeys/Engine/Collision/
+                          Glitter/Headers/CodeMonkeys/Engine/Control/
+                          Glitter/Headers/CodeMonkeys/Engine/Engine/
+                          Glitter/Headers/CodeMonkeys/Engine/Objects/
+                          Glitter/Headers/CodeMonkeys/TheGauntlet/
+                          Glitter/Headers/CodeMonkeys/TheGauntlet/GameObjects/
+                          )
+file(GLOB PROJECT_SOURCES Glitter/Sources/*.cpp
+                          Glitter/Sources/CodeMonkeys/Engine/Assets/*.cpp
+                          Glitter/Sources/CodeMonkeys/Engine/Collision/*.cpp
+                          Glitter/Sources/CodeMonkeys/Engine/Control/*.cpp
+                          Glitter/Sources/CodeMonkeys/Engine/Engine/*.cpp
+                          Glitter/Sources/CodeMonkeys/Engine/Objects/*.cpp
+                          Glitter/Sources/CodeMonkeys/TheGauntlet/*.cpp
+                          Glitter/Sources/CodeMonkeys/TheGauntlet/GameObjects/*.cpp
+)
 file(GLOB PROJECT_SHADERS Glitter/Shaders/*.comp
                           Glitter/Shaders/*.frag
                           Glitter/Shaders/*.geom

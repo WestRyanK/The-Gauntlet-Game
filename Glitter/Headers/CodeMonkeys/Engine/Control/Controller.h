@@ -1,15 +1,15 @@
 #pragma once
 
-#include "IControllable.h"
+#include "CodeMonkeys/Engine/Control/IControllable.h"
 
-namespace CodeMonkeys::TheGauntlet::Engine::Control
+namespace CodeMonkeys::Engine::Control
 {
     class Controller
     {
     private:
-        IControllable controllable;
+        IControllable* controllable = NULL;
     public:
-        Controller(IControllable controllable);
+        Controller(IControllable* controllable);
         virtual void handle_input() = 0;
     };
 }

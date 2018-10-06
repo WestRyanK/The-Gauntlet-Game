@@ -1,7 +1,10 @@
 #pragma once
 
+#include "glitter.hpp"
 
-namespace CodeMonkeys::TheGauntlet::Engine::Collision
+using namespace glm;
+
+namespace CodeMonkeys::Engine::Collision
 {
     class BoundingBox
     {
@@ -15,7 +18,7 @@ namespace CodeMonkeys::TheGauntlet::Engine::Collision
         vec3 get_corner_max();
         void set_corner_max(vec3 corner_max);
         vec3 get_corner_min();
-        void set_corner_max(vec3 corner_min);
+        void set_corner_min(vec3 corner_min);
 
         float get_min_x();
         float get_min_y();
@@ -33,5 +36,5 @@ namespace CodeMonkeys::TheGauntlet::Engine::Collision
         bool is_intersection(vec3 point);
         bool is_intersection(float x, float y, float z);
         bool is_intersection(BoundingBox bounding_box);
-    }
+    };
 }

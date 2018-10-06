@@ -2,10 +2,13 @@
 
 #include <utility>
 #include <set>
-#include "ICollisionRegion.h"
-#include "BoundingBox.h"
+#include "CodeMonkeys/Engine/Collision/ICollisionRegion.h"
+#include "CodeMonkeys/Engine/Collision/BoundingBox.h"
+#include "CodeMonkeys/Engine/Objects/Object3D.h"
 
-namespace CodeMonkeys::TheGauntlet::Engine::Collision
+using namespace CodeMonkeys::Engine::Objects;
+
+namespace CodeMonkeys::Engine::Collision
 {
     class ICollisionDetector
     {

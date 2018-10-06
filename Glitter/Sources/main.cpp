@@ -1,8 +1,8 @@
 // Local Headers
 #define STB_IMAGE_IMPLEMENTATION
 #include "glitter.hpp"
-#include "ShaderHelpers.h"
-#include "ModelLoader.h"
+#include "CodeMonkeys/Engine/Assets/ShaderHelpers.h"
+#include "CodeMonkeys/Engine/Assets/ModelLoader.h"
 
 // System Headers
 #include <glad/glad.h>
@@ -57,7 +57,9 @@ int main(int argc, char * argv[]) {
 	// Setup Vertex arrays here
 	// **************************************
 	// **************************************
-    GLuint myShader = LoadProgram("Shaders/basic.vert", "Shaders/basic.frag");
+
+    CodeMonkeys::Engine::Assets::test1();
+    GLuint myShader = CodeMonkeys::Engine::Assets::LoadShaderProgram("Shaders/basic.vert", "Shaders/basic.frag");
 	
     // Rendering Loop
     while (glfwWindowShouldClose(mWindow) == false) {
