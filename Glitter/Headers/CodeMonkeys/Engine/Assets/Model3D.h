@@ -20,7 +20,7 @@ namespace CodeMonkeys::Engine::Assets
         vector<ShaderProgram> shaders;
 
     public:
-        Model3D(mlModel* ml_model, vector<Texture*> textures, vector<ShaderProgram*> shaders);
+        Model3D(mlModel* ml_model, vector<Texture*> textures, vector<ShaderProgram> shaders);
         // Render the Model3D using its model, textures, and shaders.
         void draw();
     };

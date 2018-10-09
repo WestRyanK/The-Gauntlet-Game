@@ -2,7 +2,8 @@
 
 using CodeMonkeys::Engine::Control::Controller;
 
-Controller::Controller(IControllable* controllable)
+Controller::Controller(IControllable* controllable, GLFWwindow* window)
 {
     this->controllable = controllable;
+    this->window = window;
 }

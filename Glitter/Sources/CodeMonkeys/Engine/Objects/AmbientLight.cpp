@@ -10,5 +10,5 @@ AmbientLight::AmbientLight(vec3 color, float strength) : CodeMonkeys::Engine::Ob
 
 void AmbientLight::add_light_to_shader(ShaderProgram shader_program)
 {
-    throw NotImplementedException();
+    throw NotImplementedException("AmbientLight::add_light_to_shader");
 }

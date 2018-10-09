@@ -5,9 +5,10 @@
 using CodeMonkeys::Engine::Engine::GameEngine;
 using namespace CodeMonkeys::Engine::Control;
 
-GameEngine::GameEngine()
+GameEngine::GameEngine(GLFWwindow* window)
 {
-    throw NotImplementedException();
+    this->window = window;
+    // throw NotImplementedException("GameEngine::constructor");
 }
 
 void GameEngine::set_lighting()
@@ -21,6 +22,11 @@ void GameEngine::set_lighting()
     }
 }
 
+GLFWwindow* GameEngine::get_window()
+{
+    return this->window;
+}
+
 void GameEngine::draw_objects()
 {
     this->draw_objects_iterator.draw(this->world_root);
@@ -30,7 +36,7 @@ void GameEngine::handle_controllers(float dt)
 {
     for (Controller* controller : this->controllers)
     {
-        controller->handle_input();
+        controller->handle_input(dt);
     }
 }
         

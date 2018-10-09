@@ -5,7 +5,7 @@ using CodeMonkeys::Engine::Assets::Texture;
 
 Texture::Texture(string texture_path)
 {
-    throw NotImplementedException();
+    throw NotImplementedException("Texture::constructor");
 }
 
 unsigned int Texture::get_width()

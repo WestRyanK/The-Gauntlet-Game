@@ -1,15 +1,17 @@
 #pragma once
 
+#include "glitter.hpp"
 #include "CodeMonkeys/Engine/Control/IControllable.h"
 
 namespace CodeMonkeys::Engine::Control
 {
     class Controller
     {
-    private:
+    protected:
         IControllable* controllable = NULL;
+        GLFWwindow* window = NULL;
     public:
-        Controller(IControllable* controllable);
-        virtual void handle_input() = 0;
+        Controller(IControllable* controllable, GLFWwindow* window);
+        virtual void handle_input(float dt) = 0;
     };
 }

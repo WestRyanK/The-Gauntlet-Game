@@ -8,8 +8,8 @@ namespace CodeMonkeys::Engine::Control
     class IControllable
     {
     public:
-        virtual void control(std::string control_name, float value_a, float value_b) = 0;
-        virtual void control(std::string control_name, float value) = 0;
-        virtual void control(std::string control_name, int value) = 0;
+        // virtual void control(std::string control_name, float value_a, float value_b) = 0;
+        virtual void control(std::string control_name, float value, float dt) = 0;
+        virtual void control(std::string control_name, int value, float dt) = 0;
     };
 }

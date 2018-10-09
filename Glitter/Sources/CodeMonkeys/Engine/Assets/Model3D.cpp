@@ -3,12 +3,16 @@
 
 using CodeMonkeys::Engine::Assets::Model3D;
 
-Model3D::Model3D(mlModel* ml_model, vector<Texture*> textures, vector<ShaderProgram*> shaders)
+Model3D::Model3D(mlModel* ml_model, vector<Texture*> textures, vector<ShaderProgram> shaders)
 {
-    throw NotImplementedException();
+    // Here we should disect the mlModel and create VAOs for each of the meshes
+    
+    this->textures = textures;
+    this->shaders = shaders;
+    throw NotImplementedException("Model3D::constructor");
 }
 
 void Model3D::draw()
 {
-    throw NotImplementedException();
+    throw NotImplementedException("Model3D::draw");
 }

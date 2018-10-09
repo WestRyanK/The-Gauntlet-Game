@@ -5,7 +5,7 @@ using CodeMonkeys::Engine::Collision::BoundingBox;
 
 BoundingBox::BoundingBox(vec3 corner_max, vec3 corner_min)
 {
-    throw NotImplementedException();
+    throw NotImplementedException("BoundingBox::constructor");
 }
 
 vec3 BoundingBox::get_corner_max()
@@ -90,15 +90,15 @@ void BoundingBox::set_max_z(float z)
 
 bool BoundingBox::is_intersection(vec3 point)
 {
-    throw NotImplementedException();
+    throw NotImplementedException("BoundingBox::is_intersection");
 }
 
 bool BoundingBox::is_intersection(float x, float y, float z)
 {
-    throw NotImplementedException();
+    throw NotImplementedException("BoundingBox::is_intersection");
 }
 
 bool BoundingBox::is_intersection(BoundingBox bounding_box)
 {
-    throw NotImplementedException();
+    throw NotImplementedException("BoundingBox::is_intersection");
 }

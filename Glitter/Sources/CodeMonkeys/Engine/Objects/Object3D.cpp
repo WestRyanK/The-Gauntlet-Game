@@ -5,7 +5,7 @@ using CodeMonkeys::Engine::Objects::Object3D;
 
 Object3D::Object3D(Model3D* model)
 {
-    throw NotImplementedException();
+    throw NotImplementedException("Object3D::constructor");
 }
 
 vec3 Object3D::get_position()
@@ -46,7 +46,7 @@ void Object3D::set_scale(float scale)
 // Gets the transform matrix combining Object3D's position, rotation, and scale.
 mat4 Object3D::get_transform()
 {
-    throw NotImplementedException();
+    throw NotImplementedException("Object3D::get_transform");
 }
 
 set<Object3D*> Object3D::get_children()
@@ -78,10 +78,10 @@ void Object3D::set_parent(Object3D* parent)
 
 void Object3D::update(float dt)
 {
-    throw NotImplementedException();
+    throw NotImplementedException("Object3D::update");
 }
 
 void Object3D::draw(mat4 total_transform)
 {
-    throw NotImplementedException();
+    throw NotImplementedException("Object3D::draw");
 }

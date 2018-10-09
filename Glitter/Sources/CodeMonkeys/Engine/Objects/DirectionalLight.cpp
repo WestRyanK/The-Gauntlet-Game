@@ -1,6 +1,7 @@
 #include "glitter.hpp"
 #include "CodeMonkeys/Engine/Objects/DirectionalLight.h"
 #include "CodeMonkeys/Engine/Objects/ILight3D.h"
+#include "NIE.h"
 
 using namespace glm;
 using namespace CodeMonkeys::Engine::Objects;
@@ -23,5 +24,5 @@ void DirectionalLight::set_direction(vec3 direction)
 
 void DirectionalLight::add_light_to_shader(ShaderProgram shader_program)
 {
-
+    throw NotImplementedException("DirectionalLight::add_light_to_shader");
 }

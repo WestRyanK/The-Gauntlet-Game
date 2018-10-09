@@ -6,7 +6,7 @@ using namespace CodeMonkeys::Engine::Objects;
 
 PhysicalObject3D::PhysicalObject3D(Model3D* model) : Object3D(model)
 {
-    throw NotImplementedException();
+    throw NotImplementedException("PhysicalObject3D::constructor");
 }
 
 vec3 PhysicalObject3D::get_velocity()

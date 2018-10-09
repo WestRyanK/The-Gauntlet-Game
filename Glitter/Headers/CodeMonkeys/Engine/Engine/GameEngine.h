@@ -19,12 +19,7 @@ namespace CodeMonkeys::Engine::Engine
     class GameEngine
     {
     private:
-        set<Controller*> controllers;
-        Object3D* world_root;
-        set<ILight3D*> lights;
-        set<ShaderProgram> shaders;
-        set<ICollisionResponse*> collision_responses;
-        ICollisionDetector* collision_detector = NULL;
+        GLFWwindow* window;
         Stopwatch stopwatch;
         DrawObjectsIterator draw_objects_iterator;
         UpdateObjectsIterator update_objects_iterator;
@@ -33,7 +28,16 @@ namespace CodeMonkeys::Engine::Engine
         void draw_objects();
 
     protected:
+        set<Controller*> controllers;
+        Object3D* world_root;
+        set<ILight3D*> lights;
+        set<ShaderProgram> shaders;
+        set<ICollisionResponse*> collision_responses;
+        ICollisionDetector* collision_detector = NULL;
+
         bool is_running = false;
+
+        GLFWwindow* get_window();
 
         virtual void handle_controllers(float dt);
         virtual void update_objects(float dt);
@@ -42,7 +46,7 @@ namespace CodeMonkeys::Engine::Engine
         virtual void update_frame(float dt) = 0;
     
     public:
-        GameEngine();
+        GameEngine(GLFWwindow* window);
         void run();
         virtual void init() = 0;
     };

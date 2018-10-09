@@ -11,7 +11,7 @@ namespace CodeMonkeys::Engine::Objects
 {
     class PhysicalObject3D: public Object3D
     {
-    private:
+    protected:
         vec3 velocity;
         vec3 angular_velocity;
 
