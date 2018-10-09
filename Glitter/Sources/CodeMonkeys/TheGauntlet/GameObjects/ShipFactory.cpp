@@ -2,6 +2,7 @@
 #include "CodeMonkeys/TheGauntlet/GameObjects/Ship.h"
 #include "CodeMonkeys/Engine/Assets/Model3D.h"
 #include "CodeMonkeys/Engine/Assets/ModelLoader.h"
+#include "CodeMonkeys/Engine/Assets/ShaderHelpers.h"
 #include "CodeMonkeys/Engine/Assets/Texture.h"
 #include "CodeMonkeys/TheGauntlet/LaserCannon.h"
 #include "CodeMonkeys/TheGauntlet/LaserTurret.h"
@@ -16,11 +17,14 @@ using namespace CodeMonkeys::Engine::Assets;
 Ship* ShipFactory::create_x_wing_ship()
 {
     mlModel* ml_model = new mlModel();
-    LoadModel("Assets/Ship/XWingShip", "XWingShip.obj", *ml_model);
+    LoadModel("Assets/Ships/XWingShip", "XWingShip.obj", *ml_model);
 
     // TODO: Load the textures for ship.
     vector<Texture*> textures;
     vector<ShaderProgram> shaders;
+
+    ShaderProgram shader = LoadShaderProgram("Shaders/basic.vert", "Shaders/basic.frag");
+    shaders.push_back(shader);
 
     Model3D* model = new Model3D(ml_model, textures, shaders);
 

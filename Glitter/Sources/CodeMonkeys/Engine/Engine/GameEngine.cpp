@@ -1,13 +1,18 @@
 #include "CodeMonkeys/Engine/Engine/GameEngine.h"
+#include "glitter.hpp"
 #include "CodeMonkeys/Engine/Control/Controller.h"
+#include "CodeMonkeys/Engine/Objects/Object3D.h"
+#include "CodeMonkeys/Engine/Objects/Camera3D.h"
 #include "NIE.h"
 
 using CodeMonkeys::Engine::Engine::GameEngine;
+using namespace CodeMonkeys::Engine::Objects;
 using namespace CodeMonkeys::Engine::Control;
 
 GameEngine::GameEngine(GLFWwindow* window)
 {
     this->window = window;
+    this->world_root = new Object3D(NULL);
     // throw NotImplementedException("GameEngine::constructor");
 }
 
@@ -19,6 +24,14 @@ void GameEngine::set_lighting()
         {
             light->add_light_to_shader(shader);
         }
+    }
+}
+
+void GameEngine::set_camera()
+{
+    for (ShaderProgram shader : this->shaders)
+    {
+        this->camera->update_shader_with_camera(shader);
     }
 }
 
@@ -47,15 +60,18 @@ void GameEngine::update_objects(float dt)
         
 void GameEngine::handle_collisions(float dt)
 {
-    auto collisions = this->collision_detector->get_collisions();
-    
-    for (pair<Object3D*, Object3D*> collision : collisions)
+    if (this->collision_detector != NULL)
     {
-        for (ICollisionResponse* collision_response : this->collision_responses)
+        auto collisions = this->collision_detector->get_collisions();
+        
+        for (pair<Object3D*, Object3D*> collision : collisions)
         {
-            if (collision_response->can_respond(collision.first, collision.second))
+            for (ICollisionResponse* collision_response : this->collision_responses)
             {
-                collision_response->respond(collision.first, collision.second);
+                if (collision_response->can_respond(collision.first, collision.second))
+                {
+                    collision_response->respond(collision.first, collision.second);
+                }
             }
         }
     }
@@ -63,16 +79,32 @@ void GameEngine::handle_collisions(float dt)
         
 void GameEngine::draw()
 {
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT);
+
     this->set_lighting();
+    this->set_camera();
+    // "action!"
     this->draw_objects();
+
+    glfwSwapBuffers(this->window);
 }
         
 void GameEngine::run()
 {
+    if (this->collision_detector == NULL)
+    {
+        printf("Collision Detector NULL!\n");
+    }
+
     this->is_running = true;
     float dt = this->stopwatch.get_seconds_from_last_measurement();
     while (this->is_running)
     {
+        if (glfwGetKey(this->window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+            this->is_running = false;
+
         this->update_frame(dt);
+        glfwPollEvents();
     }
 }

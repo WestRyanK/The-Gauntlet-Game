@@ -5,6 +5,7 @@
 #include "CodeMonkeys/Engine/Control/Controller.h"
 #include "CodeMonkeys/Engine/Control/IControllable.h"
 #include "CodeMonkeys/Engine/Objects/ILight3D.h"
+#include "CodeMonkeys/Engine/Objects/Camera3D.h"
 #include "CodeMonkeys/Engine/Collision/ICollisionResponse.h"
 #include "CodeMonkeys/Engine/Collision/ICollisionDetector.h"
 #include "CodeMonkeys/Engine/Engine/Stopwatch.h"
@@ -25,6 +26,7 @@ namespace CodeMonkeys::Engine::Engine
         UpdateObjectsIterator update_objects_iterator;
 
         void set_lighting();
+        void set_camera();
         void draw_objects();
 
     protected:
@@ -34,6 +36,7 @@ namespace CodeMonkeys::Engine::Engine
         set<ShaderProgram> shaders;
         set<ICollisionResponse*> collision_responses;
         ICollisionDetector* collision_detector = NULL;
+        Camera3D* camera;
 
         bool is_running = false;
 
@@ -50,4 +53,5 @@ namespace CodeMonkeys::Engine::Engine
         void run();
         virtual void init() = 0;
     };
+
 }
