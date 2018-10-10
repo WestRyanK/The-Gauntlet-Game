@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include "glitter.hpp"
 
 using namespace std;
 
@@ -9,17 +10,18 @@ namespace CodeMonkeys::Engine::Assets
     class Texture
     {
     private:
-        unsigned int width;
-        unsigned int height;
-        unsigned int channel_count;
-        unsigned char* data;
-        string* texture_name;
+        int width;
+        int height;
+        int channel_count;
+        unsigned int texture_id;
+        const char* texture_path;
 
     public:
-        Texture(string texture_path);
-        unsigned int get_width();
-        unsigned int get_height();
-        unsigned int get_channel_count();
-        string* get_texture_name();
+        Texture(const char* texture_path);
+        int get_width();
+        int get_height();
+        int get_channel_count();
+        unsigned int get_texture_id();
+        const char* get_texture_path();
     };
 }

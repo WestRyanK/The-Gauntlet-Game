@@ -1,7 +1,13 @@
 #version 330 core
-out vec4 ColorOut;
+
+in vec3 normal_2;
+in vec2 uv_2;
+
+out vec4 color_out;
+
+uniform sampler2D texture_0;
 
 void main()
 {
-    ColorOut = vec4(1.0f, 1.0f, 1.0f, 1.0f);
+    color_out = texture(texture_0, uv_2);
 }

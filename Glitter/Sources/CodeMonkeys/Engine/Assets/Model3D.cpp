@@ -46,6 +46,7 @@ void Model3D::create_vao_ebo(mlMesh mesh)
     this->ebo_sizes.push_back(mesh.indices.size());
 }
 
+
 void Model3D::draw(mat4 transform)
 {
     for (int i = 0; i < this->vaos.size(); i++)
@@ -55,6 +56,14 @@ void Model3D::draw(mat4 transform)
         unsigned int object_location = glGetUniformLocation(this->shaders[i], "object_transform");
         glUniformMatrix4fv(object_location, 1, GL_FALSE, glm::value_ptr(transform));
 
+        if (i < this->textures.size() && this->textures[i] != NULL)
+        {
+            glActiveTexture(GL_TEXTURE0);
+            glBindTexture(GL_TEXTURE_2D, this->textures[i]->get_texture_id());
+            unsigned int texture_location = glGetUniformLocation(this->shaders[i], "texture_0");
+            glUniform1i(texture_location, 0);
+
+        }
         glBindVertexArray(this->vaos[i]);
         glDrawElements(GL_TRIANGLES, this->ebo_sizes[i], GL_UNSIGNED_INT, 0);
     }

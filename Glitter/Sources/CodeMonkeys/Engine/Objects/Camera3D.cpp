@@ -7,7 +7,7 @@ using CodeMonkeys::Engine::Objects::Camera3D;
 
 Camera3D::Camera3D() : Object3D(NULL, "Camera")
 {
-    this->look_at = vec3(0.0f, 0.0f, 0.0f);
+    this->look_at = vec3(0.0f, -5.0f, 0.0f);
     this->position = vec3(0.0f, 0.0f, 20.0f);
     // TODO: Don't hardcode window size.
     this->perspective_projection = glm::perspective(glm::radians(45.0f), 640.0f / 480.0f, 0.1f, 100.0f);
