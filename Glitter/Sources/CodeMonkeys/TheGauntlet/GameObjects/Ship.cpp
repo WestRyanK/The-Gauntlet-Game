@@ -1,5 +1,6 @@
 #include "CodeMonkeys/TheGauntlet/GameObjects/Ship.h"
 #include "CodeMonkeys/TheGauntlet/IDamageable.h"
+#include <string>
 #include "CodeMonkeys/TheGauntlet/IFlyable.h"
 #include "CodeMonkeys/Engine/Control/IControllable.h"
 #include "NIE.h"
@@ -7,7 +8,7 @@
 using CodeMonkeys::TheGauntlet::GameObjects::Ship;
 using namespace CodeMonkeys::TheGauntlet;
 
-Ship::Ship(Model3D* model,
+Ship::Ship(Model3D* model, std::string name,
     unsigned int initial_health,
     unsigned int max_health, 
 
@@ -21,7 +22,7 @@ Ship::Ship(Model3D* model,
     IFireable* primary_weapon,
     IFireable* secondary_weapon) : 
 
-        PhysicalObject3D(model), 
+        PhysicalObject3D(model, name), 
         IDamageable(initial_health, max_health), 
         IControllable(), 
         IFlyable(xy_acceleration, 

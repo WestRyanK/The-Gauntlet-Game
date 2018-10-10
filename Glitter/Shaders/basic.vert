@@ -1,8 +1,11 @@
 #version 330 core
 layout (location = 0) in vec3 position;
 
+uniform mat4 view_transform;
+uniform mat4 projection_transform;
+uniform mat4 object_transform;
+
 void main()
 {
-	// The divide by 10 was just so the model could appear on screen. You should remove it
-    gl_Position = vec4(position.x / 10, position.y / 10, position.z / 10, 1.0);
+    gl_Position = projection_transform * view_transform * object_transform * vec4(position, 1.0);
 }

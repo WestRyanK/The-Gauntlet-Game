@@ -4,7 +4,8 @@ using CodeMonkeys::TheGauntlet::Control::MouseController;
 
 MouseController::MouseController(IControllable* controllable, GLFWwindow* window) : Controller(controllable, window)
 {
-    glfwSetInputMode(this->window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    // TODO: Uncomment me in order to hide mouse!
+    // glfwSetInputMode(this->window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 }
 
 void MouseController::get_mouse_delta(float* delta_x, float* delta_y)

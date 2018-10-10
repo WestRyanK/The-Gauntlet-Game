@@ -1,8 +1,8 @@
 #pragma once
 
 #include <set>
-#include <GLFW/glfw3.h>
 #include "glitter.hpp"
+#include <string>
 #include "CodeMonkeys/Engine/Assets/Model3D.h"
 
 using namespace std;
@@ -15,20 +15,21 @@ namespace CodeMonkeys::Engine::Objects
     {
     protected:
         Assets::Model3D* model;
-        vec4 position;
-        vec4 rotation;
-        vec4 scale;
+        vec3 position;
+        vec3 rotation;
+        vec3 scale;
         set<Object3D*> children;
         Object3D* parent;
+        std::string name;
     public:
-        Object3D(Model3D* model);
+        Object3D(Model3D* model, std::string name);
 
-        vec4 get_position();
-        void set_position(vec4 position);
-        vec4 get_rotation();
-        void set_rotation(vec4 rotation);
-        vec4 get_scale();
-        void set_scale(vec4 scale);
+        vec3 get_position();
+        void set_position(vec3 position);
+        vec3 get_rotation();
+        void set_rotation(vec3 rotation);
+        vec3 get_scale();
+        void set_scale(vec3 scale);
         void set_scale(float scale);
         mat4 get_transform();
         set<Object3D*> get_children();

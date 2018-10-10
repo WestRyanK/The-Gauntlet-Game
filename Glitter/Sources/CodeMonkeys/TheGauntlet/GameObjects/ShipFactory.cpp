@@ -14,19 +14,22 @@ using namespace CodeMonkeys::TheGauntlet::GameObjects;
 using namespace CodeMonkeys::TheGauntlet; 
 using namespace CodeMonkeys::Engine::Assets;
 
+vector<ShaderProgram> ShipFactory::ship_shaders = vector<ShaderProgram>();
+vector<Texture*> ShipFactory::ship_textures = vector<Texture*>();
+
+void ShipFactory::init(vector<ShaderProgram> ship_shaders, vector<Texture*> ship_textures)
+{
+    ShipFactory::ship_shaders = ship_shaders;
+    ShipFactory::ship_textures = ship_textures;
+}
+
 Ship* ShipFactory::create_x_wing_ship()
 {
     mlModel* ml_model = new mlModel();
     LoadModel("Assets/Ships/XWingShip", "XWingShip.obj", *ml_model);
 
-    // TODO: Load the textures for ship.
-    vector<Texture*> textures;
-    vector<ShaderProgram> shaders;
 
-    ShaderProgram shader = LoadShaderProgram("Shaders/basic.vert", "Shaders/basic.frag");
-    shaders.push_back(shader);
-
-    Model3D* model = new Model3D(ml_model, textures, shaders);
+    Model3D* model = new Model3D(ml_model, ShipFactory::ship_textures, ShipFactory::ship_shaders);
 
     const unsigned int INTITIAL_HEALTH = 100;
     const unsigned int MAX_HEALTH =100;
@@ -40,7 +43,7 @@ Ship* ShipFactory::create_x_wing_ship()
     IFireable* laser_turret = new LaserTurret();
     IFireable* laser_cannon = new LaserCannon();
 
-    Ship* ship = new Ship(model,
+    Ship* ship = new Ship(model, "x_wing_ship",
                           INTITIAL_HEALTH, MAX_HEALTH,
                           XY_ACCELERATION,
                           BOOST_ACCELERATION,

@@ -12,7 +12,7 @@ using namespace CodeMonkeys::Engine::Control;
 GameEngine::GameEngine(GLFWwindow* window)
 {
     this->window = window;
-    this->world_root = new Object3D(NULL);
+    this->world_root = new Object3D(NULL, "world_root");
     // throw NotImplementedException("GameEngine::constructor");
 }
 
@@ -34,6 +34,7 @@ void GameEngine::set_camera()
         this->camera->update_shader_with_camera(shader);
     }
 }
+
 
 GLFWwindow* GameEngine::get_window()
 {
@@ -82,6 +83,7 @@ void GameEngine::draw()
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 
+
     this->set_lighting();
     this->set_camera();
     // "action!"
@@ -101,6 +103,7 @@ void GameEngine::run()
     float dt = this->stopwatch.get_seconds_from_last_measurement();
     while (this->is_running)
     {
+        dt = this->stopwatch.get_seconds_from_last_measurement();
         if (glfwGetKey(this->window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
             this->is_running = false;
 

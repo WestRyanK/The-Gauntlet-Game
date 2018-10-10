@@ -4,7 +4,10 @@ using CodeMonkeys::Engine::Engine::UpdateObjectsIterator;
 
 void UpdateObjectsIterator::visit_object(Object3D* object)
 {
-    object->update(this->dt);
+    if (object != NULL)
+    {
+        object->update(this->dt);
+    }
 }
 
 void UpdateObjectsIterator::post_visit_children(Object3D* parent)

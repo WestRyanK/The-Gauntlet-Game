@@ -6,6 +6,7 @@
 #include "CodeMonkeys/Engine/Assets/Texture.h"
 #include "glitter.hpp"
 
+using namespace glm;
 using namespace std;
 
 namespace CodeMonkeys::Engine::Assets
@@ -30,13 +31,11 @@ namespace CodeMonkeys::Engine::Assets
         vector<Texture*> textures;
         vector<ShaderProgram> shaders;
 
-        void create_ebo(mlMesh mesh);
-        void create_vao(mlMesh mesh);
-        float* convert_mesh_to_vertices(mlMesh mesh);
+        void create_vao_ebo(mlMesh mesh);
 
     public:
         Model3D(mlModel* ml_model, vector<Texture*> textures, vector<ShaderProgram> shaders);
         // Render the Model3D using its model, textures, and shaders.
-        void draw();
+        void draw(mat4 transform);
     };
 };

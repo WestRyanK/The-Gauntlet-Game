@@ -1,6 +1,7 @@
 #pragma once
 
 #include "glitter.hpp"
+#include <string>
 #include "CodeMonkeys/Engine/Objects/Object3D.h"
 #include "CodeMonkeys/Engine/Assets/Model3D.h"
 
@@ -16,7 +17,7 @@ namespace CodeMonkeys::Engine::Objects
         vec4 angular_velocity;
 
     public:
-        PhysicalObject3D(Model3D* model);
+        PhysicalObject3D(Model3D* model, std::string name);
 
         vec4 get_velocity();
         void set_velocity(vec4 velocity);

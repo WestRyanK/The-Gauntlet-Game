@@ -1,10 +1,11 @@
 #include "CodeMonkeys/Engine/Objects/PhysicalObject3D.h"
+#include <string>
 #include "NIE.h"
 
 using CodeMonkeys::Engine::Objects::PhysicalObject3D;
 using namespace CodeMonkeys::Engine::Objects;
 
-PhysicalObject3D::PhysicalObject3D(Model3D* model) : Object3D(model)
+PhysicalObject3D::PhysicalObject3D(Model3D* model, std::string name) : Object3D(model, name)
 {
     this->velocity = vec4(0.0f, 0.0f, 0.0f, 1.0f);
     this->angular_velocity = vec4(0.0f, 0.0f, 0.0f, 1.0f);

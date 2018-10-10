@@ -27,7 +27,7 @@ namespace CodeMonkeys::TheGauntlet::GameObjects
         void control(std::string control_name, int value, float dt);
 
     public:
-        Ship(Model3D* model, 
+        Ship(Model3D* model, std::string name,
             unsigned int initial_health,
             unsigned int max_health, 
             float xy_acceleration, 

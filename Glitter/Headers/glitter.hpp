@@ -20,6 +20,8 @@
 #include <stb_image.h>
 
 typedef unsigned int VAO;
+typedef unsigned int VBO;
+typedef unsigned int EBO;
 typedef unsigned int ShaderProgram;
 
 // Define Some Constants
