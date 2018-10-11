@@ -31,18 +31,21 @@ void TheGauntletEngine::init()
     ShaderProgram shader = CodeMonkeys::Engine::Assets::LoadShaderProgram("Shaders/basic.vert", "Shaders/basic.frag");
     shaders.push_back(shader);
     this->shaders.insert(shader);
-    // CodeMonkeys::TheGauntlet::GameObjects::AsteroidFactory::init_asteroid_factory(0, shaders, textures);
-    // CodeMonkeys::TheGauntlet::GameObjects::ShipFactory::init(shaders, textures);
+    CodeMonkeys::TheGauntlet::GameObjects::AsteroidFactory::init_asteroid_factory(0, shaders, textures);
+    CodeMonkeys::TheGauntlet::GameObjects::ShipFactory::init(shaders, textures);
 
-    textures.push_back(new Texture("Assets/Lab04/crayon_texture.png"));
-    textures.push_back(new Texture("Assets/Lab04/box_texture.png"));
+    Asteroid* asteroid = CodeMonkeys::TheGauntlet::GameObjects::AsteroidFactory::create_asteroid(1);
+    this->world_root->add_child(asteroid);
 
-    CodeMonkeys::Lab04::CrayonFactory::init(textures, shaders);
-    PhysicalObject3D* crayon = CodeMonkeys::Lab04::CrayonFactory::create_crayon();
-    PhysicalObject3D* box = CodeMonkeys::Lab04::CrayonFactory::create_crayon_box();
-    box->set_rotation(vec3(0.0f, 25.0f, 0.0f));
-    this->world_root->add_child(crayon);
-    this->world_root->add_child(box);
+    // textures.push_back(new Texture("Assets/Lab04/crayon_texture.png"));
+    // textures.push_back(new Texture("Assets/Lab04/box_texture.png"));
+
+    // CodeMonkeys::Lab04::CrayonFactory::init(textures, shaders);
+    // PhysicalObject3D* crayon = CodeMonkeys::Lab04::CrayonFactory::create_crayon();
+    // PhysicalObject3D* box = CodeMonkeys::Lab04::CrayonFactory::create_crayon_box();
+    // box->set_rotation(vec3(0.0f, 25.0f, 0.0f));
+    // this->world_root->add_child(crayon);
+    // this->world_root->add_child(box);
 
     this->camera = new Camera3D();
 

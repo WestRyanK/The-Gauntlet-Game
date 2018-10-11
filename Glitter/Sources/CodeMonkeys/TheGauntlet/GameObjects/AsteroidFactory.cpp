@@ -49,7 +49,6 @@ void AsteroidFactory::add_noise_to_model(mlModel* ml_model)
 {
     float MAX_NOISE = 0.5f;
 
-    // for (mlMesh asteroid_mesh : ml_model->meshes)
     for (int mesh_index = 0; mesh_index < ml_model->meshes.size(); mesh_index++)
     {
         // Mutate along axis.
@@ -58,15 +57,11 @@ void AsteroidFactory::add_noise_to_model(mlModel* ml_model)
             float stretch_factor = AsteroidFactory::rand_min_max(0.25f, 2.0f);
 
             for (int vertex_index = 0; vertex_index < ml_model->meshes[mesh_index].vertices.size(); vertex_index++)
-            // for (mlVertex asteroid_vertex : asteroid_mesh.vertices)
             {
-                // float position = asteroid_vertex.position[axis];
                 float position = ml_model->meshes[mesh_index].vertices[vertex_index].position[axis];
                 position *= stretch_factor;
                 position += AsteroidFactory::rand_centered(0.0f, MAX_NOISE);
-                // asteroid_vertex.position[axis] = position;
                 ml_model->meshes[mesh_index].vertices[vertex_index].position[axis] = position;
-                std::printf("test\n");
             }
         }
     }
