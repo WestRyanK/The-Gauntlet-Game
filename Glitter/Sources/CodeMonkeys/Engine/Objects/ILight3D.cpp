@@ -1,4 +1,7 @@
 #include "ILight3D.h"
+#include "NIE.h"
+#include <string>
+#include <iostream>
 
 using CodeMonkeys::Engine::Objects::ILight3D;
 
@@ -26,4 +29,12 @@ float ILight3D::get_strength()
 void ILight3D::set_strength(float strength)
 {
     this->strength = strength;
+}
+
+void ILight3D::add_light_property()
+{
+    throw NotImplementedException();
+    // std::ostringstream ss;
+    // ss << "allLights[" << lightIndex << "]." << propertyName;
+    // std::string uniformName = ss.str();
 }

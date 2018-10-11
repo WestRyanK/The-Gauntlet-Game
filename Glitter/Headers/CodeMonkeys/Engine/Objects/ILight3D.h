@@ -11,10 +11,11 @@ namespace CodeMonkeys::Engine::Objects
     protected:
         vec3 color;
         float strength;
+        void add_light_property();
     public:
         ILight3D(vec3 color, float strength);
         // In order for a shader to use a light, it must add its data to the shader. For each frame, every shader must receive updated values for each light.
-        virtual void add_light_to_shader(ShaderProgram shader_program) = 0;
+        virtual void add_light_to_shader(ShaderProgram shader_program);
         vec3 get_color();
         void set_color(vec3 color);
         float get_strength();
