@@ -7,7 +7,7 @@ using CodeMonkeys::Engine::Objects::Camera3D;
 
 Camera3D::Camera3D() : Object3D(NULL, "Camera")
 {
-    this->look_at = vec3(0.0f, -5.0f, 0.0f);
+    this->look_at = vec3(0.0f, 0.0f, 0.0f);
     this->position = vec3(0.0f, 0.0f, 20.0f);
     // TODO: Don't hardcode window size.
     this->perspective_projection = glm::perspective(glm::radians(45.0f), 640.0f / 480.0f, 0.1f, 100.0f);
@@ -47,10 +47,13 @@ void Camera3D::update_shader_with_camera(ShaderProgram shader)
 void Camera3D::control(std::string control_name, float value, float dt)
 {
     const float velocity = 10.0f;
+    const float angular_velocity = 1.0f;
+    vec3 forward = glm::normalize(this->look_at - this->position);
+    vec3 sideways = -glm::normalize(glm::cross(this->up, this->look_at - this->position));
     if (control_name == "move_x")
     {
-        this->position.x += value * dt * velocity;
-        this->look_at.x += value * dt * velocity;
+        this->position += sideways * dt * value * velocity;
+        this->look_at += sideways * dt * value * velocity;
     }
     if (control_name == "move_y")
     {
@@ -59,8 +62,17 @@ void Camera3D::control(std::string control_name, float value, float dt)
     }
     if (control_name == "move_z")
     {
-        this->position.z += value * dt * velocity;
-        this->look_at.z += value * dt * velocity;
+        this->position += forward * dt * value * velocity;
+        this->look_at += forward * dt * value * velocity;
+    }
+    if (control_name == "rotate_y")
+    {
+        mat4 transform;
+        transform = glm::rotate(transform, value * glm::radians(angular_velocity), this->up);
+
+        vec4 rotate = vec4(forward.x, forward.y, forward.z, 1.0f) * transform;
+        vec3 rotate3 = vec3(rotate.x, rotate.y, rotate.z);
+        this->look_at = rotate3 + this->position;
     }
 }
 

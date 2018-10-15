@@ -1,5 +1,6 @@
 #include "CodeMonkeys/TheGauntlet/GameObjects/AsteroidFactory.h"
 #include "CodeMonkeys/TheGauntlet/GameObjects/Asteroid.h"
+#include "CodeMonkeys/Engine/Assets/LoopSubdivider.h"
 #include <time.h>
 #include <iostream>
 #include <stdlib.h>
@@ -28,8 +29,8 @@ Asteroid* AsteroidFactory::create_asteroid(int size)
         health = Asteroid::SMALL_HEALTH;
     }
 
-    mlModel* ml_model = AsteroidFactory::load_asteroid_model();
-    AsteroidFactory::add_noise_to_model(ml_model);
+    mlModel* ml_model = AsteroidFactory::load_asteroid_model(size);
+    AsteroidFactory::add_noise_to_model(ml_model, 1);
     Model3D* model = AsteroidFactory::create_asteroid_model(ml_model);
 
     Asteroid* asteroid = new Asteroid(model, size, health);
@@ -37,32 +38,64 @@ Asteroid* AsteroidFactory::create_asteroid(int size)
     return asteroid;
 }
 
-mlModel* AsteroidFactory::load_asteroid_model()
+mlModel* AsteroidFactory::load_asteroid_model(float scale)
 {
-    mlModel* ml_model = new mlModel();
-    LoadModel("Assets", "asteroid.obj", *ml_model);
+    mlMesh* mesh = new mlMesh();
+    vector<mlVertex> vertices;
+    mlVertex a;
+    a.position = vec3(-scale, 0.0f, -scale);
+    vertices.push_back(a);
+    mlVertex b;
+    b.position = vec3(scale, 0.0f, -scale);
+    vertices.push_back(b);
+    mlVertex c;
+    c.position = vec3(0.0f, 0.0f, scale);
+    vertices.push_back(c);
+    mlVertex d;
+    d.position = vec3(0.0f, scale, 0.0f);
+    vertices.push_back(d);
+    mlVertex e;
+    e.position = vec3(0.0f, -scale, 0.0f);
+    vertices.push_back(e);
+    vector<unsigned int> indices = { 0, 1, 3, 1, 2, 3, 0, 2, 3, 0, 1, 4, 1, 2, 4, 0, 2, 4};
+    mesh->vertices = vertices;
+    mesh->indices = indices;
 
-    return ml_model;
+    mlModel* model = new mlModel();
+    model->meshes.push_back(*mesh);
+    return model;
+
+    // mlModel* ml_model = new mlModel();
+    // LoadModel("Assets", "asteroid.obj", *ml_model);
+
+    // return ml_model;
 }
 
-void AsteroidFactory::add_noise_to_model(mlModel* ml_model)
+void AsteroidFactory::add_noise_to_model(mlModel* ml_model, int noise_iterations)
 {
     float MAX_NOISE = 0.5f;
 
-    for (int mesh_index = 0; mesh_index < ml_model->meshes.size(); mesh_index++)
+    for (int i = 0; i < noise_iterations; i++)
     {
-        // Mutate along axis.
-        for (int axis = 0; axis < 3; axis++)
+        for (int mesh_index = 0; mesh_index < ml_model->meshes.size(); mesh_index++)
         {
-            float stretch_factor = AsteroidFactory::rand_min_max(0.25f, 2.0f);
-
-            for (int vertex_index = 0; vertex_index < ml_model->meshes[mesh_index].vertices.size(); vertex_index++)
+            // Mutate along axis.
+            for (int axis = 0; axis < 3; axis++)
             {
-                float position = ml_model->meshes[mesh_index].vertices[vertex_index].position[axis];
-                position *= stretch_factor;
-                position += AsteroidFactory::rand_centered(0.0f, MAX_NOISE);
-                ml_model->meshes[mesh_index].vertices[vertex_index].position[axis] = position;
+                float stretch_factor = AsteroidFactory::rand_min_max(0.25f, 2.0f);
+
+                // Add noise
+                for (int vertex_index = 0; vertex_index < ml_model->meshes[mesh_index].vertices.size(); vertex_index++)
+                {
+                    float position = ml_model->meshes[mesh_index].vertices[vertex_index].position[axis];
+                    position *= stretch_factor;
+                    position += AsteroidFactory::rand_centered(0.0f, MAX_NOISE);
+                    ml_model->meshes[mesh_index].vertices[vertex_index].position[axis] = position;
+                }
             }
+            mlMesh* mesh = CodeMonkeys::Engine::Assets::LoopSubdivider::subdivide_mesh(&(ml_model->meshes[mesh_index]), 1);
+            free(&(ml_model->meshes[mesh_index]));
+            ml_model->meshes[mesh_index] = *mesh;
         }
     }
 }

@@ -31,11 +31,21 @@ void KeyboardController::handle_input(float dt)
     if (glfwGetKey(this->window, GLFW_KEY_E) == GLFW_PRESS)
     {
         this->controllable->control("boost", 1.0f, dt);
-        this->controllable->control("move_z", 1.0f, dt);
+        this->controllable->control("rotate_y", 1.0f, dt);
     }
     if (glfwGetKey(this->window, GLFW_KEY_Q) == GLFW_PRESS)
     {
         this->controllable->control("brake", 1.0f, dt);
+        this->controllable->control("rotate_y", -1.0f, dt);
+    }
+
+
+    if (glfwGetKey(this->window, GLFW_KEY_F) == GLFW_PRESS)
+    {
+        this->controllable->control("move_z", 1.0f, dt);
+    }
+    if (glfwGetKey(this->window, GLFW_KEY_R) == GLFW_PRESS)
+    {
         this->controllable->control("move_z", -1.0f, dt);
     }
 

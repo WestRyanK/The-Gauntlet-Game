@@ -5,6 +5,7 @@
 #include "CodeMonkeys/TheGauntlet/Control/KeyboardController.h"
 #include "CodeMonkeys/TheGauntlet/Control/MouseController.h"
 #include "CodeMonkeys/TheGauntlet/GameObjects/ShipFactory.h"
+#include "CodeMonkeys/Engine/Assets/LoopSubdivider.h"
 #include "CodeMonkeys/TheGauntlet/GameObjects/AsteroidFactory.h"
 #include "CodeMonkeys/TheGauntlet/GameObjects/Asteroid.h"
 
@@ -34,8 +35,14 @@ void TheGauntletEngine::init()
     CodeMonkeys::TheGauntlet::GameObjects::AsteroidFactory::init_asteroid_factory(0, shaders, textures);
     CodeMonkeys::TheGauntlet::GameObjects::ShipFactory::init(shaders, textures);
 
-    Asteroid* asteroid = CodeMonkeys::TheGauntlet::GameObjects::AsteroidFactory::create_asteroid(1);
-    this->world_root->add_child(asteroid);
+    // Asteroid* asteroid = CodeMonkeys::TheGauntlet::GameObjects::AsteroidFactory::create_asteroid(1);
+    // this->world_root->add_child(asteroid);
+
+    mlModel* ml_model = CodeMonkeys::Engine::Assets::LoopSubdivider::test();
+    Model3D* subdivided = new Model3D(ml_model, textures, shaders);
+    Object3D* obj = new Object3D(subdivided, "Subdivided");
+    this->world_root->add_child(obj);
+
 
     // textures.push_back(new Texture("Assets/Lab04/crayon_texture.png"));
     // textures.push_back(new Texture("Assets/Lab04/box_texture.png"));
