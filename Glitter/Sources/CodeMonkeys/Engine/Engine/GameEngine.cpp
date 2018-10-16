@@ -13,7 +13,7 @@ GameEngine::GameEngine(GLFWwindow* window)
 {
     this->window = window;
     this->world_root = new Object3D(NULL, "world_root");
-    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); // GL_LINE or GL_FILL
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); // GL_LINE or GL_FILL
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LESS);  
     // throw NotImplementedException("GameEngine::constructor");
