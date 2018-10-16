@@ -30,7 +30,7 @@ Asteroid* AsteroidFactory::create_asteroid(int size)
     }
 
     mlModel* ml_model = AsteroidFactory::load_asteroid_model(size);
-    AsteroidFactory::add_noise_to_model(ml_model, 1);
+    AsteroidFactory::add_noise_to_model(ml_model, size , 2, true);
     Model3D* model = AsteroidFactory::create_asteroid_model(ml_model);
 
     Asteroid* asteroid = new Asteroid(model, size, health);
@@ -40,63 +40,108 @@ Asteroid* AsteroidFactory::create_asteroid(int size)
 
 mlModel* AsteroidFactory::load_asteroid_model(float scale)
 {
+    float one_over_sqrt_2 = 1/sqrt(2.0);
+
+    // Geometric definition of a tetrahedron.
+    // mlMesh* mesh = new mlMesh();
+    // vector<mlVertex> vertices;
+    // mlVertex a;
+    // a.position = vec3(scale * 1.0f, 0.0f, scale * -one_over_sqrt_2);
+    // vertices.push_back(a);
+    // mlVertex b;
+    // b.position = vec3(scale * -1.0f, 0.0f, scale * -one_over_sqrt_2);
+    // vertices.push_back(b);
+    // mlVertex c;
+    // c.position = vec3(0.0f, scale * 1.0f, scale * one_over_sqrt_2);
+    // vertices.push_back(c);
+    // mlVertex d;
+    // d.position = vec3(0.0f, scale * -1.0f, scale * one_over_sqrt_2);
+    // vertices.push_back(d);
+    // vector<unsigned int> indices = { 0, 1, 2, 1, 2, 3, 0, 2, 3, 0, 1, 3 };
+    // mesh->vertices = vertices;
+    // mesh->indices = indices;
+
+
+    // Geometric definition of cube
     mlMesh* mesh = new mlMesh();
     vector<mlVertex> vertices;
     mlVertex a;
-    a.position = vec3(-scale, 0.0f, -scale);
+    a.position = vec3(-scale, -scale, -scale);
     vertices.push_back(a);
     mlVertex b;
-    b.position = vec3(scale, 0.0f, -scale);
+    b.position = vec3(scale, -scale, -scale);
     vertices.push_back(b);
     mlVertex c;
-    c.position = vec3(0.0f, 0.0f, scale);
+    c.position = vec3(scale, -scale, scale);
     vertices.push_back(c);
     mlVertex d;
-    d.position = vec3(0.0f, scale, 0.0f);
+    d.position = vec3(-scale, -scale, scale);
     vertices.push_back(d);
     mlVertex e;
-    e.position = vec3(0.0f, -scale, 0.0f);
+    e.position = vec3(-scale, scale, -scale);
     vertices.push_back(e);
-    vector<unsigned int> indices = { 0, 1, 3, 1, 2, 3, 0, 2, 3, 0, 1, 4, 1, 2, 4, 0, 2, 4};
+    mlVertex f;
+    f.position = vec3(scale, scale, -scale);
+    vertices.push_back(f);
+    mlVertex g;
+    g.position = vec3(scale, scale, scale);
+    vertices.push_back(g);
+    mlVertex h;
+    h.position = vec3(-scale, scale, scale);
+    vertices.push_back(h);
+    vector<unsigned int> indices = { 0, 1, 3, 1, 2, 3, 4, 5, 7, 5, 6, 7, 0, 1, 4, 1, 5, 4, 1, 2, 5, 2, 6, 5, 2, 3, 6, 3, 7, 6, 3, 0, 7, 0, 4, 7 };
+
     mesh->vertices = vertices;
     mesh->indices = indices;
 
     mlModel* model = new mlModel();
-    model->meshes.push_back(*mesh);
+    model->meshes.push_back(mesh);
     return model;
-
-    // mlModel* ml_model = new mlModel();
-    // LoadModel("Assets", "asteroid.obj", *ml_model);
-
-    // return ml_model;
 }
 
-void AsteroidFactory::add_noise_to_model(mlModel* ml_model, int noise_iterations)
+void AsteroidFactory::add_noise_to_model(mlModel* ml_model, int asteroid_size, int noise_iterations, bool is_jagged)
 {
-    float MAX_NOISE = 0.5f;
+    float max_noise;
+    if (is_jagged)
+        max_noise = asteroid_size * 0.25f;
+    else
+        max_noise = asteroid_size * 0.75f;
 
     for (int i = 0; i < noise_iterations; i++)
     {
         for (int mesh_index = 0; mesh_index < ml_model->meshes.size(); mesh_index++)
         {
+
+            if (is_jagged)
+            {
+                mlMesh* mesh = CodeMonkeys::Engine::Assets::LoopSubdivider::subdivide_mesh(ml_model->meshes[mesh_index], 1);
+                free(ml_model->meshes[mesh_index]);
+                ml_model->meshes[mesh_index] = mesh;
+            }
+
             // Mutate along axis.
             for (int axis = 0; axis < 3; axis++)
             {
-                float stretch_factor = AsteroidFactory::rand_min_max(0.25f, 2.0f);
+                // float stretch_factor = AsteroidFactory::rand_min_max(0.75, 1.25f);
 
                 // Add noise
-                for (int vertex_index = 0; vertex_index < ml_model->meshes[mesh_index].vertices.size(); vertex_index++)
+                for (int vertex_index = 0; vertex_index < ml_model->meshes[mesh_index]->vertices.size(); vertex_index++)
                 {
-                    float position = ml_model->meshes[mesh_index].vertices[vertex_index].position[axis];
-                    position *= stretch_factor;
-                    position += AsteroidFactory::rand_centered(0.0f, MAX_NOISE);
-                    ml_model->meshes[mesh_index].vertices[vertex_index].position[axis] = position;
+                    float position = ml_model->meshes[mesh_index]->vertices[vertex_index].position[axis];
+                    // position *= stretch_factor;
+                    float noise_offset = AsteroidFactory::rand_centered(0.0f, max_noise);
+                    position += noise_offset;
+                    ml_model->meshes[mesh_index]->vertices[vertex_index].position[axis] = position;
                 }
             }
-            mlMesh* mesh = CodeMonkeys::Engine::Assets::LoopSubdivider::subdivide_mesh(&(ml_model->meshes[mesh_index]), 1);
-            free(&(ml_model->meshes[mesh_index]));
-            ml_model->meshes[mesh_index] = *mesh;
+            if (!is_jagged)
+            {
+                mlMesh* mesh = CodeMonkeys::Engine::Assets::LoopSubdivider::subdivide_mesh(ml_model->meshes[mesh_index], 1);
+                free(ml_model->meshes[mesh_index]);
+                ml_model->meshes[mesh_index] = mesh;
+            }
         }
+        max_noise = max_noise * 0.750f;
     }
 }
 

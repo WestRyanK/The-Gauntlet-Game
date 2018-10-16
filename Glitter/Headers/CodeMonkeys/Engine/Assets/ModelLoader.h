@@ -23,7 +23,7 @@ namespace CodeMonkeys::Engine::Assets
 		return lhs.position == rhs.position &&
 			lhs.normal      == rhs.normal &&
 			lhs.UV          == rhs.UV;
-	}
+	};
 
 	struct mlMesh {
 		std::string name;
@@ -36,7 +36,7 @@ namespace CodeMonkeys::Engine::Assets
 	// One model can contain several meshes. This allows each mesh
 	// to have its own texture.
 	struct mlModel {
-		std::vector<mlMesh> meshes;
+		std::vector<mlMesh*> meshes;
 	};
 
 	// Attempts to load the 3d model contained in modelFile. Fills out the modelOut

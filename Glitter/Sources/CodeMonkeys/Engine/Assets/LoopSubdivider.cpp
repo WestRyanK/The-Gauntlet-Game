@@ -366,7 +366,7 @@ mlModel* LoopSubdivider::test()
 
     mlModel* model = new mlModel();
     // model->meshes.push_back(*test_mesh);
-    model->meshes.push_back(*subdivided_mesh);
+    model->meshes.push_back(subdivided_mesh);
 
     return model;
 }

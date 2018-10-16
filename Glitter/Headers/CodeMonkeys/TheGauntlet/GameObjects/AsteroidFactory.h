@@ -19,7 +19,7 @@ namespace CodeMonkeys::TheGauntlet::GameObjects
         static float rand_centered(float center, float spread_radius);
         static float rand_min_max(float min, float max);
         static mlModel* load_asteroid_model(float scale);
-        static void add_noise_to_model(mlModel* ml_model, int noise_iterations);
+        static void add_noise_to_model(mlModel* ml_model, int asteroid_size, int noise_iterations, bool is_jagged);
         static Model3D* create_asteroid_model(mlModel* ml_model);
     public:
         // Seed the random generator so that we can replay game.
