@@ -15,7 +15,7 @@ Model3D::Model3D(mlModel* ml_model, vector<Texture*> textures, vector<ShaderProg
     this->shaders = shaders;
 }
 
-void Model3D::create_vao_ebo(mlMesh mesh)
+void Model3D::create_vao_ebo(mlMesh* mesh)
 {
     VAO vao;
     VBO vbo;
@@ -26,10 +26,10 @@ void Model3D::create_vao_ebo(mlMesh mesh)
 
     glBindVertexArray(vao);
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    glBufferData(GL_ARRAY_BUFFER, mesh.vertices.size() * sizeof(mlVertex), &(mesh.vertices[0]), GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, mesh->vertices.size() * sizeof(mlVertex), &(mesh->vertices[0]), GL_STATIC_DRAW);
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, mesh.indices.size() * sizeof(unsigned int), &(mesh.indices[0]), GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, mesh->indices.size() * sizeof(unsigned int), &(mesh->indices[0]), GL_STATIC_DRAW);
 
     glEnableVertexAttribArray(POSITION_INDEX);
     glVertexAttribPointer(POSITION_INDEX, POSITION_SIZE, GL_FLOAT, GL_FALSE, sizeof(mlVertex), (void*)0);
@@ -43,7 +43,7 @@ void Model3D::create_vao_ebo(mlMesh mesh)
     glBindVertexArray(0);
     this->vaos.push_back(vao);
     this->ebos.push_back(vao);
-    this->ebo_sizes.push_back(mesh.indices.size());
+    this->ebo_sizes.push_back(mesh->indices.size());
 }
 
 
