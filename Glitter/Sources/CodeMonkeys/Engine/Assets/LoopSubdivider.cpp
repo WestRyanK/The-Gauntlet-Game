@@ -333,12 +333,12 @@ mlMesh* LoopSubdivider::subdivide_mesh(mlMesh* input_mlmesh, unsigned int subdiv
         Mesh* new_mesh = new Mesh(*mesh);
         adjust_even_vertices(new_mesh, mesh);
         subdivide_triangles(new_mesh);
-        calculate_normals(new_mesh);
 
         free(mesh);
         mesh = new_mesh;
     }
 
+    calculate_normals(mesh);
     mlMesh* output_mlmesh = LoopSubdivider::create_mlmesh_from_mesh(mesh);
     free(mesh);
 
