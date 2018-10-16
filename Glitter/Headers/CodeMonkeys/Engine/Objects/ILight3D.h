@@ -17,9 +17,10 @@ namespace CodeMonkeys::Engine::Objects
         static void add_light_property_3v(ShaderProgram shader, string light_type, unsigned int light_index, string property_name, vec3 property_value);
         static void add_light_property_1f(ShaderProgram shader, string light_type, unsigned int light_index, string property_name, float property_value);
     public:
+        static void set_light_count(ShaderProgram shader, string light_type, int light_count);
         ILight3D(vec3 color, float strength);
         // In order for a shader to use a light, it must add its data to the shader. For each frame, every shader must receive updated values for each light.
-        virtual void add_light_to_shader(ShaderProgram shader_program) = 0;
+        virtual void add_light_to_shader(ShaderProgram shader_program, unsigned int light_index) = 0;
         vec3 get_color();
         void set_color(vec3 color);
         float get_strength();
