@@ -1,5 +1,6 @@
 #include <vector>
 #include "CodeMonkeys/Engine/Objects/AmbientLight.h"
+#include "CodeMonkeys/Engine/Objects/DirectionalLight.h"
 #include "CodeMonkeys/Engine/Assets/ShaderHelpers.h"
 #include "CodeMonkeys/TheGauntlet/TheGauntletEngine.h"
 #include "CodeMonkeys/Lab04/CrayonFactory.h"
@@ -63,5 +64,8 @@ void TheGauntletEngine::init()
 
     AmbientLight* ambient = new AmbientLight(vec3(1.0f, 1.0f, 1.0f), 0.2f);
     this->lights.insert(ambient);
+
+    DirectionalLight* directional = new DirectionalLight(vec3(1.0f, 1.0f, 1.0f), 0.2f, vec3(1.0f, 1.0f, 0.0f));
+    this->lights.insert(directional);
 
 }

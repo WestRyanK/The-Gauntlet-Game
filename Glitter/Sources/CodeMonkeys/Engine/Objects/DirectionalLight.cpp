@@ -24,5 +24,7 @@ void DirectionalLight::set_direction(vec3 direction)
 
 void DirectionalLight::add_light_to_shader(ShaderProgram shader_program)
 {
-    throw NotImplementedException("DirectionalLight::add_light_to_shader");
+    ILight3D::add_light_property_3v(shader_program, "directional", 0, "directional_color", this->color);
+    ILight3D::add_light_property_1f(shader_program, "directional", 0, "directional_strength", this->strength);
+    ILight3D::add_light_property_3v(shader_program, "directional", 0, "directional_direction", this->direction);
 }
