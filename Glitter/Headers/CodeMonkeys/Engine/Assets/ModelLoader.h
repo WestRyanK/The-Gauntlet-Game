@@ -6,12 +6,23 @@
 #include <string>
 #include <vector>
 
+using namespace glm;
+
 namespace CodeMonkeys::Engine::Assets
 {
 	struct mlVertex{
 		glm::vec3 position;
 		glm::vec3 normal;
 		glm::vec2 UV;
+		mlVertex() { };
+		mlVertex(const mlVertex& vertex) { position = vec3(vertex.position); normal = vec3(vertex.normal); UV = vec2(vertex.UV); };
+	};
+
+	inline bool operator==(const mlVertex& lhs, const mlVertex& rhs)
+	{
+		return lhs.position == rhs.position &&
+			lhs.normal      == rhs.normal &&
+			lhs.UV          == rhs.UV;
 	};
 
 	struct mlMesh {
@@ -25,7 +36,7 @@ namespace CodeMonkeys::Engine::Assets
 	// One model can contain several meshes. This allows each mesh
 	// to have its own texture.
 	struct mlModel {
-		std::vector<mlMesh> meshes;
+		std::vector<mlMesh*> meshes;
 	};
 
 	// Attempts to load the 3d model contained in modelFile. Fills out the modelOut

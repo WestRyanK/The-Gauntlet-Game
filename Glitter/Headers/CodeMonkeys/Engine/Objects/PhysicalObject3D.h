@@ -13,16 +13,16 @@ namespace CodeMonkeys::Engine::Objects
     class PhysicalObject3D: public Object3D
     {
     protected:
-        vec4 velocity;
-        vec4 angular_velocity;
+        vec3 velocity;
+        vec3 angular_velocity;
 
     public:
         PhysicalObject3D(Model3D* model, std::string name);
 
-        vec4 get_velocity();
-        void set_velocity(vec4 velocity);
-        vec4 get_angular_velocity();
-        void set_angular_velocity(vec4 angular_velocity);
+        vec3 get_velocity();
+        void set_velocity(vec3 velocity);
+        vec3 get_angular_velocity();
+        void set_angular_velocity(vec3 angular_velocity);
         virtual void update(float dt);
     };
 }

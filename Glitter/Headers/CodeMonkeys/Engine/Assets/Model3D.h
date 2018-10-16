@@ -31,7 +31,7 @@ namespace CodeMonkeys::Engine::Assets
         vector<Texture*> textures;
         vector<ShaderProgram> shaders;
 
-        void create_vao_ebo(mlMesh mesh);
+        void create_vao_ebo(mlMesh* mesh);
 
     public:
         Model3D(mlModel* ml_model, vector<Texture*> textures, vector<ShaderProgram> shaders);
