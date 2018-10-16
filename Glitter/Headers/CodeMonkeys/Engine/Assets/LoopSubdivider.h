@@ -70,6 +70,7 @@ namespace CodeMonkeys::Engine::Assets
         set<Triangle> get_adjacent_triangles(unsigned int vertex_index);
         set<Vertex> get_adjacent_vertices(Vertex vertex);
         int get_odd_vertex_between_even(Triangle triangle, unsigned int vertex_a_index, unsigned int vertex_b_index);
+        vec3 get_triangle_normal(Triangle triangle);
     };
 
     class LoopSubdivider
@@ -80,6 +81,7 @@ namespace CodeMonkeys::Engine::Assets
         static void add_odd_vertices(Mesh* mesh);
         static void adjust_even_vertices(Mesh* new_mesh, Mesh* old_mesh);
         static void subdivide_triangles(Mesh* mesh);
+        static void calculate_normals(Mesh* mesh);
     public:
         static mlMesh* subdivide_mesh(mlMesh* input_mlmesh, unsigned int subdivide_iterations);
         static mlModel* test();

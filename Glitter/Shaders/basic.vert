@@ -12,7 +12,7 @@ out vec2 uv_2;
 
 void main()
 {
-    normal_2 = normal_2;
+    normal_2 = normal_1;
     uv_2 = uv_1;
     gl_Position = projection_transform * view_transform * object_transform * vec4(position_1, 1.0);
 }
