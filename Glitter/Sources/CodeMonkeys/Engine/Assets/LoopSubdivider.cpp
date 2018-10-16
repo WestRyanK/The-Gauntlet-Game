@@ -4,6 +4,7 @@
 #include <iterator>
 
 using CodeMonkeys::Engine::Assets::LoopSubdivider;
+using namespace glm;
 using namespace CodeMonkeys::Engine::Assets;
 using namespace std;
 
@@ -101,18 +102,18 @@ int Mesh::get_third_vertex(Triangle triangle, unsigned int vertex_a_index, unsig
 Vertex Vertex::weighted_sum(unsigned int vertex_count, Vertex* vertices, const float* weights)
 {
     vec3 position;
-    vec3 normal;
+    // vec3 normal;
     vec2 uv;
     for (int i = 0; i < vertex_count; i++)
     {
         position += vertices[i].vertex_data.position * weights[i];
-        normal += vertices[i].vertex_data.normal * weights[i];
+        // normal += vertices[i].vertex_data.normal * weights[i];
         uv += vertices[i].vertex_data.UV * weights[i];
     }
 
     Vertex vertex;
     vertex.vertex_data.position = position;
-    vertex.vertex_data.normal = normal;
+    // vertex.vertex_data.normal = normal;
     vertex.vertex_data.UV = uv;
     return vertex;
 } 
@@ -195,25 +196,25 @@ void LoopSubdivider::add_odd_vertices(Mesh* mesh)
 Vertex Vertex::adjust_even(float beta, Vertex original_vertex, vector<Vertex> vertices)
 {
     vec3 position;
-    vec3 normal;
+    // vec3 normal;
     vec2 uv;
     for (int i = 0; i < vertices.size(); i++)
     {
         position += vertices[i].vertex_data.position;
-        normal += vertices[i].vertex_data.normal;
+        // normal += vertices[i].vertex_data.normal;
         uv += vertices[i].vertex_data.UV;
     }
     position = position * beta;
-    normal = normal * beta;
+    // normal = normal * beta;
     uv = uv * beta;
 
     position += original_vertex.vertex_data.position * (1 - vertices.size() * beta);
-    normal += original_vertex.vertex_data.normal * (1 - vertices.size() * beta);
+    // normal += original_vertex.vertex_data.normal * (1 - vertices.size() * beta);
     uv += original_vertex.vertex_data.UV * (1 - vertices.size() * beta);
 
     Vertex vertex;
     vertex.vertex_data.position = position;
-    vertex.vertex_data.normal = normal;
+    // vertex.vertex_data.normal = normal;
     vertex.vertex_data.UV = uv;
     return vertex;
 }
@@ -288,6 +289,39 @@ void LoopSubdivider::subdivide_triangles(Mesh* mesh)
     mesh->triangles = new_triangles;
 }
 
+vec3 Mesh::get_triangle_normal(Triangle triangle)
+{
+    vec3 vertices[3];
+    for (int i = 0; i < 3; i++)
+    {
+        vertices[i] = this->vertices[triangle.even_vertex_indices[i]].vertex_data.position;
+    }
+    vec3 u = vertices[1] - vertices[0];
+    vec3 v = vertices[2] - vertices[0];
+    vec3 normal = glm::normalize(glm::cross(u, v));
+    return normal;
+}
+
+void LoopSubdivider::calculate_normals(Mesh* mesh)
+{
+    for (int i = 0; i < mesh->vertices.size(); i++)
+    {
+        set<Triangle> adjacent_triangles = mesh->get_adjacent_triangles(i);
+        // set<Triangle> adjacent_triangles_set = mesh->get_adjacent_triangles(i);
+        // vector<Triangle> adjacent_triangles(adjacent_triangles_set.begin(), adjacent_triangles_set.end());
+        vec3 normal = vec3(0.0f, 0.0f, 0.0f);
+        
+        set<Triangle>::iterator it;
+        for (it = adjacent_triangles.begin(); it != adjacent_triangles.end(); ++it)
+        {
+            normal += mesh->get_triangle_normal(*it);
+        }
+        normal = glm::normalize(normal);
+
+        mesh->vertices[i].vertex_data.normal = normal;
+    }
+}
+
 mlMesh* LoopSubdivider::subdivide_mesh(mlMesh* input_mlmesh, unsigned int subdivide_iterations)
 {
     Mesh* mesh = LoopSubdivider::create_mesh_from_mlmesh(input_mlmesh);
@@ -299,6 +333,7 @@ mlMesh* LoopSubdivider::subdivide_mesh(mlMesh* input_mlmesh, unsigned int subdiv
         Mesh* new_mesh = new Mesh(*mesh);
         adjust_even_vertices(new_mesh, mesh);
         subdivide_triangles(new_mesh);
+        calculate_normals(new_mesh);
 
         free(mesh);
         mesh = new_mesh;

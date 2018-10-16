@@ -41,20 +41,20 @@ void TheGauntletEngine::init()
     Asteroid* asteroid = CodeMonkeys::TheGauntlet::GameObjects::AsteroidFactory::create_asteroid(3);
     this->world_root->add_child(asteroid);
 
-    mlModel* ml_model = CodeMonkeys::Engine::Assets::LoopSubdivider::test();
-    Model3D* subdivided = new Model3D(ml_model, textures, shaders);
-    Object3D* obj = new Object3D(subdivided, "Subdivided");
-    this->world_root->add_child(obj);
+    // mlModel* ml_model = CodeMonkeys::Engine::Assets::LoopSubdivider::test();
+    // Model3D* subdivided = new Model3D(ml_model, textures, shaders);
+    // Object3D* obj = new Object3D(subdivided, "Subdivided");
+    // this->world_root->add_child(obj);
 
-    textures.push_back(new Texture("Assets/Lab04/crayon_texture.png"));
-    textures.push_back(new Texture("Assets/Lab04/box_texture.png"));
+    // textures.push_back(new Texture("Assets/Lab04/crayon_texture.png"));
+    // textures.push_back(new Texture("Assets/Lab04/box_texture.png"));
 
-    CodeMonkeys::Lab04::CrayonFactory::init(textures, shaders);
-    PhysicalObject3D* crayon = CodeMonkeys::Lab04::CrayonFactory::create_crayon();
-    PhysicalObject3D* box = CodeMonkeys::Lab04::CrayonFactory::create_crayon_box();
-    box->set_rotation(vec3(0.0f, 25.0f, 0.0f));
-    this->world_root->add_child(crayon);
-    this->world_root->add_child(box);
+    // CodeMonkeys::Lab04::CrayonFactory::init(textures, shaders);
+    // PhysicalObject3D* crayon = CodeMonkeys::Lab04::CrayonFactory::create_crayon();
+    // PhysicalObject3D* box = CodeMonkeys::Lab04::CrayonFactory::create_crayon_box();
+    // box->set_rotation(vec3(0.0f, 25.0f, 0.0f));
+    // this->world_root->add_child(crayon);
+    // this->world_root->add_child(box);
 
     this->camera = new Camera3D();
 
