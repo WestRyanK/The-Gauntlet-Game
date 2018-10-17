@@ -38,7 +38,7 @@ void GameEngine::set_lighting()
         }
     }
 
-    for (ShaderProgram shader : this->shaders)
+    for (ShaderProgram* shader : this->shaders)
     {
         ILight3D::set_light_count(shader, "ambient", ambients.size());
         ILight3D::set_light_count(shader, "directional", directionals.size());
@@ -56,7 +56,7 @@ void GameEngine::set_lighting()
 
 void GameEngine::set_camera()
 {
-    for (ShaderProgram shader : this->shaders)
+    for (ShaderProgram* shader : this->shaders)
     {
         this->camera->update_shader_with_camera(shader);
     }

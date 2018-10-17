@@ -1,6 +1,7 @@
 #include "CodeMonkeys/TheGauntlet/GameObjects/AsteroidFactory.h"
 #include "CodeMonkeys/TheGauntlet/GameObjects/Asteroid.h"
 #include "CodeMonkeys/Engine/Assets/LoopSubdivider.h"
+#include "CodeMonkeys/Engine/Assets/ColorMaterial.h"
 #include <time.h>
 #include <iostream>
 #include <stdlib.h>
@@ -11,8 +12,7 @@ using namespace CodeMonkeys::TheGauntlet::GameObjects;
 float AsteroidFactory::ratio_asteroids_large = 1;
 float AsteroidFactory::ratio_asteroids_medium = 1;
 float AsteroidFactory::ratio_asteroids_small = 1;
-vector<Texture*> AsteroidFactory::asteroid_textures = vector<Texture*>();
-vector<ShaderProgram> AsteroidFactory::asteroid_shaders = vector<ShaderProgram>();
+vector<Material*> AsteroidFactory::asteroid_materials = vector<Material*>();
 
 Asteroid* AsteroidFactory::create_asteroid(int size)
 {
@@ -164,7 +164,7 @@ float AsteroidFactory::rand_min_max(float min, float max)
 
 Model3D* AsteroidFactory::create_asteroid_model(mlModel* ml_model)
 {
-    Model3D* model = new Model3D(ml_model, AsteroidFactory::asteroid_textures, AsteroidFactory::asteroid_shaders);
+    Model3D* model = new Model3D(ml_model, AsteroidFactory::asteroid_materials);
     return model;
 }
 
@@ -191,7 +191,7 @@ Asteroid* AsteroidFactory::create_asteroid_random_size()
     return AsteroidFactory::create_asteroid(size);
 }
 
-void AsteroidFactory::init_asteroid_factory(unsigned int seed, vector<ShaderProgram> asteroid_shaders, vector<Texture*> asteroid_textures)
+void AsteroidFactory::init_asteroid_factory(unsigned int seed, ShaderProgram* shader)
 {
     if (seed == 0)
     {
@@ -202,6 +202,9 @@ void AsteroidFactory::init_asteroid_factory(unsigned int seed, vector<ShaderProg
         srand(seed);
     }
 
-    AsteroidFactory::asteroid_shaders = asteroid_shaders;
-    AsteroidFactory::asteroid_textures = asteroid_textures;
+    Material* asteroid_material = new ColorMaterial(shader, true, 1.0f, vec3(1.0f), vec3(1.0f));
+    vector<Material*> materials;
+    materials.push_back(asteroid_material);
+
+    AsteroidFactory::asteroid_materials = materials;
 }

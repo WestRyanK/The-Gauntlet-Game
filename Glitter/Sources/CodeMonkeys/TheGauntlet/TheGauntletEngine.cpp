@@ -1,7 +1,8 @@
 #include <vector>
 #include "CodeMonkeys/Engine/Objects/AmbientLight.h"
+#include "CodeMonkeys/Engine/Assets/ColorMaterial.h"
 #include "CodeMonkeys/Engine/Objects/DirectionalLight.h"
-#include "CodeMonkeys/Engine/Assets/ShaderHelpers.h"
+#include "CodeMonkeys/Engine/Assets/ShaderProgram.h"
 #include "CodeMonkeys/TheGauntlet/TheGauntletEngine.h"
 #include "CodeMonkeys/Lab04/CrayonFactory.h"
 #include "CodeMonkeys/TheGauntlet/Control/KeyboardController.h"
@@ -15,6 +16,7 @@ using namespace std;
 using CodeMonkeys::TheGauntlet::TheGauntletEngine;
 using namespace CodeMonkeys::TheGauntlet::GameObjects;
 using namespace CodeMonkeys::Engine::Objects;
+using namespace CodeMonkeys::Engine::Assets;
 
 TheGauntletEngine::TheGauntletEngine(GLFWwindow* window) : GameEngine(window)
 {
@@ -30,29 +32,32 @@ void TheGauntletEngine::update_frame(float dt)
 
 void TheGauntletEngine::init()
 {
-    vector<ShaderProgram> shaders;
-    vector<Texture*> textures;
-    ShaderProgram shader = CodeMonkeys::Engine::Assets::LoadShaderProgram("Shaders/basic.vert", "Shaders/basic.frag");
-    shaders.push_back(shader);
+    ShaderProgram* shader = new ShaderProgram("Shaders/basic.vert", "Shaders/basic.frag");
+    // Make sure that every shader used in the scene is added to the engine's list of shaders so
+    // that lighting can be calculated.
     this->shaders.insert(shader);
-    CodeMonkeys::TheGauntlet::GameObjects::AsteroidFactory::init_asteroid_factory(0, shaders, textures);
-    CodeMonkeys::TheGauntlet::GameObjects::ShipFactory::init(shaders, textures);
+    CodeMonkeys::TheGauntlet::GameObjects::AsteroidFactory::init_asteroid_factory(0, shader);
+    CodeMonkeys::TheGauntlet::GameObjects::ShipFactory::init(shader);
 
-    Asteroid* asteroid = CodeMonkeys::TheGauntlet::GameObjects::AsteroidFactory::create_asteroid(3);
-    this->world_root->add_child(asteroid);
+    // Draw Asteroid
+    // Asteroid* asteroid = CodeMonkeys::TheGauntlet::GameObjects::AsteroidFactory::create_asteroid(3);
+    // this->world_root->add_child(asteroid);
 
-    mlModel* ml_model = CodeMonkeys::Engine::Assets::LoopSubdivider::test();
-    Model3D* subdivided = new Model3D(ml_model, textures, shaders);
-    Object3D* obj = new Object3D(subdivided, "Subdivided");
-    this->world_root->add_child(obj);
+    // Draw test subdivided shape
+    // vector<Material*> mats;
+    // mats.push_back(new ColorMaterial(shader, true, 1.0f, vec3(1.0f), vec3(0.2f)));
+    // mlModel* model = CodeMonkeys::Engine::Assets::LoopSubdivider::test();
+    // auto model3d = new Model3D(model, mats);
+    // auto obj3d = new PhysicalObject3D(model3d, "test object");
+    // obj3d->set_angular_velocity(vec3(0.0f, 0.5f, 0.0f));
+    // this->world_root->add_child(obj3d);
 
-    textures.push_back(new Texture("Assets/Lab04/crayon_texture.png"));
-    textures.push_back(new Texture("Assets/Lab04/box_texture.png"));
 
-    CodeMonkeys::Lab04::CrayonFactory::init(textures, shaders);
+    // Draw Crayon and Box
+    CodeMonkeys::Lab04::CrayonFactory::init(shader);
     PhysicalObject3D* crayon = CodeMonkeys::Lab04::CrayonFactory::create_crayon();
     PhysicalObject3D* box = CodeMonkeys::Lab04::CrayonFactory::create_crayon_box();
-    box->set_rotation(vec3(0.0f, 25.0f, 0.0f));
+    box->set_angular_velocity(vec3(0.0f, 0.5f, 0.0f));
     this->world_root->add_child(crayon);
     this->world_root->add_child(box);
 
@@ -62,12 +67,12 @@ void TheGauntletEngine::init()
     // auto mouse_controller = new CodeMonkeys::TheGauntlet::Control::MouseController(ship, this->get_window());
     this->controllers.insert(keyboard_controller);
 
-    AmbientLight* ambient = new AmbientLight(vec3(1.0f, 1.0f, 1.0f), 0.2f);
+    AmbientLight* ambient = new AmbientLight(vec3(1.0f, 1.0f, 1.0f), 0.3f);
     this->lights.insert(ambient);
 
-    DirectionalLight* directional = new DirectionalLight(vec3(1.0f, 1.0f, 1.0f), 0.2f, vec3(1.0f, 1.0f, 0.0f));
+    DirectionalLight* directional = new DirectionalLight(vec3(1.0f, 1.0f, 1.0f), 0.6f, vec3(0.0f, -1.0f, -1.0f));
     this->lights.insert(directional);
 
-    DirectionalLight* directional2 = new DirectionalLight(vec3(1.0f, 1.0f, 1.0f), 0.6f, vec3(0.0f, 1.0f, 1.0f));
-    this->lights.insert(directional2);
+    // DirectionalLight* directional2 = new DirectionalLight(vec3(1.0f, 1.0f, 1.0f), 0.2f, vec3(0.0f, 1.0f, 1.0f));
+    // this->lights.insert(directional2);
 }
