@@ -33,15 +33,12 @@ void Camera3D::set_up(vec3 up)
     this->up = up;
 }
 
-void Camera3D::update_shader_with_camera(ShaderProgram shader)
+void Camera3D::update_shader_with_camera(ShaderProgram* shader)
 {
     mat4 view = glm::lookAt(this->position, this->look_at, this->up);
 
-    unsigned int view_location = glGetUniformLocation(shader, "view_transform");
-    glUniformMatrix4fv(view_location, 1, GL_FALSE, glm::value_ptr(view));
-
-    unsigned int projection_location = glGetUniformLocation(shader, "projection_transform");
-    glUniformMatrix4fv(projection_location, 1, GL_FALSE, glm::value_ptr(this->perspective_projection));
+    shader->setUniform("view_transform", view);
+    shader->setUniform("projection_transform", this->perspective_projection);
 }
 
 void Camera3D::control(std::string control_name, float value, float dt)

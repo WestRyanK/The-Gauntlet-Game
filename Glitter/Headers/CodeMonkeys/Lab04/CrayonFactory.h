@@ -3,8 +3,8 @@
 #include <vector>
 #include "CodeMonkeys/Engine/Objects/PhysicalObject3D.h"
 #include "CodeMonkeys/Engine/Assets/ModelLoader.h"
-#include "CodeMonkeys/Engine/Assets/Texture.h"
-#include "CodeMonkeys/Engine/Assets/ShaderHelpers.h"
+#include "CodeMonkeys/Engine/Assets/Material.h"
+#include "CodeMonkeys/Engine/Assets/ShaderProgram.h"
 #include "glitter.hpp"
 
 using namespace std;
@@ -16,12 +16,12 @@ namespace CodeMonkeys::Lab04
     class CrayonFactory
     {
     private:
-        static vector<Texture*> textures;
-        static vector<ShaderProgram> shaders;
-        static PhysicalObject3D* load_model(std::string file_name, std::string texture_name, Texture* texture, std::string name);
+        static Material* crayon_material;
+        static Material* box_material;
+        static PhysicalObject3D* load_model(std::string file_name, Material* material, std::string name);
     public:
         static PhysicalObject3D* create_crayon();
         static PhysicalObject3D* create_crayon_box();
-        static void init(vector<Texture*> textures, vector<ShaderProgram> shaders);
+        static void init(ShaderProgram* shader);
     };
 }

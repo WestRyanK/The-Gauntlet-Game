@@ -4,15 +4,14 @@
 using namespace glm;
 using CodeMonkeys::Engine::Assets::Model3D;
 
-Model3D::Model3D(mlModel* ml_model, vector<Texture*> textures, vector<ShaderProgram> shaders)
+Model3D::Model3D(mlModel* ml_model, vector<Material*> materials)
 {
     for (int i = 0; i < ml_model->meshes.size(); i++)
     {
         this->create_vao_ebo(ml_model->meshes[i]);
     }
     
-    this->textures = textures;
-    this->shaders = shaders;
+    this->materials = materials;
 }
 
 void Model3D::create_vao_ebo(mlMesh* mesh)
@@ -51,19 +50,11 @@ void Model3D::draw(mat4 transform)
 {
     for (int i = 0; i < this->vaos.size(); i++)
     {
-        glUseProgram(this->shaders[i]);
+        this->materials[i]->get_shader()->use_program();
 
-        unsigned int object_location = glGetUniformLocation(this->shaders[i], "object_transform");
-        glUniformMatrix4fv(object_location, 1, GL_FALSE, glm::value_ptr(transform));
+        this->materials[i]->get_shader()->setUniform("object_transform", transform);
+        this->materials[i]->apply_material_to_shader();
 
-        if (i < this->textures.size() && this->textures[i] != NULL)
-        {
-            glActiveTexture(GL_TEXTURE0);
-            glBindTexture(GL_TEXTURE_2D, this->textures[i]->get_texture_id());
-            unsigned int texture_location = glGetUniformLocation(this->shaders[i], "texture_0");
-            glUniform1i(texture_location, 0);
-
-        }
         glBindVertexArray(this->vaos[i]);
         glDrawElements(GL_TRIANGLES, this->ebo_sizes[i], GL_UNSIGNED_INT, 0);
     }

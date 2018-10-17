@@ -43,22 +43,22 @@ string ILight3D::get_uniform_name(string light_type, unsigned int light_index, s
     return uniform_name;
 }
 
-void ILight3D::add_light_property_3v(ShaderProgram shader, string light_type, unsigned int light_index, string property_name, vec3 property_value)
-{
-    string uniform_name = ILight3D::get_uniform_name(light_type, light_index, property_name);
-    glUniform3fv(glGetUniformLocation(shader, uniform_name.c_str()), 1, glm::value_ptr(property_value));
-}
+// void ILight3D::add_light_property_3v(ShaderProgram shader, string light_type, unsigned int light_index, string property_name, vec3 property_value)
+// {
+//     string uniform_name = ILight3D::get_uniform_name(light_type, light_index, property_name);
+//     glUniform3fv(glGetUniformLocation(shader, uniform_name.c_str()), 1, glm::value_ptr(property_value));
+// }
 
-void ILight3D::add_light_property_1f(ShaderProgram shader, string light_type, unsigned int light_index, string property_name, float property_value)
-{
-    string uniform_name = ILight3D::get_uniform_name(light_type, light_index, property_name);
-    glUniform1f(glGetUniformLocation(shader, uniform_name.c_str()), property_value);
-}
+// void ILight3D::add_light_property_1f(ShaderProgram* shader, string light_type, unsigned int light_index, string property_name, float property_value)
+// {
+//     string uniform_name = ILight3D::get_uniform_name(light_type, light_index, property_name);
+//     glUniform1f(glGetUniformLocation(shader, uniform_name.c_str()), property_value);
+// }
 
-void ILight3D::set_light_count(ShaderProgram shader, string light_type, int light_count)
+void ILight3D::set_light_count(ShaderProgram* shader, string light_type, int light_count)
 {
     std::ostringstream ss;
     ss << light_type << "_count";
     std::string uniform_name = ss.str();
-    glUniform1i(glGetUniformLocation(shader, uniform_name.c_str()), light_count);
+    shader->setUniform(uniform_name.c_str(), light_count);
 }

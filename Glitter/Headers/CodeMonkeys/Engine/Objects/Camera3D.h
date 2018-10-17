@@ -23,7 +23,7 @@ namespace CodeMonkeys::Engine::Objects
         vec3 get_up();
         void set_up(vec3 up);
 
-        void update_shader_with_camera(ShaderProgram shader);
+        void update_shader_with_camera(ShaderProgram* shader);
 
         void control(std::string control_name, float value, float dt);
         void control(std::string control_name, int value, float dt);
