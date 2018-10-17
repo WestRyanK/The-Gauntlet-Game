@@ -13,8 +13,8 @@ out vec2 uv_2;
 
 void main()
 {
-    world_position_2 = position_1;
-    normal_2 = normal_1;
+    world_position_2 = (object_transform * vec4(position_1, 1.0f)).xyz;
+    normal_2 = (object_transform * vec4(normal_1, 1.0f)).xyz;
     uv_2 = uv_1;
     gl_Position = projection_transform * view_transform * object_transform * vec4(position_1, 1.0);
 }

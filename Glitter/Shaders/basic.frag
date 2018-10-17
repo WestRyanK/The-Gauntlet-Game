@@ -9,6 +9,7 @@ in vec2 uv_2;
 out vec4 color_out;
 
 uniform mat4 view_transform;
+uniform vec3 camera_position;
 uniform sampler2D texture_0;
 uniform int material_type_id;
 uniform int use_phong_highlight;
@@ -40,19 +41,20 @@ vec4 apply_ambient(vec4 fragment_color, ambient_light light)
 vec4 apply_directional(vec4 fragment_color, directional_light light)
 {
 
-    vec4 directional_out = fragment_color * vec4(light.color * light.strength * max(0.0f, dot(normal_2, light.direction)), 1.0f);
+    vec4 directional_out = fragment_color * vec4(light.color * light.strength * max(0.0f, dot(normal_2, -light.direction)), 1.0f);
 
-    // if (use_phong_highlight == 1)
-    // {
-    //     vec3 r = 2 * normal_2 * dot(normal_2, light.direction) - light.direction;
+    if (use_phong_highlight == 1)
+    {
+        vec3 r = normalize(2 * normal_2 * dot(normal_2, -light.direction) + light.direction);
 
-    //     vec3 phong_color = vec3(1.0f, 1.0f, 1.0f);
-    //     float phong_exponent = 4.0f;
-
-    //     vec3 e = vec3(view_transform[3][0], view_transform[3][1], view_transform[3][2]) - world_position_2 ;
-    //     vec4 phong_reflect_out = vec4(light.color * phong_color * pow(max(0.0f, dot(e, r)), phong_exponent), 1.0f);
-    //     directional_out += phong_reflect_out;
-    // }
+        vec3 e = normalize(camera_position - world_position_2 );
+        float phong_base = max(0.0f, dot(e, r));
+        if (phong_base > 0.0f)
+        {
+            vec4 phong_reflect_out = vec4(light.color * phong_color * pow(phong_base, phong_exponent), 1.0f);
+            directional_out += phong_reflect_out;
+        }
+    }
     return directional_out;
 }
 
@@ -81,4 +83,5 @@ void main()
     {
         color_out += apply_directional(fragment_color, directional[i]);
     }
+    // color_out = vec4(1.0f);
 }

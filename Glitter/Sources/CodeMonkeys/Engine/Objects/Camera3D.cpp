@@ -39,6 +39,7 @@ void Camera3D::update_shader_with_camera(ShaderProgram* shader)
 
     shader->setUniform("view_transform", view);
     shader->setUniform("projection_transform", this->perspective_projection);
+    shader->setUniform("camera_position", this->position);
 }
 
 void Camera3D::control(std::string control_name, float value, float dt)

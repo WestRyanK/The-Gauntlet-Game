@@ -39,19 +39,27 @@ void TheGauntletEngine::init()
     CodeMonkeys::TheGauntlet::GameObjects::AsteroidFactory::init_asteroid_factory(0, shader);
     CodeMonkeys::TheGauntlet::GameObjects::ShipFactory::init(shader);
 
-    Asteroid* asteroid = CodeMonkeys::TheGauntlet::GameObjects::AsteroidFactory::create_asteroid(3);
-    this->world_root->add_child(asteroid);
+    // Draw Asteroid
+    // Asteroid* asteroid = CodeMonkeys::TheGauntlet::GameObjects::AsteroidFactory::create_asteroid(3);
+    // this->world_root->add_child(asteroid);
 
-    // textures.push_back(new Texture("Assets/Lab04/crayon_texture.png"));
-    // textures.push_back(new Texture("Assets/Lab04/box_texture.png"));
+    // Draw test subdivided shape
+    // vector<Material*> mats;
+    // mats.push_back(new ColorMaterial(shader, true, 1.0f, vec3(1.0f), vec3(0.2f)));
+    // mlModel* model = CodeMonkeys::Engine::Assets::LoopSubdivider::test();
+    // auto model3d = new Model3D(model, mats);
+    // auto obj3d = new PhysicalObject3D(model3d, "test object");
+    // obj3d->set_angular_velocity(vec3(0.0f, 0.5f, 0.0f));
+    // this->world_root->add_child(obj3d);
 
-    // CodeMonkeys::Lab04::CrayonFactory::init(textures, shaders);
-    // PhysicalObject3D* crayon = CodeMonkeys::Lab04::CrayonFactory::create_crayon();
-    // PhysicalObject3D* box = CodeMonkeys::Lab04::CrayonFactory::create_crayon_box();
-    // box->set_rotation(vec3(0.0f, 25.0f, 0.0f));
-    // this->world_root->add_child(crayon);
-    // this->world_root->add_child(box);
 
+    // Draw Crayon and Box
+    CodeMonkeys::Lab04::CrayonFactory::init(shader);
+    PhysicalObject3D* crayon = CodeMonkeys::Lab04::CrayonFactory::create_crayon();
+    PhysicalObject3D* box = CodeMonkeys::Lab04::CrayonFactory::create_crayon_box();
+    box->set_angular_velocity(vec3(0.0f, 0.5f, 0.0f));
+    this->world_root->add_child(crayon);
+    this->world_root->add_child(box);
 
     this->camera = new Camera3D();
 
@@ -62,9 +70,9 @@ void TheGauntletEngine::init()
     AmbientLight* ambient = new AmbientLight(vec3(1.0f, 1.0f, 1.0f), 0.3f);
     this->lights.insert(ambient);
 
-    DirectionalLight* directional = new DirectionalLight(vec3(1.0f, 0.0f, 1.0f), 0.6f, vec3(1.0f, 1.0f, 0.0f));
+    DirectionalLight* directional = new DirectionalLight(vec3(1.0f, 1.0f, 1.0f), 0.6f, vec3(0.0f, -1.0f, -1.0f));
     this->lights.insert(directional);
 
-    DirectionalLight* directional2 = new DirectionalLight(vec3(0.0f, 1.0f, 1.0f), 0.8f, vec3(0.0f, 1.0f, 1.0f));
-    this->lights.insert(directional2);
+    // DirectionalLight* directional2 = new DirectionalLight(vec3(1.0f, 1.0f, 1.0f), 0.2f, vec3(0.0f, 1.0f, 1.0f));
+    // this->lights.insert(directional2);
 }

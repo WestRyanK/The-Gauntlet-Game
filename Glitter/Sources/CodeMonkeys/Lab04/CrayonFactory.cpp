@@ -26,7 +26,7 @@ void CrayonFactory::init(ShaderProgram* shader)
 {
     Texture* crayon_texture = new Texture("Assets/Lab04/crayon_texture.png");
     Texture* box_texture = new Texture("Assets/Lab04/box_texture.png");
-    CrayonFactory::crayon_material = new TextureMaterial(shader, true, 1.0f, vec3(1.0f), crayon_texture);
+    CrayonFactory::crayon_material = new TextureMaterial(shader, true, 1.0f, vec3(1.0f, 1.0f, 1.0f), crayon_texture);
     CrayonFactory::box_material = new TextureMaterial(shader, true, 1.0f, vec3(1.0f), box_texture);
 }
 

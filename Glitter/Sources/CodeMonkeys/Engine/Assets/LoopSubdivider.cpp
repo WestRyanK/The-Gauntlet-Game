@@ -307,9 +307,7 @@ void LoopSubdivider::calculate_normals(Mesh* mesh)
     for (int i = 0; i < mesh->vertices.size(); i++)
     {
         set<Triangle> adjacent_triangles = mesh->get_adjacent_triangles(i);
-        // set<Triangle> adjacent_triangles_set = mesh->get_adjacent_triangles(i);
-        // vector<Triangle> adjacent_triangles(adjacent_triangles_set.begin(), adjacent_triangles_set.end());
-        vec3 normal = vec3(0.0f, 0.0f, 0.0f);
+        vec3 normal = vec3(0.0f);
         
         set<Triangle>::iterator it;
         for (it = adjacent_triangles.begin(); it != adjacent_triangles.end(); ++it)
@@ -396,7 +394,7 @@ mlModel* LoopSubdivider::test()
 {
     mlMesh* test_mesh = create_test_mesh();
 
-    mlMesh* subdivided_mesh = LoopSubdivider::subdivide_mesh(test_mesh, 4);
+    mlMesh* subdivided_mesh = LoopSubdivider::subdivide_mesh(test_mesh, 1);
     free(test_mesh);
 
     mlModel* model = new mlModel();
