@@ -316,8 +316,18 @@ void LoopSubdivider::calculate_normals(Mesh* mesh)
         }
         normal = glm::normalize(normal);
 
-        mesh->vertices[i].vertex_data.normal = normal;
+        mesh->vertices[i].vertex_data.normal = -normal;
     }
+}
+
+mlMesh* LoopSubdivider::calculate_normals(mlMesh* input_mlmesh)
+{
+    Mesh* mesh = LoopSubdivider::create_mesh_from_mlmesh(input_mlmesh);
+    calculate_normals(mesh);
+    mlMesh* output_mlmesh = LoopSubdivider::create_mlmesh_from_mesh(mesh);
+    free(mesh);
+
+    return output_mlmesh;
 }
 
 mlMesh* LoopSubdivider::subdivide_mesh(mlMesh* input_mlmesh, unsigned int subdivide_iterations)
@@ -394,7 +404,7 @@ mlModel* LoopSubdivider::test()
 {
     mlMesh* test_mesh = create_test_mesh();
 
-    mlMesh* subdivided_mesh = LoopSubdivider::subdivide_mesh(test_mesh, 1);
+    mlMesh* subdivided_mesh = LoopSubdivider::subdivide_mesh(test_mesh, 3);
     free(test_mesh);
 
     mlModel* model = new mlModel();
@@ -406,48 +416,53 @@ mlModel* LoopSubdivider::test()
 
 mlMesh* LoopSubdivider::create_test_mesh()
 {
-    float SCALE = 5.0f;
-    float one_over_sqrt_2 = 1/sqrt(2.0);
+    float scale = 1.0f;
     mlMesh* mesh = new mlMesh();
     vector<mlVertex> vertices;
     mlVertex a;
-    a.position = vec3(SCALE * 1.0f, 0.0f, SCALE * -one_over_sqrt_2);
+    a.position = vec3(-scale, -scale, -scale);
     vertices.push_back(a);
     mlVertex b;
-    b.position = vec3(SCALE * -1.0f, 0.0f, SCALE * -one_over_sqrt_2);
+    b.position = vec3(scale, -scale, -scale);
     vertices.push_back(b);
     mlVertex c;
-    c.position = vec3(0.0f, SCALE * 1.0f, SCALE * one_over_sqrt_2);
+    c.position = vec3(scale, -scale, scale);
     vertices.push_back(c);
     mlVertex d;
-    d.position = vec3(0.0f, SCALE * -1.0f, SCALE * one_over_sqrt_2);
+    d.position = vec3(-scale, -scale, scale);
     vertices.push_back(d);
-    vector<unsigned int> indices = { 0, 1, 2, 1, 2, 3, 0, 2, 3, 0, 1, 3 };
-    mesh->vertices = vertices;
-    mesh->indices = indices;
-    return mesh;
+    mlVertex e;
+    e.position = vec3(-scale, scale, -scale);
+    vertices.push_back(e);
+    mlVertex f;
+    f.position = vec3(scale, scale, -scale);
+    vertices.push_back(f);
+    mlVertex g;
+    g.position = vec3(scale, scale, scale);
+    vertices.push_back(g);
+    mlVertex h;
+    h.position = vec3(-scale, scale, scale);
+    vertices.push_back(h);
+    vector<unsigned int> indices = { 0, 1, 3, 1, 2, 3, 4, 5, 7, 5, 6, 7, 0, 1, 4, 1, 5, 4, 1, 2, 5, 2, 6, 5, 2, 3, 6, 3, 7, 6, 3, 0, 7, 0, 4, 7 };
 
-    // float SCALE = 1.0f;
+    // float SCALE = 5.0f;
+    // float one_over_sqrt_2 = 1/sqrt(2.0);
     // mlMesh* mesh = new mlMesh();
     // vector<mlVertex> vertices;
     // mlVertex a;
-    // a.position = vec3(-SCALE, 0.0f, -SCALE);
+    // a.position = vec3(SCALE * 1.0f, 0.0f, SCALE * -one_over_sqrt_2);
     // vertices.push_back(a);
     // mlVertex b;
-    // b.position = vec3(SCALE, 0.0f, -SCALE);
+    // b.position = vec3(SCALE * -1.0f, 0.0f, SCALE * -one_over_sqrt_2);
     // vertices.push_back(b);
     // mlVertex c;
-    // c.position = vec3(0.0f, 0.0f, SCALE);
+    // c.position = vec3(0.0f, SCALE * 1.0f, SCALE * one_over_sqrt_2);
     // vertices.push_back(c);
     // mlVertex d;
-    // d.position = vec3(0.0f, SCALE, 0.0f);
+    // d.position = vec3(0.0f, SCALE * -1.0f, SCALE * one_over_sqrt_2);
     // vertices.push_back(d);
-    // mlVertex e;
-    // e.position = vec3(0.0f, -SCALE, 0.0f);
-    // vertices.push_back(e);
-    // vector<unsigned int> indices = { 0, 1, 3, 1, 2, 3, 0, 2, 3, 0, 1, 4, 1, 2, 4, 0, 2, 4};
-    // mesh->vertices = vertices;
-    // mesh->indices = indices;
-
-    // return mesh;
+    // vector<unsigned int> indices = { 0, 1, 2, 1, 2, 3, 0, 2, 3, 0, 1, 3 };
+    mesh->vertices = vertices;
+    mesh->indices = indices;
+    return mesh;
 }

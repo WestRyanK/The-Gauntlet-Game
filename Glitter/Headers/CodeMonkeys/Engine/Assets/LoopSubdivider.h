@@ -85,6 +85,7 @@ namespace CodeMonkeys::Engine::Assets
     public:
         static mlMesh* subdivide_mesh(mlMesh* input_mlmesh, unsigned int subdivide_iterations);
         static mlModel* test();
+        static mlMesh* calculate_normals(mlMesh* input_mlmesh);
         static mlMesh* create_test_mesh();
     };
 }

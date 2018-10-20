@@ -54,7 +54,9 @@ vec4 apply_directional(vec4 fragment_color, directional_light light)
             vec4 phong_reflect_out = vec4(light.color * phong_color * pow(phong_base, phong_exponent), 1.0f);
             directional_out += phong_reflect_out;
         }
+
     }
+        // directional_out = vec4(normal_2, 1.0f);
     return directional_out;
 }
 
@@ -83,5 +85,4 @@ void main()
     {
         color_out += apply_directional(fragment_color, directional[i]);
     }
-    // color_out = vec4(1.0f);
 }
