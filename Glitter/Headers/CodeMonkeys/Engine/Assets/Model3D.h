@@ -3,7 +3,7 @@
 #include <vector>
 #include <string>
 #include "CodeMonkeys/Engine/Assets/ModelLoader.h"
-#include "CodeMonkeys/Engine/Assets/Texture.h"
+#include "CodeMonkeys/Engine/Assets/Material.h"
 #include "glitter.hpp"
 
 using namespace glm;
@@ -28,13 +28,12 @@ namespace CodeMonkeys::Engine::Assets
         vector<unsigned int> ebo_sizes;
         vector<VAO> vaos;
         mlModel* ml_model;
-        vector<Texture*> textures;
-        vector<ShaderProgram> shaders;
+        vector<Material*> materials;
 
-        void create_vao_ebo(mlMesh mesh);
+        void create_vao_ebo(mlMesh* mesh);
 
     public:
-        Model3D(mlModel* ml_model, vector<Texture*> textures, vector<ShaderProgram> shaders);
+        Model3D(mlModel* ml_model, vector<Material*> material);
         // Render the Model3D using its model, textures, and shaders.
         void draw(mat4 transform);
     };

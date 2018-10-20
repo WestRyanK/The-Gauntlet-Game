@@ -23,9 +23,9 @@ namespace CodeMonkeys::Engine::Assets
 		for (int meshIdx = 0; meshIdx < node->mNumMeshes; meshIdx++) {
 			aiMesh* mesh = scene->mMeshes[node->mMeshes[meshIdx]];
 
-			mlMesh mlMesh;
+			mlMesh* ml_mesh = new mlMesh();
 		
-			mlMesh.name = std::string(mesh->mName.C_Str());
+			ml_mesh->name = std::string(mesh->mName.C_Str());
 			for (int vIdx = 0; vIdx < mesh->mNumVertices; vIdx++) {
 				mlVertex vertex;
 				vertex.position = AiVec3ToGlm3(mesh->mVertices[vIdx]);
@@ -35,13 +35,13 @@ namespace CodeMonkeys::Engine::Assets
 					vertex.UV = AiVec3ToGlm2(mesh->mTextureCoords[0][vIdx]);
 				}
 
-				mlMesh.vertices.push_back(vertex);
+				ml_mesh->vertices.push_back(vertex);
 			}
 
 			for (int fIdx = 0; fIdx < mesh->mNumFaces; fIdx++) {
 				aiFace face = mesh->mFaces[fIdx];
 				for (int iIdx = 0; iIdx < face.mNumIndices; iIdx++) {
-					mlMesh.indices.push_back(face.mIndices[iIdx]);
+					ml_mesh->indices.push_back(face.mIndices[iIdx]);
 				}
 			}
 
@@ -51,10 +51,10 @@ namespace CodeMonkeys::Engine::Assets
 				aiString str;
 				mat->GetTexture(aiTextureType_DIFFUSE, 0, &str);
 				std::string tex(str.C_Str());
-				mlMesh.textureFile = directory + tex;
+				ml_mesh->textureFile = directory + tex;
 			}
 
-			modelOut.meshes.push_back(mlMesh);
+			modelOut.meshes.push_back(ml_mesh);
 		}
 
 		for (int cIdx = 0; cIdx < node->mNumChildren; cIdx++) {

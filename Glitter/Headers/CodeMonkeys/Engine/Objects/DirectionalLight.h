@@ -15,6 +15,6 @@ namespace CodeMonkeys::Engine::Objects
         DirectionalLight(vec3 color, float strength, vec3 direction);
         vec3 get_direction();
         void set_direction(vec3 direction);
-        virtual void add_light_to_shader(ShaderProgram shader_program);
+        virtual void add_light_to_shader(ShaderProgram* shader, unsigned int light_index);
     };
 }

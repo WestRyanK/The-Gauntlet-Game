@@ -4,18 +4,17 @@
 using namespace glm;
 using CodeMonkeys::Engine::Assets::Model3D;
 
-Model3D::Model3D(mlModel* ml_model, vector<Texture*> textures, vector<ShaderProgram> shaders)
+Model3D::Model3D(mlModel* ml_model, vector<Material*> materials)
 {
     for (int i = 0; i < ml_model->meshes.size(); i++)
     {
         this->create_vao_ebo(ml_model->meshes[i]);
     }
     
-    this->textures = textures;
-    this->shaders = shaders;
+    this->materials = materials;
 }
 
-void Model3D::create_vao_ebo(mlMesh mesh)
+void Model3D::create_vao_ebo(mlMesh* mesh)
 {
     VAO vao;
     VBO vbo;
@@ -26,10 +25,10 @@ void Model3D::create_vao_ebo(mlMesh mesh)
 
     glBindVertexArray(vao);
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    glBufferData(GL_ARRAY_BUFFER, mesh.vertices.size() * sizeof(mlVertex), &(mesh.vertices[0]), GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, mesh->vertices.size() * sizeof(mlVertex), &(mesh->vertices[0]), GL_STATIC_DRAW);
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, mesh.indices.size() * sizeof(unsigned int), &(mesh.indices[0]), GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, mesh->indices.size() * sizeof(unsigned int), &(mesh->indices[0]), GL_STATIC_DRAW);
 
     glEnableVertexAttribArray(POSITION_INDEX);
     glVertexAttribPointer(POSITION_INDEX, POSITION_SIZE, GL_FLOAT, GL_FALSE, sizeof(mlVertex), (void*)0);
@@ -43,17 +42,18 @@ void Model3D::create_vao_ebo(mlMesh mesh)
     glBindVertexArray(0);
     this->vaos.push_back(vao);
     this->ebos.push_back(vao);
-    this->ebo_sizes.push_back(mesh.indices.size());
+    this->ebo_sizes.push_back(mesh->indices.size());
 }
+
 
 void Model3D::draw(mat4 transform)
 {
     for (int i = 0; i < this->vaos.size(); i++)
     {
-        glUseProgram(this->shaders[i]);
+        this->materials[i]->get_shader()->use_program();
 
-        unsigned int object_location = glGetUniformLocation(this->shaders[i], "object_transform");
-        glUniformMatrix4fv(object_location, 1, GL_FALSE, glm::value_ptr(transform));
+        this->materials[i]->get_shader()->setUniform("object_transform", transform);
+        this->materials[i]->apply_material_to_shader();
 
         glBindVertexArray(this->vaos[i]);
         glDrawElements(GL_TRIANGLES, this->ebo_sizes[i], GL_UNSIGNED_INT, 0);

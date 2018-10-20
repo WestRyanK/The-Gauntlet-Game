@@ -8,7 +8,8 @@ AmbientLight::AmbientLight(vec3 color, float strength) : CodeMonkeys::Engine::Ob
 {
 }
 
-void AmbientLight::add_light_to_shader(ShaderProgram shader_program)
+void AmbientLight::add_light_to_shader(ShaderProgram* shader, unsigned int light_index)
 {
-    throw NotImplementedException("AmbientLight::add_light_to_shader");
+    shader->setUniform(ILight3D::get_uniform_name("ambient", light_index, "color").c_str(), this->color);
+    shader->setUniform(ILight3D::get_uniform_name("ambient", light_index, "strength").c_str(), this->strength);
 }

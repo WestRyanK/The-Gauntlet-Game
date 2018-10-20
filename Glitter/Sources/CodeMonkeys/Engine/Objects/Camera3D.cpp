@@ -33,24 +33,25 @@ void Camera3D::set_up(vec3 up)
     this->up = up;
 }
 
-void Camera3D::update_shader_with_camera(ShaderProgram shader)
+void Camera3D::update_shader_with_camera(ShaderProgram* shader)
 {
     mat4 view = glm::lookAt(this->position, this->look_at, this->up);
 
-    unsigned int view_location = glGetUniformLocation(shader, "view_transform");
-    glUniformMatrix4fv(view_location, 1, GL_FALSE, glm::value_ptr(view));
-
-    unsigned int projection_location = glGetUniformLocation(shader, "projection_transform");
-    glUniformMatrix4fv(projection_location, 1, GL_FALSE, glm::value_ptr(this->perspective_projection));
+    shader->setUniform("view_transform", view);
+    shader->setUniform("projection_transform", this->perspective_projection);
+    shader->setUniform("camera_position", this->position);
 }
 
 void Camera3D::control(std::string control_name, float value, float dt)
 {
     const float velocity = 10.0f;
+    const float angular_velocity = 1.0f;
+    vec3 forward = glm::normalize(this->look_at - this->position);
+    vec3 sideways = -glm::normalize(glm::cross(this->up, this->look_at - this->position));
     if (control_name == "move_x")
     {
-        this->position.x += value * dt * velocity;
-        this->look_at.x += value * dt * velocity;
+        this->position += sideways * dt * value * velocity;
+        this->look_at += sideways * dt * value * velocity;
     }
     if (control_name == "move_y")
     {
@@ -59,8 +60,17 @@ void Camera3D::control(std::string control_name, float value, float dt)
     }
     if (control_name == "move_z")
     {
-        this->position.z += value * dt * velocity;
-        this->look_at.z += value * dt * velocity;
+        this->position += forward * dt * value * velocity;
+        this->look_at += forward * dt * value * velocity;
+    }
+    if (control_name == "rotate_y")
+    {
+        mat4 transform;
+        transform = glm::rotate(transform, value * glm::radians(angular_velocity), this->up);
+
+        vec4 rotate = vec4(forward.x, forward.y, forward.z, 1.0f) * transform;
+        vec3 rotate3 = vec3(rotate.x, rotate.y, rotate.z);
+        this->look_at = rotate3 + this->position;
     }
 }
 

@@ -1,8 +1,11 @@
 #include "CodeMonkeys/Engine/Engine/GameEngine.h"
 #include "glitter.hpp"
+#include <typeinfo>
 #include "CodeMonkeys/Engine/Control/Controller.h"
 #include "CodeMonkeys/Engine/Objects/Object3D.h"
 #include "CodeMonkeys/Engine/Objects/Camera3D.h"
+#include "CodeMonkeys/Engine/Objects/AmbientLight.h"
+#include "CodeMonkeys/Engine/Objects/DirectionalLight.h"
 #include "NIE.h"
 
 using CodeMonkeys::Engine::Engine::GameEngine;
@@ -13,28 +16,51 @@ GameEngine::GameEngine(GLFWwindow* window)
 {
     this->window = window;
     this->world_root = new Object3D(NULL, "world_root");
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); // GL_LINE or GL_FILL
+    glEnable(GL_DEPTH_TEST);
+    glDepthFunc(GL_LESS);  
     // throw NotImplementedException("GameEngine::constructor");
 }
 
 void GameEngine::set_lighting()
 {
+    vector<AmbientLight*> ambients;
+    vector<DirectionalLight*> directionals;
     for (ILight3D* light : this->lights)
     {
-        for (ShaderProgram shader : this->shaders)
+        if (dynamic_cast<AmbientLight*>(light) != NULL)
         {
-            light->add_light_to_shader(shader);
+            ambients.push_back(dynamic_cast<AmbientLight*>(light));
+        }
+        if (dynamic_cast<DirectionalLight*>(light) != NULL)
+        {
+            directionals.push_back(dynamic_cast<DirectionalLight*>(light));
+        }
+    }
+
+    for (ShaderProgram* shader : this->shaders)
+    {
+        ILight3D::set_light_count(shader, "ambient", ambients.size());
+        ILight3D::set_light_count(shader, "directional", directionals.size());
+        for (int i = 0; i < ambients.size(); i++)
+        {
+            ambients[i]->add_light_to_shader(shader, i);
+        }
+        for (int i = 0; i < directionals.size(); i++)
+        {
+            directionals[i]->add_light_to_shader(shader, i);
         }
     }
 }
 
+
 void GameEngine::set_camera()
 {
-    for (ShaderProgram shader : this->shaders)
+    for (ShaderProgram* shader : this->shaders)
     {
         this->camera->update_shader_with_camera(shader);
     }
 }
-
 
 GLFWwindow* GameEngine::get_window()
 {
@@ -81,7 +107,7 @@ void GameEngine::handle_collisions(float dt)
 void GameEngine::draw()
 {
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 
     this->set_lighting();

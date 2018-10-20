@@ -33,7 +33,7 @@ namespace CodeMonkeys::Engine::Engine
         set<Controller*> controllers;
         Object3D* world_root;
         set<ILight3D*> lights;
-        set<ShaderProgram> shaders;
+        set<ShaderProgram*> shaders;
         set<ICollisionResponse*> collision_responses;
         ICollisionDetector* collision_detector = NULL;
         Camera3D* camera;

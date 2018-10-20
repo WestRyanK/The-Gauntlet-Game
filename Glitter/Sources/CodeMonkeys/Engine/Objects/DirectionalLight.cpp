@@ -22,7 +22,9 @@ void DirectionalLight::set_direction(vec3 direction)
     this->direction = direction;
 }
 
-void DirectionalLight::add_light_to_shader(ShaderProgram shader_program)
+void DirectionalLight::add_light_to_shader(ShaderProgram* shader, unsigned int light_index)
 {
-    throw NotImplementedException("DirectionalLight::add_light_to_shader");
+    shader->setUniform(ILight3D::get_uniform_name("directional", light_index, "color").c_str(), this->color);
+    shader->setUniform(ILight3D::get_uniform_name("directional", light_index, "strength").c_str(), this->strength);
+    shader->setUniform(ILight3D::get_uniform_name("directional", light_index, "direction").c_str(), this->direction);
 }

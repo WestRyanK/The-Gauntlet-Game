@@ -8,7 +8,6 @@ namespace CodeMonkeys::Engine::Objects
     {
     public:
         AmbientLight(vec3 color, float strength);
-        virtual void add_light_to_shader(ShaderProgram shader_program);
-
+        virtual void add_light_to_shader(ShaderProgram* shader, unsigned int light_index);
     };
 }
