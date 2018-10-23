@@ -11,6 +11,9 @@ namespace CodeMonkeys::TheGauntlet
         float max_xy_velocity = 1;
         float max_z_velocity = 10;
         float min_z_velocity = 1;
+        float max_roll = 25;
+        float roll_acceleration = 10;
+        float deroll_percent = 0.95;
     
     public:
         IFlyable( float xy_acceleration, 
