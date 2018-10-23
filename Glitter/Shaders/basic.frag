@@ -73,7 +73,7 @@ void main()
     }
     else
     {
-        fragment_color = vec4(1.0f);
+        fragment_color = vec4(0.5f);
     }
 
     color_out = vec4(0.0f);

@@ -8,7 +8,7 @@ void DrawObjectsIterator::visit_object(Object3D* object)
     if (!this->transform_stack.empty())
     {
         mat4 parent_transform = this->transform_stack.top();
-        transform = transform * parent_transform;
+        transform = parent_transform * transform ;
     }
     this->transform_stack.push(transform);
 
