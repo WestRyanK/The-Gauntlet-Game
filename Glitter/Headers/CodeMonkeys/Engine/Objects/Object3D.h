@@ -19,7 +19,7 @@ namespace CodeMonkeys::Engine::Objects
         vec3 rotation;
         vec3 scale;
         set<Object3D*> children;
-        Object3D* parent;
+        Object3D* parent = NULL;
         std::string name;
     public:
         Object3D(Model3D* model, std::string name);
@@ -31,7 +31,7 @@ namespace CodeMonkeys::Engine::Objects
         vec3 get_scale();
         void set_scale(vec3 scale);
         void set_scale(float scale);
-        mat4 get_transform();
+        virtual mat4 get_transform();
         set<Object3D*> get_children();
         void add_child(Object3D* child);
         void remove_child(Object3D* child);

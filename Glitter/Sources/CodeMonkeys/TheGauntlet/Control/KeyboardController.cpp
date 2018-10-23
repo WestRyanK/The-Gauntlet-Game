@@ -25,6 +25,10 @@ void KeyboardController::handle_input(float dt)
     {
         this->controllable->control("move_x", 1.0f, dt);
     }
+    if (glfwGetKey(this->window, GLFW_KEY_D) == GLFW_RELEASE && glfwGetKey(this->window, GLFW_KEY_A) == GLFW_RELEASE)
+    {
+        this->controllable->control("move_x", 0.0f, dt);
+    }
 
 
 

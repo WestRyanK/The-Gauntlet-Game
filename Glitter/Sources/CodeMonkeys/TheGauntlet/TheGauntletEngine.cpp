@@ -1,5 +1,7 @@
 #include <vector>
+#include <stdlib.h>
 #include "CodeMonkeys/Engine/Objects/AmbientLight.h"
+#include "CodeMonkeys/Engine/Objects/SpringArm.h"
 #include "CodeMonkeys/Engine/Assets/ColorMaterial.h"
 #include "CodeMonkeys/Engine/Objects/DirectionalLight.h"
 #include "CodeMonkeys/Engine/Assets/ShaderProgram.h"
@@ -39,9 +41,18 @@ void TheGauntletEngine::init()
     CodeMonkeys::TheGauntlet::GameObjects::AsteroidFactory::init_asteroid_factory(0, shader);
     CodeMonkeys::TheGauntlet::GameObjects::ShipFactory::init(shader);
 
+    auto ship = CodeMonkeys::TheGauntlet::GameObjects::ShipFactory::create_x_wing_ship();
+    this->world_root->add_child(ship);
+
     // Draw Asteroid
-    // Asteroid* asteroid = CodeMonkeys::TheGauntlet::GameObjects::AsteroidFactory::create_asteroid(3);
-    // this->world_root->add_child(asteroid);
+    const int S = 2000;
+    const int T = 400;
+    for (int i = 0; i < 2000; i++)
+    {
+        Asteroid* asteroid = CodeMonkeys::TheGauntlet::GameObjects::AsteroidFactory::create_asteroid_random_size();
+        this->world_root->add_child(asteroid);
+        asteroid->set_position(vec3(rand() % T - T / 2, rand() % T - T / 2, rand() % S - S));
+    }
 
     // Draw test subdivided shape
     // vector<Material*> mats;
@@ -61,16 +72,22 @@ void TheGauntletEngine::init()
     this->world_root->add_child(crayon);
     this->world_root->add_child(box);
 
+    SpringArm* spring_arm = new SpringArm(10.0f, 10.0f, 1.0f);
     this->camera = new Camera3D();
+    ship->add_child(spring_arm);
+    // ship->add_child(this->camera);
+    spring_arm->add_child(this->camera);
+    // this->camera->set_look_at(ship);
+    this->camera->set_look_at(vec3(0,0,-1));
 
-    auto keyboard_controller = new CodeMonkeys::TheGauntlet::Control::KeyboardController(this->camera, this->get_window());
+    auto keyboard_controller = new CodeMonkeys::TheGauntlet::Control::KeyboardController(ship, this->get_window());
     // auto mouse_controller = new CodeMonkeys::TheGauntlet::Control::MouseController(ship, this->get_window());
     this->controllers.insert(keyboard_controller);
 
     AmbientLight* ambient = new AmbientLight(vec3(1.0f, 1.0f, 1.0f), 0.3f);
     this->lights.insert(ambient);
 
-    DirectionalLight* directional = new DirectionalLight(vec3(1.0f, 1.0f, 1.0f), 0.6f, vec3(0.0f, -1.0f, -1.0f));
+    DirectionalLight* directional = new DirectionalLight(vec3(1.0f, 1.0f, 1.0f), 0.6f, vec3(-1, -1, 0));
     this->lights.insert(directional);
 
     // DirectionalLight* directional2 = new DirectionalLight(vec3(1.0f, 1.0f, 1.0f), 0.2f, vec3(0.0f, 1.0f, 1.0f));
