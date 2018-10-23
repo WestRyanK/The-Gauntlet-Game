@@ -74,13 +74,12 @@ void TheGauntletEngine::init()
     this->world_root->add_child(crayon);
     this->world_root->add_child(box);
 
-    SpringArm* spring_arm = new SpringArm(10.0f, 10.0f, 1.0f);
+    SpringArm* spring_arm = new SpringArm(10.0f, 1.0f, 1.0f);
     this->camera = new Camera3D();
     ship->add_child(spring_arm);
     // ship->add_child(this->camera);
     spring_arm->add_child(this->camera);
-    // this->camera->set_look_at(ship);
-    this->camera->set_look_at(vec3(0,0,-1));
+    this->camera->set_look_at(ship);
 
     auto keyboard_controller = new CodeMonkeys::TheGauntlet::Control::KeyboardController(ship, this->get_window());
     // auto mouse_controller = new CodeMonkeys::TheGauntlet::Control::MouseController(ship, this->get_window());
