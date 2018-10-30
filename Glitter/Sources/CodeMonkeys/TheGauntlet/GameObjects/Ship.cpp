@@ -59,7 +59,7 @@ void Ship::update(float dt)
     rotation_matrix = glm::rotate(rotation_matrix, this->rotation.y, vec3(0,1,0));
     facing_direction = rotation_matrix * facing_direction;
 
-    float speed = 40;
+    float speed = 60;
     this->set_velocity(vec3(speed * facing_direction));
 
     // vec3 forward = glm::normalize(this->look_at - this->position);
@@ -76,16 +76,16 @@ void Ship::update_vertical(float dt)
     if (!this->acclerating_vertically)
         this->dampen_vertical(dt);
     
-    if (this->rotation.x >= glm::radians(30.0f))
+    if (this->rotation.x >= glm::radians(maxVerticalAngle))
     {
-        this->rotation.x = glm::radians(30.0f);
+        this->rotation.x = glm::radians(maxVerticalAngle);
         if (this->angular_velocity.x > 0)
             this->set_angular_velocity(vec3(0, this->angular_velocity.y, this->angular_velocity.z));
         
     }
-    if (this->rotation.x <= -glm::radians(30.0f))
+    if (this->rotation.x <= -glm::radians(maxVerticalAngle))
     {
-        this->rotation.x = -glm::radians(30.0f);
+        this->rotation.x = -glm::radians(maxVerticalAngle);
         if (this->angular_velocity.x < 0)
         {
             
