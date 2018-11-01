@@ -10,7 +10,7 @@ Camera3D::Camera3D() : Object3D(NULL, "Camera")
     this->look_at = vec3(0.0f, 0.0f, 0.0f);
     this->position = vec3(0.0f, 0.0f, 60.0f);
     // TODO: Don't hardcode window size.
-    this->perspective_projection = glm::perspective(glm::radians(45.0f), 640.0f / 480.0f, 0.1f, 1000.0f);
+    this->perspective_projection = glm::perspective(glm::radians(45.0f), 640.0f / 480.0f, 0.1f, 1600.0f);
 }
 
 vec3 Camera3D::get_look_at()
@@ -53,6 +53,20 @@ mat4 Camera3D::get_hierarchical_transform(Object3D* object)
 
 void Camera3D::update_shader_with_camera(ShaderProgram* shader)
 {
+    mat4 view = this->get_view_transform();
+
+    shader->setUniform("view_transform", view);
+    shader->setUniform("projection_transform", this->perspective_projection);
+    shader->setUniform("camera_position", this->position);
+}
+
+mat4 Camera3D::get_perpective_projection()
+{
+    return this->perspective_projection;
+}
+
+mat4 Camera3D::get_view_transform()
+{
     mat4 hierarchical_transform = this->get_hierarchical_transform(this);
     vec3 transformed_look_at;
     if (this->look_at_parent != NULL)
@@ -60,17 +74,13 @@ void Camera3D::update_shader_with_camera(ShaderProgram* shader)
         mat4 look_hierarchical_transform = this->get_hierarchical_transform(this->look_at_parent);
         transformed_look_at = vec3(look_hierarchical_transform * vec4(transformed_look_at, 1.0f));
     }
-    else 
+    else
     {
         transformed_look_at = vec3(hierarchical_transform * vec4(this->look_at, 1));
     }
     vec3 transformed_position = vec3(hierarchical_transform * vec4(0,0,0, 1));
-
-    mat4 view = glm::lookAt(transformed_position, transformed_look_at, this->up);
-
-    shader->setUniform("view_transform", view);
-    shader->setUniform("projection_transform", this->perspective_projection);
-    shader->setUniform("camera_position", this->position);
+    
+    return glm::lookAt(transformed_position, transformed_look_at, this->up);
 }
 
 // SFL 223 Notes:

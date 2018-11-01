@@ -18,7 +18,7 @@ using namespace CodeMonkeys::TheGauntlet;
 
 int main(int argc, char * argv[]) {
 
-    TheGauntletWindow gauntlet_window = TheGauntletWindow(640, 480);
+    TheGauntletWindow gauntlet_window = TheGauntletWindow(1280, 960);
     TheGauntletEngine gauntlet_engine = TheGauntletEngine(gauntlet_window.get_window());
 
     gauntlet_engine.init();

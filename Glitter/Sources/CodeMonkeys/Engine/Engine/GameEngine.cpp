@@ -16,6 +16,7 @@ GameEngine::GameEngine(GLFWwindow* window)
 {
     this->window = window;
     this->world_root = new Object3D(NULL, "world_root");
+    this->skybox = NULL;
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); // GL_LINE or GL_FILL
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LESS);  
@@ -109,10 +110,11 @@ void GameEngine::draw()
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-
-    this->set_lighting();
-    this->set_camera();
+    this->set_lighting(); // TODO: investigate 1282 error
+    this->set_camera(); // TODO: investigate 1282 error
     // "action!"
+    if (this->skybox != NULL)
+        this->skybox->draw(this->camera->get_view_transform(), this->camera->get_perpective_projection());
     this->draw_objects();
 
     glfwSwapBuffers(this->window);

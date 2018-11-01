@@ -35,11 +35,24 @@ void TheGauntletEngine::update_frame(float dt)
 void TheGauntletEngine::init()
 {
     ShaderProgram* shader = new ShaderProgram("Shaders/basic.vert", "Shaders/basic.frag");
+    ShaderProgram* skyboxShader = new ShaderProgram("Shaders/skybox.vert", "Shaders/skybox.frag");
     // Make sure that every shader used in the scene is added to the engine's list of shaders so
     // that lighting can be calculated.
     this->shaders.insert(shader);
     CodeMonkeys::TheGauntlet::GameObjects::AsteroidFactory::init_asteroid_factory(0, shader);
     CodeMonkeys::TheGauntlet::GameObjects::ShipFactory::init(shader);
+    
+    // create skybox
+    std::vector<std::string> skybox_faces
+    {
+        "Assets/Textures/Skybox/right.png",
+        "Assets/Textures/Skybox/left.png",
+        "Assets/Textures/Skybox/top.png",
+        "Assets/Textures/Skybox/bottom.png",
+        "Assets/Textures/Skybox/front.png",
+        "Assets/Textures/Skybox/back.png"
+    };
+    this->skybox = new Skybox(skybox_faces, skyboxShader);
 
     auto ship = CodeMonkeys::TheGauntlet::GameObjects::ShipFactory::create_x_wing_ship();
     this->world_root->add_child(ship);
@@ -90,7 +103,4 @@ void TheGauntletEngine::init()
 
     DirectionalLight* directional = new DirectionalLight(vec3(1.0f, 1.0f, 1.0f), 0.6f, vec3(-1, -1, 0));
     this->lights.insert(directional);
-
-    // DirectionalLight* directional2 = new DirectionalLight(vec3(1.0f, 1.0f, 1.0f), 0.2f, vec3(0.0f, 1.0f, 1.0f));
-    // this->lights.insert(directional2);
 }

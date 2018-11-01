@@ -11,6 +11,7 @@
 #include "CodeMonkeys/Engine/Engine/Stopwatch.h"
 #include "CodeMonkeys/Engine/Engine/DrawObjectsIterator.h"
 #include "CodeMonkeys/Engine/Engine/UpdateObjectsIterator.h"
+#include "CodeMonkeys/Engine/Objects/Skybox.h"
 
 using namespace CodeMonkeys::Engine::Control;
 using namespace CodeMonkeys::Engine::Collision;
@@ -37,6 +38,7 @@ namespace CodeMonkeys::Engine::Engine
         set<ICollisionResponse*> collision_responses;
         ICollisionDetector* collision_detector = NULL;
         Camera3D* camera;
+        Skybox* skybox;
 
         bool is_running = false;
 
