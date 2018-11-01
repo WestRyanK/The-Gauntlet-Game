@@ -6,7 +6,6 @@
 #include "CodeMonkeys/Engine/Objects/DirectionalLight.h"
 #include "CodeMonkeys/Engine/Assets/ShaderProgram.h"
 #include "CodeMonkeys/TheGauntlet/TheGauntletEngine.h"
-#include "CodeMonkeys/Lab04/CrayonFactory.h"
 #include "CodeMonkeys/TheGauntlet/Control/KeyboardController.h"
 #include "CodeMonkeys/TheGauntlet/Control/MouseController.h"
 #include "CodeMonkeys/TheGauntlet/GameObjects/ShipFactory.h"
@@ -66,26 +65,6 @@ void TheGauntletEngine::init()
         this->world_root->add_child(asteroid);
         asteroid->set_position(vec3(rand() % T - T / 2, rand() % T - T / 2, rand() % S - S));
     }
-
-    // Draw test subdivided shape
-    // vector<Material*> mats;
-    // mats.push_back(new ColorMaterial(shader, true, 1.0f, vec3(1.0f), vec3(1.0f)));
-    // mlModel* model = CodeMonkeys::Engine::Assets::LoopSubdivider::test();
-    // auto model3d = new Model3D(model, mats);
-    // auto obj3d = new PhysicalObject3D(model3d, "test object");
-    // obj3d->set_angular_velocity(vec3(0.5f, 0.0f, 0.0f));
-    // // obj3d->set_velocity(vec3(0.0f, 0.5f, 0.0f));
-    // this->world_root->add_child(obj3d);
-
-    // Draw Crayon and Box
-    CodeMonkeys::Lab04::CrayonFactory::init(shader);
-    PhysicalObject3D* crayon = CodeMonkeys::Lab04::CrayonFactory::create_crayon();
-    PhysicalObject3D* box = CodeMonkeys::Lab04::CrayonFactory::create_crayon_box();
-    box->set_position(vec3(0.0f, 10.0f, 0.0f));
-    box->set_angular_velocity(vec3(0.0f, 0.5f, 0.0f));
-    crayon->set_angular_velocity(vec3(0.0f, 0.5f, 0.0f));
-    this->world_root->add_child(crayon);
-    this->world_root->add_child(box);
 
     SpringArm* spring_arm = new SpringArm(10.0f, 1.0f, 1.0f);
     this->camera = new Camera3D();
