@@ -1,7 +1,7 @@
 #include <vector>
 #include <stdlib.h>
 #include "CodeMonkeys/Engine/Objects/AmbientLight.h"
-#include "CodeMonkeys/Engine/Engine/Renderer.h"
+#include "CodeMonkeys/Engine/Engine/FrameBufferRenderer.h"
 #include "CodeMonkeys/Engine/Objects/SpringArm.h"
 #include "CodeMonkeys/Engine/Assets/ColorMaterial.h"
 #include "CodeMonkeys/Engine/Objects/DirectionalLight.h"
@@ -35,10 +35,12 @@ void TheGauntletEngine::update_frame(float dt)
 void TheGauntletEngine::init()
 {
     ShaderProgram* shader = new ShaderProgram("Shaders/basic.vert", "Shaders/basic.frag");
+    ShaderProgram* shader2 = new ShaderProgram("Shaders/basic.vert", "Shaders/basic.frag");
     ShaderProgram* skyboxShader = new ShaderProgram("Shaders/skybox.vert", "Shaders/skybox.frag");
     // Make sure that every shader used in the scene is added to the engine's list of shaders so
     // that lighting can be calculated.
-    this->shaders.insert(shader);
+    // this->shaders.insert(shader);
+    this->shaders.insert(shader2);
     CodeMonkeys::TheGauntlet::GameObjects::AsteroidFactory::init_asteroid_factory(0, shader);
     CodeMonkeys::TheGauntlet::GameObjects::ShipFactory::init(shader);
     
@@ -58,11 +60,11 @@ void TheGauntletEngine::init()
     this->world_root->add_child(ship);
 
     // Draw Asteroid
-    const int S = 2000;
-    const int T = 400;
+    const int S = 20;
+    const int T = 40;
     const int V = 50;
     const int A = 5;
-    for (int i = 0; i < 2000; i++)
+    for (int i = 0; i < 200; i++)
     {
         Asteroid* asteroid = CodeMonkeys::TheGauntlet::GameObjects::AsteroidFactory::create_asteroid_random_size();
         this->world_root->add_child(asteroid);
@@ -88,5 +90,5 @@ void TheGauntletEngine::init()
     DirectionalLight* directional = new DirectionalLight(vec3(1.0f, 1.0f, 1.0f), 0.6f, vec3(-1, -1, 0));
     this->lights.insert(directional);
 
-    this->renderer = new Renderer(this->get_window());
+    this->renderer = new FrameBufferRenderer(this->get_window(), 1280, 960);
 }

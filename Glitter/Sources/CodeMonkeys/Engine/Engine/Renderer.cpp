@@ -6,14 +6,16 @@
 
 using CodeMonkeys::Engine::Engine::Renderer;
 
-Renderer::Renderer(GLFWwindow* window)
+Renderer::Renderer(GLFWwindow* window, GLuint width, GLuint height)
 {
     this->window = window;
+    this->width = width;
+    this->height = height;
 }
 
 void Renderer::clear()
 {
-    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    glClearColor(0.1f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
@@ -63,6 +65,8 @@ void Renderer::draw_objects(Object3D* world_root)
         
 void Renderer::render(set<ShaderProgram*> shaders, set<ILight3D*> lights, Camera3D* camera, Object3D* world_root, Skybox* skybox)
 {
+    // this->set_frame_buffer(this->frame_buffer, 0, 0, this->frame_width, this->frame_height);
+
     this->clear();
     this->set_lighting(shaders, lights); // TODO: investigate 1282 error
     this->set_camera(shaders, camera); // TODO: investigate 1282 error
@@ -72,5 +76,32 @@ void Renderer::render(set<ShaderProgram*> shaders, set<ILight3D*> lights, Camera
 
     this->draw_objects(world_root);
 
+    // this->draw_frame_buffer(this->rendered_texture);
     glfwSwapBuffers(this->window);
+}
+
+
+GLuint Renderer::get_width()
+{
+    return this->width;
+}
+
+GLuint Renderer::get_height()
+{
+    return this->height;
+}
+
+// void Renderer::set_width(GLuint width)
+// {
+//     this->width = width;
+// }
+
+// void Renderer::set_height(GLuint height)
+// {
+//     this->height = height;
+// }
+
+GLFWwindow* Renderer::get_window()
+{
+    return this->window;
 }
