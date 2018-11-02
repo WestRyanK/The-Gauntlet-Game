@@ -1,6 +1,7 @@
 #include <vector>
 #include <stdlib.h>
 #include "CodeMonkeys/Engine/Objects/AmbientLight.h"
+#include "CodeMonkeys/Engine/Engine/Renderer.h"
 #include "CodeMonkeys/Engine/Objects/SpringArm.h"
 #include "CodeMonkeys/Engine/Assets/ColorMaterial.h"
 #include "CodeMonkeys/Engine/Objects/DirectionalLight.h"
@@ -59,11 +60,15 @@ void TheGauntletEngine::init()
     // Draw Asteroid
     const int S = 2000;
     const int T = 400;
+    const int V = 50;
+    const int A = 5;
     for (int i = 0; i < 2000; i++)
     {
         Asteroid* asteroid = CodeMonkeys::TheGauntlet::GameObjects::AsteroidFactory::create_asteroid_random_size();
         this->world_root->add_child(asteroid);
         asteroid->set_position(vec3(rand() % T - T / 2, rand() % T - T / 2, rand() % S - S));
+        asteroid->set_velocity(vec3(rand() % V - V / 2, rand() % V - V / 2, rand() % V - V / 2));
+        asteroid->set_angular_velocity(vec3(rand() % A - A / 2, rand() % A - A / 2, rand() % A - A / 2));
     }
 
     SpringArm* spring_arm = new SpringArm(10.0f, 1.0f, 1.0f);
@@ -82,4 +87,6 @@ void TheGauntletEngine::init()
 
     DirectionalLight* directional = new DirectionalLight(vec3(1.0f, 1.0f, 1.0f), 0.6f, vec3(-1, -1, 0));
     this->lights.insert(directional);
+
+    this->renderer = new Renderer(this->get_window());
 }

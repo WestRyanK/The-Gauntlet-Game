@@ -9,8 +9,8 @@
 #include "CodeMonkeys/Engine/Collision/ICollisionResponse.h"
 #include "CodeMonkeys/Engine/Collision/ICollisionDetector.h"
 #include "CodeMonkeys/Engine/Engine/Stopwatch.h"
-#include "CodeMonkeys/Engine/Engine/DrawObjectsIterator.h"
 #include "CodeMonkeys/Engine/Engine/UpdateObjectsIterator.h"
+#include "CodeMonkeys/Engine/Engine/Renderer.h"
 #include "CodeMonkeys/Engine/Objects/Skybox.h"
 
 using namespace CodeMonkeys::Engine::Control;
@@ -23,12 +23,7 @@ namespace CodeMonkeys::Engine::Engine
     private:
         GLFWwindow* window;
         Stopwatch stopwatch;
-        DrawObjectsIterator draw_objects_iterator;
         UpdateObjectsIterator update_objects_iterator;
-
-        void set_lighting();
-        void set_camera();
-        void draw_objects();
 
     protected:
         set<Controller*> controllers;
@@ -39,6 +34,7 @@ namespace CodeMonkeys::Engine::Engine
         ICollisionDetector* collision_detector = NULL;
         Camera3D* camera;
         Skybox* skybox;
+        Renderer* renderer;
 
         bool is_running = false;
 
@@ -47,8 +43,8 @@ namespace CodeMonkeys::Engine::Engine
         virtual void handle_controllers(float dt);
         virtual void update_objects(float dt);
         virtual void handle_collisions(float dt);
-        virtual void draw();
         virtual void update_frame(float dt) = 0;
+        void draw();
     
     public:
         GameEngine(GLFWwindow* window);
