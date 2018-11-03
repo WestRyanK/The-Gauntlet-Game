@@ -11,28 +11,30 @@ Renderer3D::Renderer3D(GLFWwindow* window, int width, int height, float camera_s
     this->quads[1] = new Quad(0.0f, -1.0f, 1.0f, 2.0f);
 }
 
-Camera3D* Renderer3D::create_second_camera(Camera3D* camera)
+vector<Camera3D*> Renderer3D::create_3d_cameras(Camera3D* camera)
 {
-    Camera3D* second_camera = new Camera3D();
+    vector<Camera3D*> cameras;
+
+    cameras.push_back(new Camera3D());
+    cameras.push_back(new Camera3D());
     vec3 sideways = normalize(cross(camera->get_up(), camera->get_look_at() - camera->get_position()));
     vec3 offset = sideways * this->camera_spacing;
 
-    second_camera->set_look_at(camera->get_look_at_parent());
-    second_camera->set_parent(camera->get_parent());
-    second_camera->set_position(camera->get_position());
-    second_camera->set_position(camera->get_position() - offset);
+    for (int i = 0; i < 2; i++)
+    {
+        cameras[i]->set_look_at(camera->get_look_at_parent());
+        cameras[i]->set_parent(camera->get_parent());
+        cameras[i]->set_position(camera->get_position());
+        cameras[i]->set_position(camera->get_position() - 2.0f * offset * (float)i + offset );
+    }
     // second_camera->set_look_at(camera->get_look_at());
 
-    return second_camera;
+    return cameras;
 }
 
 void Renderer3D::render(set<ShaderProgram*> shaders, set<ILight3D*> lights, Camera3D* camera, Object3D* world_root, Skybox* skybox)
 {
-    Camera3D* second_camera = create_second_camera(camera);
-    vector<Camera3D*> cameras = vector<Camera3D*>();
-    cameras.push_back(camera);
-    // cameras.push_back(camera);
-    cameras.push_back(second_camera);
+    vector<Camera3D*> cameras = create_3d_cameras(camera);
 
     GLuint half_width = this->get_width() / 2;
 
@@ -60,5 +62,6 @@ void Renderer3D::render(set<ShaderProgram*> shaders, set<ILight3D*> lights, Came
     this->quads[1]->draw(rendered_textures[1]);
     glfwSwapBuffers(this->get_window());
 
-    free(second_camera);
+    free(cameras[0]);
+    free(cameras[1]);
 }
