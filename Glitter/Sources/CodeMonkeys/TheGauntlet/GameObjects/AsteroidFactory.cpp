@@ -29,8 +29,9 @@ Asteroid* AsteroidFactory::create_asteroid(int size)
         health = Asteroid::SMALL_HEALTH;
     }
 
-    mlModel* ml_model = AsteroidFactory::load_asteroid_model(size  * 2);
-    AsteroidFactory::add_noise_to_model(ml_model, size * 2, 1, true);
+    const int SCALE = 4;
+    mlModel* ml_model = AsteroidFactory::load_asteroid_model(size  * SCALE);
+    AsteroidFactory::add_noise_to_model(ml_model, size * SCALE, 1, true);
     Model3D* model = AsteroidFactory::create_asteroid_model(ml_model);
 
     Asteroid* asteroid = new Asteroid(model, size, health);
