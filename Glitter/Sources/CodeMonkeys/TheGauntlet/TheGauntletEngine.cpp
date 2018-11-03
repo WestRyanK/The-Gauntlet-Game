@@ -1,6 +1,7 @@
 #include <vector>
 #include <stdlib.h>
 #include "CodeMonkeys/Engine/Objects/AmbientLight.h"
+#include "CodeMonkeys/Engine/Engine/Renderer3D.h"
 #include "CodeMonkeys/Engine/Objects/SpringArm.h"
 #include "CodeMonkeys/Engine/Assets/ColorMaterial.h"
 #include "CodeMonkeys/Engine/Objects/DirectionalLight.h"
@@ -19,7 +20,7 @@ using namespace CodeMonkeys::TheGauntlet::GameObjects;
 using namespace CodeMonkeys::Engine::Objects;
 using namespace CodeMonkeys::Engine::Assets;
 
-TheGauntletEngine::TheGauntletEngine(GLFWwindow* window) : GameEngine(window)
+TheGauntletEngine::TheGauntletEngine(GLFWwindow* window, GLuint width, GLuint height) : GameEngine(window, width, height)
 {
 }
 
@@ -59,11 +60,15 @@ void TheGauntletEngine::init()
     // Draw Asteroid
     const int S = 2000;
     const int T = 400;
+    const int V = 50;
+    const int A = 5;
     for (int i = 0; i < 2000; i++)
     {
         Asteroid* asteroid = CodeMonkeys::TheGauntlet::GameObjects::AsteroidFactory::create_asteroid_random_size();
         this->world_root->add_child(asteroid);
         asteroid->set_position(vec3(rand() % T - T / 2, rand() % T - T / 2, rand() % S - S));
+        asteroid->set_velocity(vec3(rand() % V - V / 2, rand() % V - V / 2, rand() % V - V / 2));
+        asteroid->set_angular_velocity(vec3(rand() % A - A / 2, rand() % A - A / 2, rand() % A - A / 2));
     }
 
     SpringArm* spring_arm = new SpringArm(10.0f, 1.0f, 1.0f);
@@ -82,4 +87,7 @@ void TheGauntletEngine::init()
 
     DirectionalLight* directional = new DirectionalLight(vec3(1.0f, 1.0f, 1.0f), 0.6f, vec3(-1, -1, 0));
     this->lights.insert(directional);
+
+    // this->renderer = new FrameBufferRenderer(this->get_window(), 1280, 480);
+    this->renderer = new Renderer3D(this->get_window(), this->get_width(), this->get_height(), 6);
 }

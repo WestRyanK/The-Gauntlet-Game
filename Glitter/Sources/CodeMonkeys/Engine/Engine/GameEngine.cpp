@@ -7,70 +7,47 @@
 #include "CodeMonkeys/Engine/Objects/AmbientLight.h"
 #include "CodeMonkeys/Engine/Objects/DirectionalLight.h"
 #include "NIE.h"
+#include <stdexcept>
 
 using CodeMonkeys::Engine::Engine::GameEngine;
 using namespace CodeMonkeys::Engine::Objects;
 using namespace CodeMonkeys::Engine::Control;
 
-GameEngine::GameEngine(GLFWwindow* window)
+GameEngine::GameEngine(GLFWwindow* window, GLuint width, GLuint height)
 {
     this->window = window;
+    this->width = width;
+    this->height = height;
     this->world_root = new Object3D(NULL, "world_root");
     this->skybox = NULL;
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); // GL_LINE or GL_FILL
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LESS);  
-    // throw NotImplementedException("GameEngine::constructor");
 }
 
-void GameEngine::set_lighting()
+GLuint GameEngine::get_width()
 {
-    vector<AmbientLight*> ambients;
-    vector<DirectionalLight*> directionals;
-    for (ILight3D* light : this->lights)
-    {
-        if (dynamic_cast<AmbientLight*>(light) != NULL)
-        {
-            ambients.push_back(dynamic_cast<AmbientLight*>(light));
-        }
-        if (dynamic_cast<DirectionalLight*>(light) != NULL)
-        {
-            directionals.push_back(dynamic_cast<DirectionalLight*>(light));
-        }
-    }
-
-    for (ShaderProgram* shader : this->shaders)
-    {
-        ILight3D::set_light_count(shader, "ambient", ambients.size());
-        ILight3D::set_light_count(shader, "directional", directionals.size());
-        for (int i = 0; i < ambients.size(); i++)
-        {
-            ambients[i]->add_light_to_shader(shader, i);
-        }
-        for (int i = 0; i < directionals.size(); i++)
-        {
-            directionals[i]->add_light_to_shader(shader, i);
-        }
-    }
+    return this->width;
 }
 
-
-void GameEngine::set_camera()
+GLuint GameEngine::get_height()
 {
-    for (ShaderProgram* shader : this->shaders)
-    {
-        this->camera->update_shader_with_camera(shader);
-    }
+    return this->height;
+}
+
+void GameEngine::set_width(GLuint width)
+{
+    this->width = width;
+}
+
+void GameEngine::set_height(GLuint height)
+{
+    this->height = height;
 }
 
 GLFWwindow* GameEngine::get_window()
 {
     return this->window;
-}
-
-void GameEngine::draw_objects()
-{
-    this->draw_objects_iterator.draw(this->world_root);
 }
 
 void GameEngine::handle_controllers(float dt)
@@ -79,6 +56,14 @@ void GameEngine::handle_controllers(float dt)
     {
         controller->handle_input(dt);
     }
+}
+
+void GameEngine::draw()
+{
+    if (this->renderer != NULL)
+        this->renderer->render(this->shaders, this->lights, this->camera, this->world_root, this->skybox);
+    else
+        throw "Must specify renderer for engine!";
 }
         
 void GameEngine::update_objects(float dt)
@@ -103,21 +88,6 @@ void GameEngine::handle_collisions(float dt)
             }
         }
     }
-}
-        
-void GameEngine::draw()
-{
-    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-    this->set_lighting(); // TODO: investigate 1282 error
-    this->set_camera(); // TODO: investigate 1282 error
-    // "action!"
-    if (this->skybox != NULL)
-        this->skybox->draw(this->camera->get_view_transform(), this->camera->get_perpective_projection());
-    this->draw_objects();
-
-    glfwSwapBuffers(this->window);
 }
         
 void GameEngine::run()

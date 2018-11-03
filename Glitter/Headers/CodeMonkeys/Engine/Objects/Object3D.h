@@ -39,6 +39,6 @@ namespace CodeMonkeys::Engine::Objects
         void set_parent(Object3D* parent);
 
         virtual void update(float dt);
-        virtual void draw(mat4 total_transform);
+        virtual void draw(mat4 total_transform, ShaderProgram* shader);
     };
 }

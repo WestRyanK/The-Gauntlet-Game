@@ -99,10 +99,10 @@ void Object3D::update(float dt)
 {
 }
 
-void Object3D::draw(mat4 total_transform)
+void Object3D::draw(mat4 total_transform, ShaderProgram* shader)
 {
     if (this->model != NULL)
     {
-        this->model->draw(total_transform);
+        this->model->draw(total_transform, shader);
     }
 }

@@ -17,7 +17,7 @@ vector<Material*> ShipFactory::ship_materials = vector<Material*>();
 
 void ShipFactory::init(ShaderProgram* shader)
 {
-    Material* ship_material = new ColorMaterial(shader, true, 10.0f, vec3(0.8f), vec3(0.6f, 0.0f, 0.0f));
+    Material* ship_material = new ColorMaterial(shader, true, 10.0f, vec3(0.8f), vec3(0.9f, 0.9f, 0.9f));
     vector<Material*> materials;
     materials.push_back(ship_material);
     ShipFactory::ship_materials = materials;

@@ -1,8 +1,10 @@
 #include "CodeMonkeys/Engine/Objects/Camera3D.h"
+#include "CodeMonkeys/Engine/Objects/Object3D.h"
 #include "glitter.hpp"
 #include "NIE.h"
 
 using namespace glm;
+using namespace CodeMonkeys::Engine::Objects;
 using CodeMonkeys::Engine::Objects::Camera3D;
 
 Camera3D::Camera3D() : Object3D(NULL, "Camera")
@@ -60,10 +62,16 @@ void Camera3D::update_shader_with_camera(ShaderProgram* shader)
     shader->setUniform("camera_position", this->position);
 }
 
+Object3D* Camera3D::get_look_at_parent()
+{
+    return this->look_at_parent;
+}
+
 mat4 Camera3D::get_perpective_projection()
 {
     return this->perspective_projection;
 }
+
 
 mat4 Camera3D::get_view_transform()
 {
