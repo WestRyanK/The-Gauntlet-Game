@@ -16,7 +16,7 @@ namespace CodeMonkeys::Engine::Engine
         GLuint frame_buffers[2];
         GLuint rendered_textures[2];
 
-        Camera3D* create_second_camera(Camera3D* camera);
+        vector<Camera3D*> create_3d_cameras(Camera3D* camera);
     public:
         Renderer3D(GLFWwindow* window, int width, int height, float camera_spacing);
         void render(set<ShaderProgram*> shaders, set<ILight3D*> lights, Camera3D* camera, Object3D* world_root, Skybox* skybox);

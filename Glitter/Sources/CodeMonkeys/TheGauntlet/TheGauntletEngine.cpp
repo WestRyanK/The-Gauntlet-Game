@@ -60,7 +60,7 @@ void TheGauntletEngine::init()
     // Draw Asteroid
     const int S = 2000;
     const int T = 400;
-    const int V = 50;
+    const int V = 25;
     const int A = 5;
     for (int i = 0; i < 2000; i++)
     {
@@ -89,5 +89,5 @@ void TheGauntletEngine::init()
     this->lights.insert(directional);
 
     // this->renderer = new FrameBufferRenderer(this->get_window(), 1280, 480);
-    this->renderer = new Renderer3D(this->get_window(), this->get_width(), this->get_height(), 6);
+    this->renderer = new Renderer3D(this->get_window(), this->get_width(), this->get_height(), 2);
 }
