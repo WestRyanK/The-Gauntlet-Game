@@ -58,7 +58,7 @@ void TheGauntletEngine::init()
     this->world_root->add_child(ship);
 
     // Draw Asteroid
-    const int S = 2000;
+    const int S = 5000;
     const int T = 400;
     const int V = 25;
     const int A = 5;
