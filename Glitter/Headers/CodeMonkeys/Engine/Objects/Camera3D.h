@@ -25,6 +25,7 @@ namespace CodeMonkeys::Engine::Objects
         vec3 get_up();
         void set_up(vec3 up);
         void set_look_at(Object3D* look_at_parent);
+        Object3D* get_look_at_parent();
         
         mat4 get_view_transform();
         mat4 get_perpective_projection();

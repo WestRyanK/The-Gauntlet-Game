@@ -1,6 +1,7 @@
 #pragma once
 
 #include "CodeMonkeys/Engine/Engine/FrameBufferRenderer.h"
+#include "CodeMonkeys/Engine/Engine/Quad.h"
 #include "glitter.hpp"
 
 using namespace glm;
@@ -11,6 +12,9 @@ namespace CodeMonkeys::Engine::Engine
     {
     private:
         float camera_spacing;
+        Quad* quads[2];
+        GLuint frame_buffers[2];
+        GLuint rendered_textures[2];
 
         Camera3D* create_second_camera(Camera3D* camera);
     public:

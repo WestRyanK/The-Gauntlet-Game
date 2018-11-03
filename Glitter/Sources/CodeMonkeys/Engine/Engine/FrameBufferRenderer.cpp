@@ -6,78 +6,19 @@ using CodeMonkeys::Engine::Engine::FrameBufferRenderer;
 FrameBufferRenderer::FrameBufferRenderer(GLFWwindow* window, GLuint width, GLuint height) : Renderer(window, width, height)
 {
     this->create_frame_buffer(this->get_width(), this->get_height(), this->frame_buffer, this->rendered_texture);
-    this->create_output_quad();
+    this->quad = new Quad(-1.0f, -1.0f, 2.0f, 2.0f);
+    // tex = new Texture("Assets/Lab04/crayon_texture.png");
 }
 
-void FrameBufferRenderer::create_output_quad()
-{
-    // The fullscreen quad's FBO
-    glGenVertexArrays(1, &this->quad_vao);
-    glBindVertexArray(this->quad_vao);
-
-    static const GLfloat quad_vertex_buffer_data[] = {
-        -1.0f, -1.0f, 0.0f,
-        1.0f, -1.0f, 0.0f,
-        -1.0f,  1.0f, 0.0f,
-        -1.0f,  1.0f, 0.0f,
-        1.0f, -1.0f, 0.0f,
-        1.0f,  1.0f, 0.0f,
-    };
-
-    GLuint quad_vbo;
-    glGenBuffers(1, &quad_vbo);
-    glBindBuffer(GL_ARRAY_BUFFER, quad_vbo);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(quad_vertex_buffer_data), quad_vertex_buffer_data, GL_STATIC_DRAW);
-
-    // 1st attribute buffer : vertices
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(
-        0,                  // attribute 0. No particular reason for 0, but must match the layout in the shader.
-        3,                  // size
-        GL_FLOAT,           // type
-        GL_FALSE,           // normalized?
-        0,                  // stride
-        (void*)0            // array buffer offset
-    );
-
-    glBindVertexArray(0);
-
-    // Create and compile our GLSL program from the shaders
-    // this->quad_shader = new ShaderProgram("Shaders/frame_buffer.vert", "Shaders/frame_buffer.frag");
-    // this->quad_shader = new ShaderProgram("Shaders/basic.vert", "Shaders/basic.frag");
-}
-
-void FrameBufferRenderer::set_frame_buffer(GLuint frame_buffer, GLuint x, GLuint y, GLuint width, GLuint height)
-{
-    // Render to our framebuffer
-    glBindFramebuffer(GL_FRAMEBUFFER, frame_buffer);
-    glViewport(x, y, width, height); // Render on the whole framebuffer, complete from the lower left corner to the upper right
-}
 
 void FrameBufferRenderer::draw_frame_buffer(GLuint rendered_texture)
 { 
+    glViewport(0, 0, this->get_width(), this->get_height()); 
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
     glViewport(0, 0, this->get_width(), this->get_height()); 
     // // Clear the screen
     glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    // // Use our shader
-    this->quad_shader->use_program();
-
-    // // Bind our texture in Texture Unit 0
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, rendered_texture);
-    // // Set our "renderedTexture" sampler to use Texture Unit 0
-    // this->quad_texture_id = glGetUniformLocation(this->quad_shader->get_shader_id(), "rendered_texture");
-    this->quad_shader->setUniform("rendered_texture", (int)rendered_texture);
-    // glUniform1i(this->quad_texture_id, 0);
-
-    glBindVertexArray(this->quad_vao);
-    // // Draw the triangles !
-    glDrawArrays(GL_TRIANGLES, 0, 6); // 2*3 indices starting at 0 -> 2 triangles
-
-    glBindVertexArray(0);
-    glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 void FrameBufferRenderer::create_frame_buffer(GLuint width, GLuint height, GLuint& frame_buffer, GLuint& rendered_texture)
@@ -136,18 +77,26 @@ void screenshot (char filename[160],int x, int y)
 
 void FrameBufferRenderer::render(set<ShaderProgram*> shaders, set<ILight3D*> lights, Camera3D* camera, Object3D* world_root, Skybox* skybox)
 {
-    // this->set_frame_buffer(this->frame_buffer, 0, 0, this->get_width(), this->get_height());
+    glBindFramebuffer(GL_FRAMEBUFFER, this->frame_buffer);
+    glViewport(0, 0, this->get_width(), this->get_height()); 
 
     this->clear();
-    this->set_lighting(shaders, lights); // TODO: investigate 1282 error
-    this->set_camera(shaders, camera); // TODO: investigate 1282 error
-    // "action!"
+
     if (skybox != NULL)
         skybox->draw(camera->get_view_transform(), camera->get_perpective_projection());
+    for (ShaderProgram* shader : shaders)
+    {
+        shader->use_program();
 
-    this->draw_objects(world_root);
+        this->set_lighting(shader, lights); // TODO: investigate 1282 error
+        this->set_camera(shader, camera); // TODO: investigate 1282 error
 
-    screenshot("test.tga", this->get_width(), this->get_height());
-    // this->draw_frame_buffer(this->rendered_texture);
+        this->draw_objects(world_root, shader);
+    }
+
+
+    // this->draw_frame_buffer(tex->get_texture_id());
+    this->draw_frame_buffer(this->rendered_texture);
+    this->quad->draw(rendered_texture);
     glfwSwapBuffers(this->get_window());
 }

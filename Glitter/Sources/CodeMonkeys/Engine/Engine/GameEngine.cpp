@@ -13,14 +13,36 @@ using CodeMonkeys::Engine::Engine::GameEngine;
 using namespace CodeMonkeys::Engine::Objects;
 using namespace CodeMonkeys::Engine::Control;
 
-GameEngine::GameEngine(GLFWwindow* window)
+GameEngine::GameEngine(GLFWwindow* window, GLuint width, GLuint height)
 {
     this->window = window;
+    this->width = width;
+    this->height = height;
     this->world_root = new Object3D(NULL, "world_root");
     this->skybox = NULL;
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); // GL_LINE or GL_FILL
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LESS);  
+}
+
+GLuint GameEngine::get_width()
+{
+    return this->width;
+}
+
+GLuint GameEngine::get_height()
+{
+    return this->height;
+}
+
+void GameEngine::set_width(GLuint width)
+{
+    this->width = width;
+}
+
+void GameEngine::set_height(GLuint height)
+{
+    this->height = height;
 }
 
 GLFWwindow* GameEngine::get_window()

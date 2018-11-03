@@ -46,16 +46,18 @@ void Model3D::create_vao_ebo(mlMesh* mesh)
 }
 
 
-void Model3D::draw(mat4 transform)
+void Model3D::draw(mat4 transform, ShaderProgram* shader)
 {
     for (int i = 0; i < this->vaos.size(); i++)
     {
-        this->materials[i]->get_shader()->use_program();
-        this->materials[i]->get_shader()->setUniform("object_transform", transform);
-        this->materials[i]->apply_material_to_shader();
+        if (this->materials[i]->get_shader() == shader)
+        {
+            this->materials[i]->get_shader()->setUniform("object_transform", transform);
+            this->materials[i]->apply_material_to_shader();
 
-        glBindVertexArray(this->vaos[i]);
-        glDrawElements(GL_TRIANGLES, this->ebo_sizes[i], GL_UNSIGNED_INT, 0);
-        glBindVertexArray(0);
+            glBindVertexArray(this->vaos[i]);
+            glDrawElements(GL_TRIANGLES, this->ebo_sizes[i], GL_UNSIGNED_INT, 0);
+            glBindVertexArray(0);
+        }
     }
 }

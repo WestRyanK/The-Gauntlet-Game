@@ -35,6 +35,6 @@ namespace CodeMonkeys::Engine::Assets
     public:
         Model3D(mlModel* ml_model, vector<Material*> material);
         // Render the Model3D using its model, textures, and shaders.
-        void draw(mat4 transform);
+        void draw(mat4 transform, ShaderProgram* shader);
     };
 };

@@ -30,9 +30,9 @@ namespace CodeMonkeys::Engine::Engine
 
 
         void clear();
-        void set_lighting(set<ShaderProgram*> shaders, set<ILight3D*> lights);
-        void set_camera(set<ShaderProgram*> shaders, Camera3D* camera);
-        void draw_objects(Object3D* world_root);
+        void set_lighting(ShaderProgram* shader, set<ILight3D*> lights);
+        void set_camera(ShaderProgram* shader, Camera3D* camera);
+        void draw_objects(Object3D* world_root, ShaderProgram* shader);
 
     public:
         Renderer(GLFWwindow* window, GLuint width, GLuint height);

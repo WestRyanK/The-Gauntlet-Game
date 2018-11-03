@@ -24,6 +24,8 @@ namespace CodeMonkeys::Engine::Engine
         GLFWwindow* window;
         Stopwatch stopwatch;
         UpdateObjectsIterator update_objects_iterator;
+        GLuint width;
+        GLuint height;
 
     protected:
         set<Controller*> controllers;
@@ -39,6 +41,10 @@ namespace CodeMonkeys::Engine::Engine
         bool is_running = false;
 
         GLFWwindow* get_window();
+        GLuint get_width();
+        GLuint get_height();
+        void set_width(GLuint width);
+        void set_height(GLuint height);
 
         virtual void handle_controllers(float dt);
         virtual void update_objects(float dt);
@@ -47,7 +53,7 @@ namespace CodeMonkeys::Engine::Engine
         void draw();
     
     public:
-        GameEngine(GLFWwindow* window);
+        GameEngine(GLFWwindow* window, GLuint width, GLuint height);
         void run();
         virtual void init() = 0;
     };

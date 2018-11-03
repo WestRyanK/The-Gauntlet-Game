@@ -15,11 +15,11 @@ Renderer::Renderer(GLFWwindow* window, GLuint width, GLuint height)
 
 void Renderer::clear()
 {
-    glClearColor(0.1f, 0.0f, 0.0f, 1.0f);
+    glClearColor(0.2f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-void Renderer::set_lighting(set<ShaderProgram*> shaders, set<ILight3D*> lights)
+void Renderer::set_lighting(ShaderProgram* shader, set<ILight3D*> lights)
 {
     vector<AmbientLight*> ambients;
     vector<DirectionalLight*> directionals;
@@ -35,48 +35,44 @@ void Renderer::set_lighting(set<ShaderProgram*> shaders, set<ILight3D*> lights)
         }
     }
 
-    for (ShaderProgram* shader : shaders)
+    ILight3D::set_light_count(shader, "ambient", ambients.size());
+    ILight3D::set_light_count(shader, "directional", directionals.size());
+    for (int i = 0; i < ambients.size(); i++)
     {
-        ILight3D::set_light_count(shader, "ambient", ambients.size());
-        ILight3D::set_light_count(shader, "directional", directionals.size());
-        for (int i = 0; i < ambients.size(); i++)
-        {
-            ambients[i]->add_light_to_shader(shader, i);
-        }
-        for (int i = 0; i < directionals.size(); i++)
-        {
-            directionals[i]->add_light_to_shader(shader, i);
-        }
+        ambients[i]->add_light_to_shader(shader, i);
+    }
+    for (int i = 0; i < directionals.size(); i++)
+    {
+        directionals[i]->add_light_to_shader(shader, i);
     }
 }
 
-void Renderer::set_camera(set<ShaderProgram*> shaders, Camera3D* camera)
+void Renderer::set_camera(ShaderProgram* shader, Camera3D* camera)
 {
-    for (ShaderProgram* shader : shaders)
-    {
-        camera->update_shader_with_camera(shader);
-    }
+    camera->update_shader_with_camera(shader);
 }
 
-void Renderer::draw_objects(Object3D* world_root)
+void Renderer::draw_objects(Object3D* world_root, ShaderProgram* shader)
 {
-    this->draw_objects_iterator.draw(world_root);
+    this->draw_objects_iterator.draw(world_root, shader);
 }
         
 void Renderer::render(set<ShaderProgram*> shaders, set<ILight3D*> lights, Camera3D* camera, Object3D* world_root, Skybox* skybox)
 {
-    // this->set_frame_buffer(this->frame_buffer, 0, 0, this->frame_width, this->frame_height);
-
     this->clear();
-    this->set_lighting(shaders, lights); // TODO: investigate 1282 error
-    this->set_camera(shaders, camera); // TODO: investigate 1282 error
-    // "action!"
+
     if (skybox != NULL)
         skybox->draw(camera->get_view_transform(), camera->get_perpective_projection());
+    for (ShaderProgram* shader : shaders)
+    {
+        shader->use_program();
 
-    this->draw_objects(world_root);
+        this->set_lighting(shader, lights); // TODO: investigate 1282 error
+        this->set_camera(shader, camera); // TODO: investigate 1282 error
 
-    // this->draw_frame_buffer(this->rendered_texture);
+        this->draw_objects(world_root, shader);
+    }
+
     glfwSwapBuffers(this->window);
 }
 

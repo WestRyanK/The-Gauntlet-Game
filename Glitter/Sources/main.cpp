@@ -18,8 +18,10 @@ using namespace CodeMonkeys::TheGauntlet;
 
 int main(int argc, char * argv[]) {
 
-    TheGauntletWindow gauntlet_window = TheGauntletWindow(1280, 960);
-    TheGauntletEngine gauntlet_engine = TheGauntletEngine(gauntlet_window.get_window());
+    const GLuint WIDTH = 1920;
+    const GLuint HEIGHT = 720;
+    TheGauntletWindow gauntlet_window = TheGauntletWindow(WIDTH, HEIGHT);
+    TheGauntletEngine gauntlet_engine = TheGauntletEngine(gauntlet_window.get_window(), WIDTH, HEIGHT);
 
     gauntlet_engine.init();
     gauntlet_engine.run();
