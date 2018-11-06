@@ -8,11 +8,11 @@ void DrawObjectsIterator::visit_object(Object3D* object)
     if (!this->transform_stack.empty())
     {
         mat4 parent_transform = this->transform_stack.top();
-        transform = transform * parent_transform;
+        transform = parent_transform * transform ;
     }
     this->transform_stack.push(transform);
 
-    object->draw(transform);
+    object->draw(transform, current_shader);
 }
 
 void DrawObjectsIterator::post_visit_children(Object3D* parent)
@@ -23,7 +23,8 @@ void DrawObjectsIterator::post_visit_children(Object3D* parent)
     }
 }
 
-void DrawObjectsIterator::draw(Object3D* world_root)
+void DrawObjectsIterator::draw(Object3D* world_root, ShaderProgram* current_shader)
 {
+    this->current_shader = current_shader;
     this->traverse(world_root);
 }

@@ -6,7 +6,7 @@ in vec3 world_position_2;
 in vec3 normal_2;
 in vec2 uv_2;
 
-out vec4 color_out;
+layout(location = 0) out vec3 color_out;
 
 uniform mat4 view_transform;
 uniform vec3 camera_position;
@@ -54,7 +54,9 @@ vec4 apply_directional(vec4 fragment_color, directional_light light)
             vec4 phong_reflect_out = vec4(light.color * phong_color * pow(phong_base, phong_exponent), 1.0f);
             directional_out += phong_reflect_out;
         }
+
     }
+        // directional_out = vec4(normal_2, 1.0f);
     return directional_out;
 }
 
@@ -71,17 +73,17 @@ void main()
     }
     else
     {
-        fragment_color = vec4(1.0f);
+        fragment_color = vec4(0.5f);
     }
 
-    color_out = vec4(0.0f);
+    color_out = vec3(0.0f);
+    // color_out = vec4(0.0f);
     for (int i = 0; i < ambient_count; i++)
     {
-        color_out += apply_ambient(fragment_color, ambient[i]);
+        color_out += apply_ambient(fragment_color, ambient[i]).rgb;
     }
     for (int i = 0; i < directional_count; i++)
     {
-        color_out += apply_directional(fragment_color, directional[i]);
+        color_out += apply_directional(fragment_color, directional[i]).rgb;
     }
-    // color_out = vec4(1.0f);
 }

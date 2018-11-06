@@ -15,11 +15,13 @@ namespace CodeMonkeys::Engine::Objects
     protected:
         vec3 velocity;
         vec3 angular_velocity;
+        vec3 acceleration;
 
     public:
         PhysicalObject3D(Model3D* model, std::string name);
 
         vec3 get_velocity();
+        vec3 get_acceleration();
         void set_velocity(vec3 velocity);
         vec3 get_angular_velocity();
         void set_angular_velocity(vec3 angular_velocity);

@@ -69,14 +69,20 @@ set<Object3D*> Object3D::get_children()
 
 void Object3D::add_child(Object3D* child)
 {
+    if (child->parent != NULL)
+        child->parent->remove_child(child);
+
     if (!this->children.count(child))
         this->children.insert(child);
+
+        child->parent = this;
 }
 
 void Object3D::remove_child(Object3D* child)
 {
     if (this->children.count(child))
         this->children.erase(child);
+    child->parent = NULL;
 }
 
 Object3D* Object3D::get_parent()
@@ -93,10 +99,10 @@ void Object3D::update(float dt)
 {
 }
 
-void Object3D::draw(mat4 total_transform)
+void Object3D::draw(mat4 total_transform, ShaderProgram* shader)
 {
     if (this->model != NULL)
     {
-        this->model->draw(total_transform);
+        this->model->draw(total_transform, shader);
     }
 }

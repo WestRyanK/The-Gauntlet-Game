@@ -26,7 +26,7 @@ Texture::Texture(const char* texture_path)
         // glGenerateMipmap(GL_TEXTURE_2D);
         stbi_image_free(data);
     }
-    else
+    else // if (texture_path != NULL)
     {
         printf("Failed to load texture image: %s\n", texture_path);
     }

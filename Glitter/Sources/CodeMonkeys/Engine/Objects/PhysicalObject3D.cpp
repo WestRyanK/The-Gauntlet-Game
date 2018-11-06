@@ -19,6 +19,7 @@ vec3 PhysicalObject3D::get_velocity()
 
 void PhysicalObject3D::set_velocity(vec3 velocity)
 {
+    this->acceleration = this->velocity - velocity;
     this->velocity = velocity;
 }
         
@@ -32,8 +33,14 @@ void PhysicalObject3D::set_angular_velocity(vec3 angular_velocity)
     this->angular_velocity = angular_velocity;
 }
 
+vec3 PhysicalObject3D::get_acceleration()
+{
+    return this->acceleration;
+}
+
 void PhysicalObject3D::update(float dt)
 {
+    this->acceleration = this->acceleration * 0.90f;
     this->position.x += dt * this->velocity.x;
     this->position.y += dt * this->velocity.y;
     this->position.z += dt * this->velocity.z;

@@ -25,6 +25,13 @@ namespace CodeMonkeys::TheGauntlet::GameObjects
         void on_death();
         void control(std::string control_name, float value, float dt);
         void control(std::string control_name, int value, float dt);
+        void update(float dt);
+        void update_vertical(float dt);
+        void update_lateral(float dt);
+        void dampen_lateral(float dt);
+        void dampen_vertical(float dt);
+        bool acclerating_vertically;
+        bool acclerating_laterally;
 
     public:
         Ship(Model3D* model, std::string name,

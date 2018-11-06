@@ -29,8 +29,9 @@ Asteroid* AsteroidFactory::create_asteroid(int size)
         health = Asteroid::SMALL_HEALTH;
     }
 
-    mlModel* ml_model = AsteroidFactory::load_asteroid_model(size);
-    AsteroidFactory::add_noise_to_model(ml_model, size , 2, true);
+    const int SCALE = 4;
+    mlModel* ml_model = AsteroidFactory::load_asteroid_model(size  * SCALE);
+    AsteroidFactory::add_noise_to_model(ml_model, size * SCALE, 1, true);
     Model3D* model = AsteroidFactory::create_asteroid_model(ml_model);
 
     Asteroid* asteroid = new Asteroid(model, size, health);
@@ -202,7 +203,7 @@ void AsteroidFactory::init_asteroid_factory(unsigned int seed, ShaderProgram* sh
         srand(seed);
     }
 
-    Material* asteroid_material = new ColorMaterial(shader, true, 1.0f, vec3(1.0f), vec3(1.0f));
+    Material* asteroid_material = new ColorMaterial(shader, false, 1.0f, vec3(1.0f), vec3(0.2f));
     vector<Material*> materials;
     materials.push_back(asteroid_material);
 

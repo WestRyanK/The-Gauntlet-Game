@@ -12,7 +12,7 @@ namespace CodeMonkeys::TheGauntlet
         void update_frame(float dt);
 
     public:
-        TheGauntletEngine(GLFWwindow* window);
+        TheGauntletEngine(GLFWwindow* window, GLuint width, GLuint height);
         void init();
     };
 }
