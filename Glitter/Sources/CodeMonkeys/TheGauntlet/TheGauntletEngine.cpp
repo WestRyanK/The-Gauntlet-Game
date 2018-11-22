@@ -15,10 +15,12 @@
 #include "CodeMonkeys/TheGauntlet/GameObjects/Asteroid.h"
 #include "CodeMonkeys/Engine/Collision/GridCollisionDetector.h"
 #include "CodeMonkeys/Engine/Collision/SimpleCollisionDetector.h"
+#include "CodeMonkeys/TheGauntlet/Collision/ShipAsteroidCollisionResponse.h"
 
 using namespace std;
 using CodeMonkeys::TheGauntlet::TheGauntletEngine;
 using namespace CodeMonkeys::TheGauntlet::GameObjects;
+using namespace CodeMonkeys::TheGauntlet::Collision;
 using namespace CodeMonkeys::Engine::Objects;
 using namespace CodeMonkeys::Engine::Assets;
 
@@ -81,6 +83,9 @@ void TheGauntletEngine::init()
     auto ship = CodeMonkeys::TheGauntlet::GameObjects::ShipFactory::create_x_wing_ship();
     this->world_root->add_child(ship);
 
+    auto ship2 = CodeMonkeys::TheGauntlet::GameObjects::ShipFactory::create_x_wing_ship();
+    this->world_root->add_child(ship2);
+    ship2->set_position(vec3(0, 0, 0));
 
     // Draw Asteroid
     // const int S = 5000;
@@ -102,7 +107,7 @@ void TheGauntletEngine::init()
 
         Asteroid* asteroi2 = CodeMonkeys::TheGauntlet::GameObjects::AsteroidFactory::create_asteroid(3);
         this->world_root->add_child(asteroi2);
-        asteroi2->set_position(vec3(60,0,0));
+        asteroi2->set_position(vec3(40,0,0));
 
 
     auto keyboard_controller = new CodeMonkeys::TheGauntlet::Control::KeyboardController(ship, this->get_window());
@@ -110,6 +115,7 @@ void TheGauntletEngine::init()
     this->controllers.insert(keyboard_controller);
 
     this->init_light_and_camera(ship);
+    this->collision_responses.insert(new ShipAsteroidCollisionResponse());
 
     this->renderer = new FrameBufferRenderer(this->get_window(), this->get_width(), this->get_height());
     // this->renderer = new Renderer3D(this->get_window(), this->get_width(), this->get_height(), 2);
