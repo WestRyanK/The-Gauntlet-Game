@@ -24,6 +24,22 @@ bool IntersectDetector::is_intersection(ICollisionRegion* region_a, ICollisionRe
         multi_sphere_a->free_spheres(spheres);
         return intersect;
     }
+    else if (multi_sphere_a != NULL && multi_sphere_b != NULL)
+    {
+        auto spheres_a = multi_sphere_a->get_spheres();
+        auto spheres_b = multi_sphere_b->get_spheres();
+        bool intersect = false;
+        for (auto sa : spheres_a)
+        {
+            for (auto sb : spheres_b)
+            {
+                intersect |= is_intersection((BoundingSphere*) sa, (BoundingSphere*) sb);
+            }
+        }
+        multi_sphere_a->free_spheres(spheres_a);
+        multi_sphere_b->free_spheres(spheres_b);
+        return intersect;
+    }
 
     
     return false;
