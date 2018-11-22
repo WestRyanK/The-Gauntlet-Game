@@ -13,7 +13,7 @@ bool ShipAsteroidCollisionResponse::can_respond(Object3D* object_a, Object3D* ob
     return (ship != NULL && asteroid != NULL);
 }
 
-void ShipAsteroidCollisionResponse::respond(Object3D* object_a, Object3D* object_b)
+void ShipAsteroidCollisionResponse::respond(Object3D* object_a, Object3D* object_b, float dt)
 {
     printf("BOOOM!!!");
 }

@@ -131,7 +131,7 @@ void AsteroidFactory::add_noise_to_model(mlModel* ml_model, int asteroid_size, i
                     float position = ml_model->meshes[mesh_index]->vertices[vertex_index].position[axis];
                     // position *= stretch_factor;
                     float noise_offset = AsteroidFactory::rand_centered(0.0f, max_noise);
-                    // position += noise_offset;
+                    position += noise_offset;
                     ml_model->meshes[mesh_index]->vertices[vertex_index].position[axis] = position;
                 }
             }

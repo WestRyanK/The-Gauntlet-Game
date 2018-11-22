@@ -145,7 +145,7 @@ void Ship::dampen_vertical(float dt)
 
 void Ship::control(std::string control_name, float value, float dt)
 {
-    const float velocity = 10.0f;
+    const float velocity = 100.0f;
     vec3 forward = vec3(0, 0, 1);
     vec3 sideways = vec3(1, 0, 0);
     if (control_name == "move_x")

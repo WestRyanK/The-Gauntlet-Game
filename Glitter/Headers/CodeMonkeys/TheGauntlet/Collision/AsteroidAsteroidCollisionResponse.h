@@ -4,7 +4,7 @@
 
 namespace CodeMonkeys::TheGauntlet::Collision
 {
-    class ShipAsteroidCollisionResponse : public ICollisionResponse
+    class AsteroidAsteroidCollisionResponse : public ICollisionResponse
     {
     public:
         virtual bool can_respond(Object3D* object_a, Object3D* object_b);

@@ -85,7 +85,7 @@ void GameEngine::handle_collisions(float dt)
             {
                 if (collision_response->can_respond(collision.first, collision.second))
                 {
-                    collision_response->respond(collision.first, collision.second);
+                    collision_response->respond(collision.first, collision.second, dt);
                 }
             }
         }
