@@ -37,14 +37,10 @@ Ship* ShipFactory::create_x_wing_ship()
     const float BOOST_ACCELERATION = 10;
     const float BRAKE_ACCELERATION = 2;
     const float MAX_XY_VELOCITY = 10;
-    const float MAX_Z_VELOCITY = 20;
-    const float MIN_Z_VELOCITY = 5;
-    // const float XY_ACCELERATION = 500;
-    // const float BOOST_ACCELERATION = 80;
-    // const float BRAKE_ACCELERATION = 20;
-    // const float MAX_XY_VELOCITY = 80;
-    // const float MAX_Z_VELOCITY = 200;
-    // const float MIN_Z_VELOCITY = 80;
+    const float MAX_Z_VELOCITY = 0;
+    // const float MAX_Z_VELOCITY = 20;
+    const float MIN_Z_VELOCITY = 0;
+    // const float MIN_Z_VELOCITY = 5;
 
     IFireable* laser_turret = new LaserTurret();
     IFireable* laser_cannon = new LaserCannon();

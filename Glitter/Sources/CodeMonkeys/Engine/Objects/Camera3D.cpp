@@ -40,19 +40,6 @@ void Camera3D::set_up(vec3 up)
     this->up = up;
 }
 
-mat4 Camera3D::get_hierarchical_transform(Object3D* object)
-{
-    mat4 transform;
-    Object3D* parent_object = object;
-    while (parent_object != NULL)
-    {
-        transform = parent_object->get_transform() * transform;
-        parent_object = parent_object->get_parent();
-    }
-
-    return transform;
-}
-
 void Camera3D::update_shader_with_camera(ShaderProgram* shader)
 {
     mat4 view = this->get_view_transform();
@@ -75,11 +62,11 @@ mat4 Camera3D::get_perpective_projection()
 
 mat4 Camera3D::get_view_transform()
 {
-    mat4 hierarchical_transform = this->get_hierarchical_transform(this);
+    mat4 hierarchical_transform = this->get_hierarchical_transform();
     vec3 transformed_look_at;
     if (this->look_at_parent != NULL)
     {
-        mat4 look_hierarchical_transform = this->get_hierarchical_transform(this->look_at_parent);
+        mat4 look_hierarchical_transform = this->look_at_parent->get_hierarchical_transform();
         transformed_look_at = vec3(look_hierarchical_transform * vec4(transformed_look_at, 1.0f));
     }
     else

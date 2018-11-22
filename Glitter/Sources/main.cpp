@@ -20,9 +20,10 @@ int main(int argc, char * argv[]) {
 
     const float virtual_reality_ratio = 0.375f;
     const float normal_ratio = 0.5625;
-    // const GLuint WIDTH = 1920;
-    const GLuint WIDTH = 780;
-    const GLuint HEIGHT = (int)(WIDTH * virtual_reality_ratio);
+    const GLuint WIDTH = 1920;
+    // const GLuint WIDTH = 780;
+    const GLuint HEIGHT = (int)(WIDTH * normal_ratio);
+    // const GLuint HEIGHT = (int)(WIDTH * virtual_reality_ratio);
 
     TheGauntletWindow gauntlet_window = TheGauntletWindow(WIDTH, HEIGHT);
     TheGauntletEngine gauntlet_engine = TheGauntletEngine(gauntlet_window.get_window(), WIDTH, HEIGHT);

@@ -8,6 +8,7 @@
 #include "CodeMonkeys/Engine/Control/IControllable.h"
 #include "CodeMonkeys/Engine/Objects/PhysicalObject3D.h"
 #include "CodeMonkeys/Engine/Assets/Model3D.h"
+#include "CodeMonkeys/Engine/Collision/BoundingMultiSphere.h"
 
 using namespace CodeMonkeys::TheGauntlet;
 using namespace CodeMonkeys::Engine::Control;
@@ -32,6 +33,7 @@ namespace CodeMonkeys::TheGauntlet::GameObjects
         void dampen_vertical(float dt);
         bool acclerating_vertically;
         bool acclerating_laterally;
+        BoundingMultiSphere* bounding_multisphere;
 
     public:
         Ship(Model3D* model, std::string name,
@@ -45,5 +47,7 @@ namespace CodeMonkeys::TheGauntlet::GameObjects
             float min_z_velocity,
             IFireable* primary_weapon,
             IFireable* secondary_weapon);
+
+        ICollisionRegion* get_collision_region();
     };
 }

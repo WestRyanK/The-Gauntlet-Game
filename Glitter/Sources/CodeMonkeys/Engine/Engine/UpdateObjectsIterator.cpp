@@ -7,6 +7,7 @@ void UpdateObjectsIterator::visit_object(Object3D* object)
     if (object != NULL)
     {
         object->update(this->dt);
+        this->collision_detector->update(object);
     }
 }
 
@@ -18,4 +19,9 @@ void UpdateObjectsIterator::update(Object3D* world_root, float dt)
 {
     this->dt = dt;
     this->traverse(world_root);
+}
+
+void UpdateObjectsIterator::set_collision_detector(ICollisionDetector* collision_detector)
+{
+    this->collision_detector = collision_detector;
 }

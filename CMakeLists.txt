@@ -33,6 +33,7 @@ include_directories(Glitter/Headers/
                     Glitter/Headers/CodeMonkeys/TheGauntlet/
                     Glitter/Headers/CodeMonkeys/TheGauntlet/Control/
                     Glitter/Headers/CodeMonkeys/TheGauntlet/GameObjects/
+                    Glitter/Headers/CodeMonkeys/TheGauntlet/Collision/
                     Glitter/Headers/CodeMonkeys/Lab04/
                     Glitter/Vendor/assimp/include/
                     Glitter/Vendor/bullet/src/
@@ -52,6 +53,7 @@ file(GLOB PROJECT_HEADERS Glitter/Headers/*.hpp
                           Glitter/Headers/CodeMonkeys/TheGauntlet/*.h
                           Glitter/Headers/CodeMonkeys/TheGauntlet/Control/*.h
                           Glitter/Headers/CodeMonkeys/TheGauntlet/GameObjects/*.h
+                          Glitter/Headers/CodeMonkeys/TheGauntlet/Collision/*.h
                           Glitter/Headers/CodeMonkeys/Lab04/*.h
                           )
 file(GLOB PROJECT_SOURCES Glitter/Sources/*.cpp
@@ -63,6 +65,7 @@ file(GLOB PROJECT_SOURCES Glitter/Sources/*.cpp
                           Glitter/Sources/CodeMonkeys/TheGauntlet/*.cpp
                           Glitter/Sources/CodeMonkeys/TheGauntlet/Control/*.cpp
                           Glitter/Sources/CodeMonkeys/TheGauntlet/GameObjects/*.cpp
+                          Glitter/Sources/CodeMonkeys/TheGauntlet/Collision/*.cpp
                           Glitter/Sources/CodeMonkeys/Lab04/*.cpp
 )
 file(GLOB PROJECT_SHADERS Glitter/Shaders/*.comp

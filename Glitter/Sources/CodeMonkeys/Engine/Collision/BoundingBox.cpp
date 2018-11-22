@@ -87,18 +87,3 @@ void BoundingBox::set_max_z(float z)
 {
     this->corner_max.z = z;
 }
-
-bool BoundingBox::is_intersection(vec3 point)
-{
-    throw NotImplementedException("BoundingBox::is_intersection");
-}
-
-bool BoundingBox::is_intersection(float x, float y, float z)
-{
-    throw NotImplementedException("BoundingBox::is_intersection");
-}
-
-bool BoundingBox::is_intersection(BoundingBox bounding_box)
-{
-    throw NotImplementedException("BoundingBox::is_intersection");
-}

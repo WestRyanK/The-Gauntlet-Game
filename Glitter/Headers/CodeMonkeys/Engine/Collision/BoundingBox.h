@@ -1,12 +1,13 @@
 #pragma once
 
 #include "glitter.hpp"
+#include "CodeMonkeys/Engine/Collision/ICollisionRegion.h"
 
 using namespace glm;
 
 namespace CodeMonkeys::Engine::Collision
 {
-    class BoundingBox
+    class BoundingBox : public ICollisionRegion
     {
     private:
         // The corner in the +X, +Y, +Z direction.
@@ -32,9 +33,5 @@ namespace CodeMonkeys::Engine::Collision
         void set_max_x(float x);
         void set_max_y(float y);
         void set_max_z(float z);
-
-        bool is_intersection(vec3 point);
-        bool is_intersection(float x, float y, float z);
-        bool is_intersection(BoundingBox bounding_box);
     };
 }
