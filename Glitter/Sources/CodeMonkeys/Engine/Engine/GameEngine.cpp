@@ -79,6 +79,8 @@ void GameEngine::handle_collisions(float dt)
         
         for (pair<Object3D*, Object3D*> collision : collisions)
         {
+            printf("Collision between %s and %s!\n", collision.first->get_name().c_str(), collision.second->get_name().c_str());
+
             for (ICollisionResponse* collision_response : this->collision_responses)
             {
                 if (collision_response->can_respond(collision.first, collision.second))
@@ -110,3 +112,8 @@ void GameEngine::run()
     }
 }
 
+void GameEngine::set_collision_detector(ICollisionDetector* collision_detector)
+{
+    this->collision_detector = collision_detector;
+    this->update_objects_iterator.set_collision_detector(collision_detector);
+}

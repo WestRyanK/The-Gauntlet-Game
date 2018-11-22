@@ -49,14 +49,36 @@ void Object3D::set_scale(float scale)
     this->scale = vec3(scale, scale, scale);
 }
 
+vec3 Object3D::get_transformed_position()
+{
+    vec4 position = vec4(0.0f, 0.0f, 0.0f, 1.0f);
+    mat4 transform = this->get_hierarchical_transform();
+    position = transform * position;
+
+    return vec3(position.x, position.y, position.z);
+}
+
+mat4 Object3D::get_hierarchical_transform()
+{
+    mat4 transform;
+    Object3D* parent_object = this;
+    while (parent_object != NULL)
+    {
+        transform = parent_object->get_transform() * transform;
+        parent_object = parent_object->get_parent();
+    }
+
+    return transform;
+}
+
 // Gets the transform matrix combining Object3D's position, rotation, and scale.
 mat4 Object3D::get_transform()
 {
     mat4 transform;
     transform = glm::translate(transform, this->position);
-    transform = glm::rotate(transform, this->rotation.x, vec3(1.0f, 0.0f, 0.0f));
-    transform = glm::rotate(transform, this->rotation.y, vec3(0.0f, 1.0f, 0.0f));
-    transform = glm::rotate(transform, this->rotation.z, vec3(0.0f, 0.0f, 1.0f));
+    transform = glm::rotate(transform, glm::radians(this->rotation.y), vec3(0, 1, 0));
+    transform = glm::rotate(transform, glm::radians(this->rotation.z), vec3(0, 0, 1));
+    transform = glm::rotate(transform, glm::radians(this->rotation.x), vec3(1, 0, 0));
     transform = glm::scale(transform, this->scale);
     // transform = position * rotation * scale * transform;
     return transform;
@@ -105,4 +127,14 @@ void Object3D::draw(mat4 total_transform, ShaderProgram* shader)
     {
         this->model->draw(total_transform, shader);
     }
+}
+
+ICollisionRegion* Object3D::get_collision_region()
+{
+    return NULL;
+}
+
+std::string Object3D::get_name()
+{
+    return this->name;
 }

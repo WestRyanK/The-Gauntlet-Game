@@ -14,13 +14,13 @@ float AsteroidFactory::ratio_asteroids_medium = 1;
 float AsteroidFactory::ratio_asteroids_small = 1;
 vector<Material*> AsteroidFactory::asteroid_materials = vector<Material*>();
 
-Asteroid* AsteroidFactory::create_asteroid(int size)
+Asteroid* AsteroidFactory::create_asteroid(int size_class)
 {
     unsigned int health = 0;
-    if (size == Asteroid::SMALL)
+    if (size_class == Asteroid::SMALL)
     {
         health = Asteroid::SMALL_HEALTH;
-    } else if (size == Asteroid::MEDIUM)
+    } else if (size_class == Asteroid::MEDIUM)
     {
         health = Asteroid::MEDIUM_HEALTH;
     } 
@@ -30,11 +30,11 @@ Asteroid* AsteroidFactory::create_asteroid(int size)
     }
 
     const int SCALE = 4;
-    mlModel* ml_model = AsteroidFactory::load_asteroid_model(size  * SCALE);
-    AsteroidFactory::add_noise_to_model(ml_model, size * SCALE, 1, true);
+    mlModel* ml_model = AsteroidFactory::load_asteroid_model(size_class  * SCALE);
+    AsteroidFactory::add_noise_to_model(ml_model, size_class * SCALE, 1, true);
     Model3D* model = AsteroidFactory::create_asteroid_model(ml_model);
 
-    Asteroid* asteroid = new Asteroid(model, size, health);
+    Asteroid* asteroid = new Asteroid(model, size_class, health, size_class * SCALE);
 
     return asteroid;
 }
@@ -131,7 +131,7 @@ void AsteroidFactory::add_noise_to_model(mlModel* ml_model, int asteroid_size, i
                     float position = ml_model->meshes[mesh_index]->vertices[vertex_index].position[axis];
                     // position *= stretch_factor;
                     float noise_offset = AsteroidFactory::rand_centered(0.0f, max_noise);
-                    position += noise_offset;
+                    // position += noise_offset;
                     ml_model->meshes[mesh_index]->vertices[vertex_index].position[axis] = position;
                 }
             }

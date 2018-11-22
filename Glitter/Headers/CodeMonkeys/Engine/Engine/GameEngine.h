@@ -23,6 +23,7 @@ namespace CodeMonkeys::Engine::Engine
     private:
         GLFWwindow* window;
         Stopwatch stopwatch;
+        ICollisionDetector* collision_detector = NULL;
         UpdateObjectsIterator update_objects_iterator;
         GLuint width;
         GLuint height;
@@ -33,7 +34,6 @@ namespace CodeMonkeys::Engine::Engine
         set<ILight3D*> lights;
         set<ShaderProgram*> shaders;
         set<ICollisionResponse*> collision_responses;
-        ICollisionDetector* collision_detector = NULL;
         Camera3D* camera;
         Skybox* skybox;
         Renderer* renderer;
@@ -45,6 +45,7 @@ namespace CodeMonkeys::Engine::Engine
         GLuint get_height();
         void set_width(GLuint width);
         void set_height(GLuint height);
+        virtual void set_collision_detector(ICollisionDetector* collision_detector);
 
         virtual void handle_controllers(float dt);
         virtual void update_objects(float dt);
