@@ -74,7 +74,7 @@ void GridCollisionDetector::insert(Object3D* object)
     }
     else
     {
-        printf("Out of bounds!");
+        // printf("Out of bounds!");
     }
 }
 

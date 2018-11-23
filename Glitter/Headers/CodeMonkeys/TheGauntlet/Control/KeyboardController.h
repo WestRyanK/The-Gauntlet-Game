@@ -8,8 +8,11 @@ namespace CodeMonkeys::TheGauntlet::Control
 {
     class KeyboardController : public Controller
     {
+    private:
     public:
         void handle_input(float dt);
         KeyboardController(IControllable* controllable, GLFWwindow* window);
+        bool w_pressed = false;
+        static KeyboardController* instance;
     };
 }
