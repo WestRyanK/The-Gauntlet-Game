@@ -20,7 +20,6 @@ namespace CodeMonkeys::Engine::Collision
         void create_grid();
         ivec3 get_grid_cell_location(vec3 position);
         set<Object3D*>* get_grid_cell(ivec3 location);
-        void get_collisions_between_cells(set<Object3D*>* cell_a, set<Object3D*>* cell_b, set<pair<Object3D*, Object3D*>>* collisions);
     public:
         GridCollisionDetector(vec3 positive_bounds, vec3 negative_bounds, float grid_size);
         void clear();

@@ -30,6 +30,7 @@ void SpringArm::update(float dt)
         // printf("Acc: %f, %f, %f\n", this->acceleration.x, this->acceleration.y, this->acceleration.z);
         // printf("Arm: %f, %f, %f\n", arm_unstretched_position.x, arm_unstretched_position.y, arm_unstretched_position.z);
         this->arm_connector_position = arm_unstretched_position;
+        this->arm_connector_position.y = 300;
         // this->arm_connector_position = arm_unstretched_position - stretch;
     }
 }
