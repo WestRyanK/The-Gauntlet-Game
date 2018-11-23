@@ -66,9 +66,16 @@ void GridCollisionDetector::insert(Object3D* object)
     vec3 position = object->get_transformed_position();
     ivec3 location = this->get_grid_cell_location(position);
     auto cell = this->get_grid_cell(location);
-    cell->insert(object);
+    if (cell != NULL)
+    {
+        cell->insert(object);
 
-    this->object_location_lookup[object] = location;
+        this->object_location_lookup[object] = location;
+    }
+    else
+    {
+        printf("Out of bounds!");
+    }
 }
 
 void GridCollisionDetector::remove(Object3D* object)
@@ -99,21 +106,6 @@ void GridCollisionDetector::update(Object3D* object)
     }
 }
 
-void GridCollisionDetector::get_collisions_between_cells(set<Object3D*>* cell_a, set<Object3D*>* cell_b, set<pair<Object3D*, Object3D*>>* collisions)
-{
-    for (auto object_a_iter = cell_a->begin(); object_a_iter != cell_a->end(); object_a_iter++)
-    {
-        for (auto object_b_iter = cell_b->begin(); object_b_iter != cell_b->end(); object_b_iter++)
-        {
-            if (*object_a_iter != *object_b_iter)
-            {
-                if(IntersectDetector::is_intersection((*object_a_iter)->get_collision_region(), (*object_b_iter)->get_collision_region()))
-                    collisions->insert(pair<Object3D*, Object3D*>(*object_a_iter, *object_b_iter));
-            }
-        }
-    }
-}
-
 set<pair<Object3D*, Object3D*>> GridCollisionDetector::get_collisions()
 {
     set<pair<Object3D*, Object3D*>> collisions;
@@ -136,7 +128,7 @@ set<pair<Object3D*, Object3D*>> GridCollisionDetector::get_collisions()
                                 auto other_cell = this->get_grid_cell(ivec3(x + x_off, y + y_off, z + z_off));
                                 if (other_cell != NULL)
                                 {
-                                    this->get_collisions_between_cells(current_cell, other_cell, &collisions);
+                                    ICollisionDetector::get_collisions_among_objects(&collisions, current_cell, other_cell);
                                 }
                             }
                         }

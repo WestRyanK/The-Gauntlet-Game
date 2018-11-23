@@ -1,5 +1,4 @@
 #include "CodeMonkeys/Engine/Collision/SimpleCollisionDetector.h"
-#include "CodeMonkeys/Engine/Collision/IntersectDetector.h"
 
 using CodeMonkeys::Engine::Collision::SimpleCollisionDetector;
 
@@ -17,21 +16,22 @@ void SimpleCollisionDetector::clear()
 
 void SimpleCollisionDetector::create_objects()
 {
-    // this->objects = new set<Object3D*>();
-    this->objects = new vector<Object3D*>();
+    this->objects = new set<Object3D*>();
+    // this->objects = new vector<Object3D*>();
 }
 
 void SimpleCollisionDetector::insert(Object3D* object)
 {
-    // this->objects->insert(object);
-    this->objects->push_back(object);
+    this->objects->insert(object);
+    // this->objects->push_back(object);
 }
 
 void SimpleCollisionDetector::remove(Object3D* object)
 {
-    auto iter = std::find(this->objects->begin(), this->objects->end(), object);
-    if (iter != this->objects->end())
-        this->objects->erase(iter);
+    this->objects->erase(object);
+    // auto iter = std::find(this->objects->begin(), this->objects->end(), object);
+    // if (iter != this->objects->end())
+    //     this->objects->erase(iter);
 }
 
 void SimpleCollisionDetector::update(Object3D* object)
@@ -43,20 +43,6 @@ void SimpleCollisionDetector::update(Object3D* object)
 set<pair<Object3D*, Object3D*>> SimpleCollisionDetector::get_collisions()
 {
     set<pair<Object3D*, Object3D*>> collisions;
-
-    for (auto object_a_iter = this->objects->begin(); object_a_iter != this->objects->end(); object_a_iter++)
-    {
-        for (auto object_b_iter = this->objects->begin(); object_b_iter != this->objects->end(); object_b_iter++)
-        {
-            if (*object_a_iter != *object_b_iter)
-            {
-                if(IntersectDetector::is_intersection((*object_a_iter)->get_collision_region(), (*object_b_iter)->get_collision_region()))
-                {
-                    collisions.insert(pair<Object3D*, Object3D*>(*object_a_iter, *object_b_iter));
-                }
-            }
-        }
-    }
-    printf("\n");
+    ICollisionDetector::get_collisions_among_objects(&collisions, this->objects, this->objects);
     return collisions;
 }

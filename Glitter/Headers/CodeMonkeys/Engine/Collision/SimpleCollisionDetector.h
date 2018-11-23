@@ -11,7 +11,8 @@ namespace CodeMonkeys::Engine::Collision
     class SimpleCollisionDetector : public ICollisionDetector
     {
     private:
-        vector<Object3D*>* objects;
+        set<Object3D*>* objects;
+        // vector<Object3D*>* objects;
         void create_objects();
     public:
         SimpleCollisionDetector();

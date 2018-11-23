@@ -79,7 +79,7 @@ void GameEngine::handle_collisions(float dt)
         
         for (pair<Object3D*, Object3D*> collision : collisions)
         {
-            printf("Collision between %s and %s!\n", collision.first->get_name().c_str(), collision.second->get_name().c_str());
+            // printf("Collision between %s and %s!\n", collision.first->get_name().c_str(), collision.second->get_name().c_str());
 
             for (ICollisionResponse* collision_response : this->collision_responses)
             {
