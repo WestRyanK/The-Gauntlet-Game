@@ -2,19 +2,34 @@
 
 using CodeMonkeys::TheGauntlet::Control::KeyboardController;
 
+KeyboardController* KeyboardController::instance = NULL;
+
+void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
+{
+    if (key == GLFW_KEY_W)
+    {
+        KeyboardController::instance->w_pressed = (action == GLFW_PRESS || action == GLFW_REPEAT);
+        printf("%d\n", KeyboardController::instance->w_pressed);
+    }
+}
+
 KeyboardController::KeyboardController(IControllable* controllable, GLFWwindow* window) : Controller(controllable, window) 
 { 
-
+    instance = this;
+    glfwSetKeyCallback(window, key_callback);
 }
+
 
 void KeyboardController::handle_input(float dt)
 {
+    glfwPollEvents();
     if (glfwGetKey(this->window, GLFW_KEY_S) == GLFW_PRESS)
     {
         this->controllable->control("move_y", 1.0f, dt);
     }
-    if (glfwGetKey(this->window, GLFW_KEY_W) == GLFW_PRESS)
+    if (w_pressed)
     {
+        printf("W\n");
         this->controllable->control("move_y", -1.0f, dt);
     }
     if (glfwGetKey(this->window, GLFW_KEY_S) == GLFW_RELEASE && glfwGetKey(this->window, GLFW_KEY_W) == GLFW_RELEASE)
