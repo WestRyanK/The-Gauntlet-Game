@@ -21,7 +21,7 @@ Texture::Texture(const char* texture_path)
     unsigned char* data = stbi_load(this->texture_path, &(this->width), &(this->height), &(this->channel_count), 0); 
     if (data)
     {
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, this->width, this->height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, this->width, this->height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
         glBindTexture(GL_TEXTURE_2D, 0);
         // glGenerateMipmap(GL_TEXTURE_2D);
         stbi_image_free(data);

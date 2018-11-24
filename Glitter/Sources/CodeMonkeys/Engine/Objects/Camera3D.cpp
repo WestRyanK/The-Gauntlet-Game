@@ -71,7 +71,8 @@ mat4 Camera3D::get_view_transform()
     }
     else
     {
-        transformed_look_at = vec3(hierarchical_transform * vec4(this->look_at, 1));
+        transformed_look_at = this->look_at;
+        // transformed_look_at = vec3(hierarchical_transform * vec4(this->look_at, 1));
     }
     vec3 transformed_position = vec3(hierarchical_transform * vec4(0,0,0, 1));
     
@@ -82,8 +83,8 @@ mat4 Camera3D::get_view_transform()
 //braising - moist heat method of cooking less tender cuts of meat
 void Camera3D::control(std::string control_name, float value, float dt)
 {
-    const float velocity = 10.0f;
-    const float angular_velocity = 1.0f;
+    const float velocity = 60.0f;
+    const float angular_velocity = 10.0f;
     vec3 forward = glm::normalize(this->look_at - this->position);
     vec3 sideways = -glm::normalize(glm::cross(this->up, this->look_at - this->position));
     if (control_name == "move_x")
@@ -93,8 +94,8 @@ void Camera3D::control(std::string control_name, float value, float dt)
     }
     if (control_name == "move_y")
     {
-        this->position.y += value * dt * velocity;
-        this->look_at.y += value * dt * velocity;
+        this->position.y -= value * dt * velocity;
+        this->look_at.y -= value * dt * velocity;
     }
     if (control_name == "move_z")
     {

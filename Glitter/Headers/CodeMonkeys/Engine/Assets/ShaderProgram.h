@@ -22,6 +22,7 @@ namespace CodeMonkeys::Engine::Assets
 
 		void  setUniform(const char* property_name, float property_value) { glUniform1f(glGetUniformLocation(this->shader_id, property_name), property_value); };
 		void  setUniform(const char* property_name, int property_value) { glUniform1i(glGetUniformLocation(this->shader_id, property_name), property_value); };
+		void  setUniform(const char* property_name, vec2 property_value) { glUniform2fv(glGetUniformLocation(this->shader_id, property_name), 1, glm::value_ptr(property_value)); };
 		void  setUniform(const char* property_name, vec3 property_value) { glUniform3fv(glGetUniformLocation(this->shader_id, property_name), 1, glm::value_ptr(property_value)); };
 		void  setUniform(const char* property_name, vec4 property_value) { glUniform4fv(glGetUniformLocation(this->shader_id, property_name), 1, glm::value_ptr(property_value)); };
 		void  setUniform(const char* property_name, mat3 property_value) { glUniformMatrix3fv(glGetUniformLocation(this->shader_id, property_name), 1, GL_FALSE, glm::value_ptr(property_value)); };

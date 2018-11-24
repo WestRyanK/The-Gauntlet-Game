@@ -17,6 +17,7 @@
 #include "CodeMonkeys/Engine/Collision/SimpleCollisionDetector.h"
 #include "CodeMonkeys/TheGauntlet/Collision/ShipAsteroidCollisionResponse.h"
 #include "CodeMonkeys/TheGauntlet/Collision/AsteroidAsteroidCollisionResponse.h"
+#include "CodeMonkeys/Engine/Objects/Billboard.h"
 
 using namespace std;
 using CodeMonkeys::TheGauntlet::TheGauntletEngine;
@@ -56,11 +57,11 @@ void TheGauntletEngine::init_skybox()
 
 void TheGauntletEngine::init_light_and_camera(Object3D* camera_parent)
 {
-    SpringArm* spring_arm = new SpringArm(10.0f, 1.0f, 1.0f);
-    this->camera = new Camera3D();
-    camera_parent->add_child(spring_arm);
-    spring_arm->add_child(this->camera);
-    this->camera->set_look_at(camera_parent);
+    // SpringArm* spring_arm = new SpringArm(10.0f, 1.0f, 1.0f);
+    // this->camera = new Camera3D();
+    // camera_parent->add_child(spring_arm);
+    // spring_arm->add_child(this->camera);
+    // this->camera->set_look_at(camera_parent);
 
     AmbientLight* ambient = new AmbientLight(vec3(1.0f, 1.0f, 1.0f), 0.3f);
     this->lights.insert(ambient);
@@ -71,8 +72,7 @@ void TheGauntletEngine::init_light_and_camera(Object3D* camera_parent)
 
 void TheGauntletEngine::init()
 {
-    this->set_collision_detector(new GridCollisionDetector(vec3(1000), vec3(-1000), 50));
-    // this->set_collision_detector(new SimpleCollisionDetector());
+    this->set_collision_detector(new GridCollisionDetector(vec3(1000), vec3(-1000), 50)); // this->set_collision_detector(new SimpleCollisionDetector());
 
     ShaderProgram* shader = new ShaderProgram("Shaders/basic.vert", "Shaders/basic.frag");
     // Make sure that every shader used in the scene is added to the engine's list of shaders so
@@ -84,13 +84,13 @@ void TheGauntletEngine::init()
     
 
     auto ship = CodeMonkeys::TheGauntlet::GameObjects::ShipFactory::create_x_wing_ship();
-    this->world_root->add_child(ship);
+    // this->world_root->add_child(ship);
 
     // auto ship2 = CodeMonkeys::TheGauntlet::GameObjects::ShipFactory::create_x_wing_ship();
     // this->world_root->add_child(ship2);
     // ship2->set_position(vec3(0, 0, 0));
 
-    // // Draw Asteroid
+    // Draw Asteroid
     const int S = 800;
     const int T = 800;
     const int V = 25;
@@ -106,25 +106,34 @@ void TheGauntletEngine::init()
         asteroid->set_angular_velocity(vec3(rand() % A - A / 2, rand() % A - A / 2, rand() % A - A / 2));
     }
 
-        Asteroid* asteroid = CodeMonkeys::TheGauntlet::GameObjects::AsteroidFactory::create_asteroid(1);
-        this->world_root->add_child(asteroid);
-        asteroid->set_position(vec3(99, 0, 99));
-        asteroid->set_angular_velocity(vec3(40));
+        // Asteroid* asteroid = CodeMonkeys::TheGauntlet::GameObjects::AsteroidFactory::create_asteroid(1);
+        // this->world_root->add_child(asteroid);
+        // asteroid->set_position(vec3(99, 0, 99));
+        // asteroid->set_angular_velocity(vec3(40));
 
-        Asteroid* asteroi2 = CodeMonkeys::TheGauntlet::GameObjects::AsteroidFactory::create_asteroid(3);
-        this->world_root->add_child(asteroi2);
-        asteroi2->set_position(vec3(-99, 0, -99));
-        asteroi2->set_angular_velocity(vec3(-40));
+        // Asteroid* asteroi2 = CodeMonkeys::TheGauntlet::GameObjects::AsteroidFactory::create_asteroid(3);
+        // this->world_root->add_child(asteroi2);
+        // asteroi2->set_position(vec3(-99, 0, -99));
+        // asteroi2->set_angular_velocity(vec3(-40));
 
+    Billboard* billboard = new Billboard("test_billboard", new Texture("Assets/Textures/awesome.png"), 20, 20);
+    this->shaders.insert(Billboard::get_shader());
+    this->world_root->add_child(billboard);
+    billboard->set_velocity(vec3(0, 0, 20));
 
-    auto keyboard_controller = new CodeMonkeys::TheGauntlet::Control::KeyboardController(ship, this->get_window());
-    // auto mouse_controller = new CodeMonkeys::TheGauntlet::Control::MouseController(ship, this->get_window());
+    this->camera = new Camera3D();
+    this->world_root->add_child(this->camera);
+    this->camera->set_look_at(vec3(0,0, 10));
+    // this->camera->set_look_at(ship);
+    this->init_light_and_camera(ship);
+    auto keyboard_controller = new CodeMonkeys::TheGauntlet::Control::KeyboardController(this->camera, this->get_window());
+    // auto keyboard_controller = new CodeMonkeys::TheGauntlet::Control::KeyboardController(ship, this->get_window());
     this->controllers.insert(keyboard_controller);
 
-    this->init_light_and_camera(ship);
     this->collision_responses.insert(new ShipAsteroidCollisionResponse());
     this->collision_responses.insert(new AsteroidAsteroidCollisionResponse());
 
-    this->renderer = new FrameBufferRenderer(this->get_window(), this->get_width(), this->get_height());
+    this->renderer = new Renderer(this->get_window(), this->get_width(), this->get_height());
+    // this->renderer = new FrameBufferRenderer(this->get_window(), this->get_width(), this->get_height());
     // this->renderer = new Renderer3D(this->get_window(), this->get_width(), this->get_height(), 2);
 }
