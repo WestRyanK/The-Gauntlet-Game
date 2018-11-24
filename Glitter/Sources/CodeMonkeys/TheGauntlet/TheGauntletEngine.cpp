@@ -58,11 +58,11 @@ void TheGauntletEngine::init_skybox()
 
 void TheGauntletEngine::init_light_and_camera(Object3D* camera_parent)
 {
-    // SpringArm* spring_arm = new SpringArm(10.0f, 1.0f, 1.0f);
-    // this->camera = new Camera3D();
-    // camera_parent->add_child(spring_arm);
-    // spring_arm->add_child(this->camera);
-    // this->camera->set_look_at(camera_parent);
+    SpringArm* spring_arm = new SpringArm(10.0f, 1.0f, 1.0f);
+    this->camera = new Camera3D();
+    camera_parent->add_child(spring_arm);
+    spring_arm->add_child(this->camera);
+    this->camera->set_look_at(camera_parent);
 
     AmbientLight* ambient = new AmbientLight(vec3(1.0f, 1.0f, 1.0f), 0.3f);
     this->lights.insert(ambient);
@@ -79,13 +79,15 @@ void TheGauntletEngine::init()
     // Make sure that every shader used in the scene is added to the engine's list of shaders so
     // that lighting can be calculated.
     this->shaders.insert(shader);
+    Billboard::init_billboard_class();
+    this->shaders.insert(Billboard::get_shader());
     CodeMonkeys::TheGauntlet::GameObjects::AsteroidFactory::init_asteroid_factory(0, shader);
     CodeMonkeys::TheGauntlet::GameObjects::ShipFactory::init(shader);
     this->init_skybox();
     
 
     auto ship = CodeMonkeys::TheGauntlet::GameObjects::ShipFactory::create_x_wing_ship();
-    // this->world_root->add_child(ship);
+    this->world_root->add_child(ship);
 
     // auto ship2 = CodeMonkeys::TheGauntlet::GameObjects::ShipFactory::create_x_wing_ship();
     // this->world_root->add_child(ship2);
@@ -118,19 +120,13 @@ void TheGauntletEngine::init()
         // asteroi2->set_angular_velocity(vec3(-40));
 
 
-    // billboard->set_velocity(vec3(0, 0, 20));
-
-    this->camera = new Camera3D();
-    this->world_root->add_child(this->camera);
-    this->camera->set_look_at(vec3(0,0, 10));
-    // this->camera->set_look_at(ship);
     this->init_light_and_camera(ship);
-    auto keyboard_controller = new CodeMonkeys::TheGauntlet::Control::KeyboardController(this->camera, this->get_window());
-    // auto keyboard_controller = new CodeMonkeys::TheGauntlet::Control::KeyboardController(ship, this->get_window());
+    // auto keyboard_controller = new CodeMonkeys::TheGauntlet::Control::KeyboardController(this->camera, this->get_window());
+    auto keyboard_controller = new CodeMonkeys::TheGauntlet::Control::KeyboardController(ship, this->get_window());
     this->controllers.insert(keyboard_controller);
 
-    this->collision_responses.insert(new ShipAsteroidCollisionResponse());
-    this->collision_responses.insert(new AsteroidAsteroidCollisionResponse());
+    this->collision_responses.insert(new ShipAsteroidCollisionResponse(this));
+    this->collision_responses.insert(new AsteroidAsteroidCollisionResponse(this));
 
     this->renderer = new Renderer(this->get_window(), this->get_width(), this->get_height());
     // this->renderer = new FrameBufferRenderer(this->get_window(), this->get_width(), this->get_height());

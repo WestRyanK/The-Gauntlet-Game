@@ -15,7 +15,6 @@ namespace CodeMonkeys::Engine::Objects
     private:
         static ShaderProgram* billboard_shader;
         static GLuint* billboard_vao;
-        static void init_billboard_class();
 
         Texture* billboard_texture;
         float width;
@@ -26,5 +25,6 @@ namespace CodeMonkeys::Engine::Objects
         virtual void draw(mat4 total_transform, ShaderProgram* shader);
         static ShaderProgram* get_shader();
         void update(float dt);
+        static void init_billboard_class();
     };
 }

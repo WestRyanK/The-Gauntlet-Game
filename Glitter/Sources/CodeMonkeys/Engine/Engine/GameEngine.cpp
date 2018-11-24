@@ -8,6 +8,7 @@
 #include "CodeMonkeys/Engine/Objects/DirectionalLight.h"
 #include "NIE.h"
 #include <stdexcept>
+#include "CodeMonkeys/Engine/Collision/ICollisionResponse.h"
 
 using CodeMonkeys::Engine::Engine::GameEngine;
 using namespace CodeMonkeys::Engine::Objects;

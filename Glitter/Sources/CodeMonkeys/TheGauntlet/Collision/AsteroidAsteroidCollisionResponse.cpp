@@ -5,7 +5,7 @@
 using CodeMonkeys::TheGauntlet::Collision::AsteroidAsteroidCollisionResponse;
 using namespace CodeMonkeys::TheGauntlet::GameObjects;
 
-AsteroidAsteroidCollisionResponse::AsteroidAsteroidCollisionResponse()//CodeMonkeys::Engine::Engine::GameEngine* engine) : ICollisionResponse(engine) 
+AsteroidAsteroidCollisionResponse::AsteroidAsteroidCollisionResponse(CodeMonkeys::Engine::Engine::GameEngine* engine) : ICollisionResponse(engine) 
 {
 }
 
