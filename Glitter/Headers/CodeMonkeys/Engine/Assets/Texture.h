@@ -9,7 +9,7 @@ namespace CodeMonkeys::Engine::Assets
 {
     class Texture
     {
-    private:
+    protected:
         int width;
         int height;
         int channel_count;
@@ -18,10 +18,10 @@ namespace CodeMonkeys::Engine::Assets
 
     public:
         Texture(const char* texture_path);
-        int get_width();
-        int get_height();
-        int get_channel_count();
-        unsigned int get_texture_id();
-        const char* get_texture_path();
+        virtual int get_width();
+        virtual int get_height();
+        virtual int get_channel_count();
+        virtual unsigned int get_texture_id();
+        virtual const char* get_texture_path();
     };
 }

@@ -18,6 +18,7 @@
 #include "CodeMonkeys/TheGauntlet/Collision/ShipAsteroidCollisionResponse.h"
 #include "CodeMonkeys/TheGauntlet/Collision/AsteroidAsteroidCollisionResponse.h"
 #include "CodeMonkeys/Engine/Objects/Billboard.h"
+#include "CodeMonkeys/Engine/Assets/AnimatedTexture.h"
 
 using namespace std;
 using CodeMonkeys::TheGauntlet::TheGauntletEngine;
@@ -116,10 +117,8 @@ void TheGauntletEngine::init()
         // asteroi2->set_position(vec3(-99, 0, -99));
         // asteroi2->set_angular_velocity(vec3(-40));
 
-    Billboard* billboard = new Billboard("test_billboard", new Texture("Assets/Textures/awesome.png"), 20, 20);
-    this->shaders.insert(Billboard::get_shader());
-    this->world_root->add_child(billboard);
-    billboard->set_velocity(vec3(0, 0, 20));
+
+    // billboard->set_velocity(vec3(0, 0, 20));
 
     this->camera = new Camera3D();
     this->world_root->add_child(this->camera);

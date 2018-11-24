@@ -57,6 +57,9 @@ namespace CodeMonkeys::Engine::Engine
         GameEngine(GLFWwindow* window, GLuint width, GLuint height);
         void run();
         virtual void init() = 0;
+
+
+        Object3D* get_world_root();
     };
 
 }

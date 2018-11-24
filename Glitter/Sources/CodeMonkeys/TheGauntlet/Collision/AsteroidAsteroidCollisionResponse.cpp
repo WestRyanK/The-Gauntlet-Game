@@ -5,6 +5,10 @@
 using CodeMonkeys::TheGauntlet::Collision::AsteroidAsteroidCollisionResponse;
 using namespace CodeMonkeys::TheGauntlet::GameObjects;
 
+AsteroidAsteroidCollisionResponse::AsteroidAsteroidCollisionResponse()//CodeMonkeys::Engine::Engine::GameEngine* engine) : ICollisionResponse(engine) 
+{
+}
+
 bool AsteroidAsteroidCollisionResponse::can_respond(Object3D* object_a, Object3D* object_b)
 {
     Asteroid* asteroid_a = dynamic_cast<Asteroid*> (object_a);
@@ -36,4 +40,5 @@ void AsteroidAsteroidCollisionResponse::respond(Object3D* object_a, Object3D* ob
     // TODO: Use Elastic collision equations!
     asteroid_a->set_velocity(new_direction_a * speed_a);
     asteroid_b->set_velocity(new_direction_b * speed_b);
+
 }
