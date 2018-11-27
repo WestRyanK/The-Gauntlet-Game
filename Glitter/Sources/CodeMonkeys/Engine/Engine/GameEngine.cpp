@@ -8,6 +8,7 @@
 #include "CodeMonkeys/Engine/Objects/DirectionalLight.h"
 #include "NIE.h"
 #include <stdexcept>
+#include "CodeMonkeys/Engine/Collision/ICollisionResponse.h"
 
 using CodeMonkeys::Engine::Engine::GameEngine;
 using namespace CodeMonkeys::Engine::Objects;
@@ -118,4 +119,10 @@ void GameEngine::set_collision_detector(ICollisionDetector* collision_detector)
 {
     this->collision_detector = collision_detector;
     this->update_objects_iterator.set_collision_detector(collision_detector);
+}
+
+
+Object3D* GameEngine::get_world_root()
+{
+    return this->world_root;
 }

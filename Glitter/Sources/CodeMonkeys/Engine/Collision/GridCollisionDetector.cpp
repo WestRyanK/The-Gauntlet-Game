@@ -63,18 +63,22 @@ void GridCollisionDetector::clear()
 
 void GridCollisionDetector::insert(Object3D* object)
 {
-    vec3 position = object->get_transformed_position();
-    ivec3 location = this->get_grid_cell_location(position);
-    auto cell = this->get_grid_cell(location);
-    if (cell != NULL)
+    // If the object we're adding doesn't have collision regions, there is no reason to add it!
+    if (object != NULL && object->get_collision_region() != NULL)
     {
-        cell->insert(object);
+        vec3 position = object->get_transformed_position();
+        ivec3 location = this->get_grid_cell_location(position);
+        auto cell = this->get_grid_cell(location);
+        if (cell != NULL)
+        {
+            cell->insert(object);
 
-        this->object_location_lookup[object] = location;
-    }
-    else
-    {
-        // printf("Out of bounds!");
+            this->object_location_lookup[object] = location;
+        }
+        else
+        {
+            // printf("Out of bounds!");
+        }
     }
 }
 
@@ -91,18 +95,27 @@ void GridCollisionDetector::remove(Object3D* object)
 
 void GridCollisionDetector::update(Object3D* object)
 {
-    vec3 position = object->get_transformed_position();
-    ivec3 location = this->get_grid_cell_location(position);
-
-    auto previous_location = this->object_location_lookup.find(object);
-    if (previous_location == this->object_location_lookup.end())
+    // If an object was removed from the world, its parent will be null.
+    // Therefore, if parent is null, remove it from the collision detector.
+    if (object != NULL && object->get_parent() != NULL)
     {
-        this->insert(object);
+        vec3 position = object->get_transformed_position();
+        ivec3 location = this->get_grid_cell_location(position);
+
+        auto previous_location = this->object_location_lookup.find(object);
+        if (previous_location == this->object_location_lookup.end())
+        {
+            this->insert(object);
+        }
+        else if (location != (*previous_location).second)
+        {
+            this->remove(object);
+            this->insert(object);
+        }
     }
-    else if (location != (*previous_location).second)
+    else
     {
         this->remove(object);
-        this->insert(object);
     }
 }
 

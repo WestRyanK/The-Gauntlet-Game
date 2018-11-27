@@ -42,12 +42,12 @@ Ship::Ship(Model3D* model, std::string name,
     this->acclerating_laterally = false;
 
     this->bounding_multisphere = new BoundingMultiSphere(this->position, vec3());
-    this->bounding_multisphere->add_sphere(new BoundingSphere(vec3(0.0f, 0.0f, -10.0f), 2.5f));
-    this->bounding_multisphere->add_sphere(new BoundingSphere(vec3(0.0f, 0.0f, 5.0f), 2.5f));
-    this->bounding_multisphere->add_sphere(new BoundingSphere(vec3(2.0f, 0.0f, 3.0f), 2.5f));
-    this->bounding_multisphere->add_sphere(new BoundingSphere(vec3(-2.0f, 0.0f, 3.0f), 2.5f));
-    this->bounding_multisphere->add_sphere(new BoundingSphere(vec3(-11.0f, 0.0f, 3.0f), 2.0f));
-    this->bounding_multisphere->add_sphere(new BoundingSphere(vec3(11.0f, 0.0f, 3.0f), 2.0f));
+    this->bounding_multisphere->add_sphere(new BoundingSphere(vec3(0.0f, 0.0f, -10.0f), 3.0f));
+    this->bounding_multisphere->add_sphere(new BoundingSphere(vec3(0.0f, 0.0f, 5.0f), 3.0f));
+    this->bounding_multisphere->add_sphere(new BoundingSphere(vec3(2.0f, 0.0f, 3.0f), 3.0f));
+    this->bounding_multisphere->add_sphere(new BoundingSphere(vec3(-2.0f, 0.0f, 3.0f), 3.0f));
+    this->bounding_multisphere->add_sphere(new BoundingSphere(vec3(-11.0f, 0.0f, 3.0f), 3.0f));
+    this->bounding_multisphere->add_sphere(new BoundingSphere(vec3(11.0f, 0.0f, 3.0f), 3.0f));
 }
 
 void Ship::on_death()

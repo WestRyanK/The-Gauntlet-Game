@@ -18,6 +18,9 @@
 #include "CodeMonkeys/TheGauntlet/Collision/ShipAsteroidCollisionResponse.h"
 #include "CodeMonkeys/TheGauntlet/Collision/AsteroidAsteroidCollisionResponse.h"
 #include "CodeMonkeys/Engine/Objects/Billboard.h"
+#include "CodeMonkeys/Engine/Objects/ParticleEmitter.h"
+#include "CodeMonkeys/Engine/Objects/Particle.h"
+#include "CodeMonkeys/Engine/Assets/AnimatedTexture.h"
 
 using namespace std;
 using CodeMonkeys::TheGauntlet::TheGauntletEngine;
@@ -57,11 +60,11 @@ void TheGauntletEngine::init_skybox()
 
 void TheGauntletEngine::init_light_and_camera(Object3D* camera_parent)
 {
-    // SpringArm* spring_arm = new SpringArm(10.0f, 1.0f, 1.0f);
-    // this->camera = new Camera3D();
-    // camera_parent->add_child(spring_arm);
-    // spring_arm->add_child(this->camera);
-    // this->camera->set_look_at(camera_parent);
+    SpringArm* spring_arm = new SpringArm(10.0f, 1.0f, 1.0f);
+    this->camera = new Camera3D();
+    camera_parent->add_child(spring_arm);
+    spring_arm->add_child(this->camera);
+    this->camera->set_look_at(camera_parent);
 
     AmbientLight* ambient = new AmbientLight(vec3(1.0f, 1.0f, 1.0f), 0.3f);
     this->lights.insert(ambient);
@@ -78,13 +81,22 @@ void TheGauntletEngine::init()
     // Make sure that every shader used in the scene is added to the engine's list of shaders so
     // that lighting can be calculated.
     this->shaders.insert(shader);
+    Billboard::init_billboard_class();
+    this->shaders.insert(Billboard::get_shader());
     CodeMonkeys::TheGauntlet::GameObjects::AsteroidFactory::init_asteroid_factory(0, shader);
     CodeMonkeys::TheGauntlet::GameObjects::ShipFactory::init(shader);
     this->init_skybox();
     
 
     auto ship = CodeMonkeys::TheGauntlet::GameObjects::ShipFactory::create_x_wing_ship();
-    // this->world_root->add_child(ship);
+    this->world_root->add_child(ship);
+
+    AnimatedTexture* explosion_animation = new AnimatedTexture("Assets/Textures/Explosions/explosion_01/explosion", "png", 64);
+    Texture* awesome = new Texture("Assets/Textures/awesome.png");
+    Particle* explosion_particle = new Particle("ship_explosion", explosion_animation, 80, 80, 1);
+    ParticleEmitter* emitter = new ParticleEmitter("ship_explosion_emitter", explosion_particle );
+    emitter->set_position(vec3(0, 0, 15));
+    ship->add_child(emitter);
 
     // auto ship2 = CodeMonkeys::TheGauntlet::GameObjects::ShipFactory::create_x_wing_ship();
     // this->world_root->add_child(ship2);
@@ -106,32 +118,24 @@ void TheGauntletEngine::init()
         asteroid->set_angular_velocity(vec3(rand() % A - A / 2, rand() % A - A / 2, rand() % A - A / 2));
     }
 
-        // Asteroid* asteroid = CodeMonkeys::TheGauntlet::GameObjects::AsteroidFactory::create_asteroid(1);
-        // this->world_root->add_child(asteroid);
-        // asteroid->set_position(vec3(99, 0, 99));
-        // asteroid->set_angular_velocity(vec3(40));
+    // Asteroid* asteroid = CodeMonkeys::TheGauntlet::GameObjects::AsteroidFactory::create_asteroid(1);
+    // this->world_root->add_child(asteroid);
+    // asteroid->set_position(vec3(40, 0, 40));
+    // asteroid->set_angular_velocity(vec3(40));
 
-        // Asteroid* asteroi2 = CodeMonkeys::TheGauntlet::GameObjects::AsteroidFactory::create_asteroid(3);
-        // this->world_root->add_child(asteroi2);
-        // asteroi2->set_position(vec3(-99, 0, -99));
-        // asteroi2->set_angular_velocity(vec3(-40));
+    // Asteroid* asteroi2 = CodeMonkeys::TheGauntlet::GameObjects::AsteroidFactory::create_asteroid(3);
+    // this->world_root->add_child(asteroi2);
+    // asteroi2->set_position(vec3(-40, 0, -40));
+    // asteroi2->set_angular_velocity(vec3(-40));
 
-    Billboard* billboard = new Billboard("test_billboard", new Texture("Assets/Textures/awesome.png"), 20, 20);
-    this->shaders.insert(Billboard::get_shader());
-    this->world_root->add_child(billboard);
-    billboard->set_velocity(vec3(0, 0, 20));
 
-    this->camera = new Camera3D();
-    this->world_root->add_child(this->camera);
-    this->camera->set_look_at(vec3(0,0, 10));
-    // this->camera->set_look_at(ship);
     this->init_light_and_camera(ship);
-    auto keyboard_controller = new CodeMonkeys::TheGauntlet::Control::KeyboardController(this->camera, this->get_window());
-    // auto keyboard_controller = new CodeMonkeys::TheGauntlet::Control::KeyboardController(ship, this->get_window());
+    // auto keyboard_controller = new CodeMonkeys::TheGauntlet::Control::KeyboardController(this->camera, this->get_window());
+    auto keyboard_controller = new CodeMonkeys::TheGauntlet::Control::KeyboardController(ship, this->get_window());
     this->controllers.insert(keyboard_controller);
 
-    this->collision_responses.insert(new ShipAsteroidCollisionResponse());
-    this->collision_responses.insert(new AsteroidAsteroidCollisionResponse());
+    this->collision_responses.insert(new ShipAsteroidCollisionResponse(this));
+    this->collision_responses.insert(new AsteroidAsteroidCollisionResponse(this));
 
     this->renderer = new Renderer(this->get_window(), this->get_width(), this->get_height());
     // this->renderer = new FrameBufferRenderer(this->get_window(), this->get_width(), this->get_height());

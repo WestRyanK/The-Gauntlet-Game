@@ -43,10 +43,11 @@ void Camera3D::set_up(vec3 up)
 void Camera3D::update_shader_with_camera(ShaderProgram* shader)
 {
     mat4 view = this->get_view_transform();
+    vec4 hierarchical_position = this->get_hierarchical_transform() * vec4(0,0,0,1);
 
     shader->setUniform("view_transform", view);
     shader->setUniform("projection_transform", this->perspective_projection);
-    shader->setUniform("camera_position", this->position);
+    shader->setUniform("camera_position", vec3(hierarchical_position.x, hierarchical_position.y, hierarchical_position.z));
 }
 
 Object3D* Camera3D::get_look_at_parent()

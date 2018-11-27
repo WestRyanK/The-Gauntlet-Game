@@ -1,8 +1,10 @@
 #include "CodeMonkeys/Engine/Objects/Billboard.h"
 #include "CodeMonkeys/Engine/Engine/Quad.h"
+#include "CodeMonkeys/Engine/Assets/AnimatedTexture.h"
 
 using CodeMonkeys::Engine::Objects::Billboard;
 using namespace CodeMonkeys::Engine::Engine;
+using namespace CodeMonkeys::Engine::Assets;
 
 ShaderProgram* Billboard::billboard_shader = NULL;
 GLuint* Billboard::billboard_vao = NULL;
@@ -11,16 +13,15 @@ Billboard::Billboard(std::string name, Texture* billboard_texture, float width, 
 {
     if (Billboard::billboard_shader == NULL && billboard_vao == NULL)
     {
-        Billboard::init_billboard();
+        Billboard::init_billboard_class();
     }
 
     this->billboard_texture = billboard_texture;
     this->width = width;
     this->height = height;
-
 }
 
-void Billboard::init_billboard()
+void Billboard::init_billboard_class()
 {
     Billboard::billboard_shader = new ShaderProgram("Shaders/billboard.vert", "Shaders/billboard.frag");
 
@@ -72,4 +73,10 @@ void Billboard::draw(mat4 transform, ShaderProgram* shader)
 ShaderProgram* Billboard::get_shader()
 {
     return Billboard::billboard_shader;
+}
+
+void Billboard::update(float dt)
+{
+    PhysicalObject3D::update(dt);
+    this->billboard_texture->update(dt);
 }
