@@ -6,7 +6,7 @@ in vec3 world_position_2;
 in vec3 normal_2;
 in vec2 uv_2;
 
-layout(location = 0) out vec3 color_out;
+layout(location = 0) out vec4 color_out;
 
 uniform mat4 view_transform;
 uniform vec3 camera_position;
@@ -73,17 +73,17 @@ void main()
     }
     else
     {
-        fragment_color = vec4(0.5f);
+        fragment_color = vec4(0.5f, 0.5f, 0.5f, 1.0f);
     }
 
-    color_out = vec3(0.0f);
-    // color_out = vec4(0.0f);
+    // color_out = vec3(0);
+    color_out = vec4(0.0f);
     for (int i = 0; i < ambient_count; i++)
     {
-        color_out += apply_ambient(fragment_color, ambient[i]).rgb;
+        color_out += apply_ambient(fragment_color, ambient[i]);
     }
     for (int i = 0; i < directional_count; i++)
     {
-        color_out += apply_directional(fragment_color, directional[i]).rgb;
+        color_out += apply_directional(fragment_color, directional[i]);
     }
 }

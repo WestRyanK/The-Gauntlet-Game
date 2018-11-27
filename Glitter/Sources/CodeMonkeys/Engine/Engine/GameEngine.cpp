@@ -24,9 +24,10 @@ GameEngine::GameEngine(GLFWwindow* window, GLuint width, GLuint height)
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); // GL_LINE or GL_FILL
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LESS);  
-//     glEnable(GL_BLEND);  
-//     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);  
+    glEnable(GL_BLEND);  
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);  
 }
+
 
 GLuint GameEngine::get_width()
 {
@@ -120,7 +121,6 @@ void GameEngine::set_collision_detector(ICollisionDetector* collision_detector)
     this->collision_detector = collision_detector;
     this->update_objects_iterator.set_collision_detector(collision_detector);
 }
-
 
 Object3D* GameEngine::get_world_root()
 {
