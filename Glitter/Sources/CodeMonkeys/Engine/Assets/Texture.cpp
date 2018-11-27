@@ -59,3 +59,13 @@ const char* Texture::get_texture_path()
 {
     return this->texture_path;
 }
+
+void Texture::update(float dt)
+{
+
+}
+
+void Texture::reset()
+{
+
+}

@@ -18,6 +18,8 @@
 #include "CodeMonkeys/TheGauntlet/Collision/ShipAsteroidCollisionResponse.h"
 #include "CodeMonkeys/TheGauntlet/Collision/AsteroidAsteroidCollisionResponse.h"
 #include "CodeMonkeys/Engine/Objects/Billboard.h"
+#include "CodeMonkeys/Engine/Objects/ParticleEmitter.h"
+#include "CodeMonkeys/Engine/Objects/Particle.h"
 #include "CodeMonkeys/Engine/Assets/AnimatedTexture.h"
 
 using namespace std;
@@ -89,6 +91,13 @@ void TheGauntletEngine::init()
     auto ship = CodeMonkeys::TheGauntlet::GameObjects::ShipFactory::create_x_wing_ship();
     this->world_root->add_child(ship);
 
+    AnimatedTexture* explosion_animation = new AnimatedTexture("Assets/Textures/Explosions/explosion_01/explosion", "png", 64);
+    Texture* awesome = new Texture("Assets/Textures/awesome.png");
+    Particle* explosion_particle = new Particle("ship_explosion", explosion_animation, 80, 80, 1);
+    ParticleEmitter* emitter = new ParticleEmitter("ship_explosion_emitter", explosion_particle );
+    emitter->set_position(vec3(0, 0, 15));
+    ship->add_child(emitter);
+
     // auto ship2 = CodeMonkeys::TheGauntlet::GameObjects::ShipFactory::create_x_wing_ship();
     // this->world_root->add_child(ship2);
     // ship2->set_position(vec3(0, 0, 0));
@@ -109,15 +118,15 @@ void TheGauntletEngine::init()
         asteroid->set_angular_velocity(vec3(rand() % A - A / 2, rand() % A - A / 2, rand() % A - A / 2));
     }
 
-        // Asteroid* asteroid = CodeMonkeys::TheGauntlet::GameObjects::AsteroidFactory::create_asteroid(1);
-        // this->world_root->add_child(asteroid);
-        // asteroid->set_position(vec3(99, 0, 99));
-        // asteroid->set_angular_velocity(vec3(40));
+    // Asteroid* asteroid = CodeMonkeys::TheGauntlet::GameObjects::AsteroidFactory::create_asteroid(1);
+    // this->world_root->add_child(asteroid);
+    // asteroid->set_position(vec3(40, 0, 40));
+    // asteroid->set_angular_velocity(vec3(40));
 
-        // Asteroid* asteroi2 = CodeMonkeys::TheGauntlet::GameObjects::AsteroidFactory::create_asteroid(3);
-        // this->world_root->add_child(asteroi2);
-        // asteroi2->set_position(vec3(-99, 0, -99));
-        // asteroi2->set_angular_velocity(vec3(-40));
+    // Asteroid* asteroi2 = CodeMonkeys::TheGauntlet::GameObjects::AsteroidFactory::create_asteroid(3);
+    // this->world_root->add_child(asteroi2);
+    // asteroi2->set_position(vec3(-40, 0, -40));
+    // asteroi2->set_angular_velocity(vec3(-40));
 
 
     this->init_light_and_camera(ship);

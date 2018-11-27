@@ -61,7 +61,17 @@ const char* AnimatedTexture::get_texture_path()
     return frames[this->current_frame]->get_texture_path();
 }
 
-void AnimatedTexture::next_frame(int count)
+void AnimatedTexture::update(float dt)
 {
-    this->set_current_frame((this->current_frame + count) % this->frame_count);
+    this->set_current_frame((this->current_frame + this->animation_speed) % this->frame_count);
+}
+
+void AnimatedTexture::set_animation_speed(int animation_speed)
+{
+    this->animation_speed = animation_speed;
+}
+
+void AnimatedTexture::reset()
+{
+    this->set_current_frame(0);
 }

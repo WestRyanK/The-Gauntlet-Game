@@ -78,7 +78,5 @@ ShaderProgram* Billboard::get_shader()
 void Billboard::update(float dt)
 {
     PhysicalObject3D::update(dt);
-
-    AnimatedTexture* anim_texture = (AnimatedTexture*)this->billboard_texture;
-    anim_texture->next_frame(3);
+    this->billboard_texture->update(dt);
 }

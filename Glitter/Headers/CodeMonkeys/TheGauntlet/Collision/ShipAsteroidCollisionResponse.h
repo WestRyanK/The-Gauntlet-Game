@@ -11,8 +11,6 @@ namespace CodeMonkeys::TheGauntlet::Collision
 {
     class ShipAsteroidCollisionResponse : public ICollisionResponse
     {
-    private:
-        AnimatedTexture* explosion_animation;
     public:
         ShipAsteroidCollisionResponse(
         // );

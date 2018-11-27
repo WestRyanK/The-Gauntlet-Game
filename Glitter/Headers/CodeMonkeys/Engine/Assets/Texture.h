@@ -23,5 +23,7 @@ namespace CodeMonkeys::Engine::Assets
         virtual int get_channel_count();
         virtual unsigned int get_texture_id();
         virtual const char* get_texture_path();
+        virtual void update(float dt);
+        virtual void reset();
     };
 }

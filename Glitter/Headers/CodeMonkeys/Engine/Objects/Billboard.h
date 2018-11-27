@@ -16,6 +16,7 @@ namespace CodeMonkeys::Engine::Objects
         static ShaderProgram* billboard_shader;
         static GLuint* billboard_vao;
 
+    protected:
         Texture* billboard_texture;
         float width;
         float height;
