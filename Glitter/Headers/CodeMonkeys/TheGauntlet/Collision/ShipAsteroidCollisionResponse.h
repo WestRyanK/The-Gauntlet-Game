@@ -12,6 +12,7 @@ namespace CodeMonkeys::TheGauntlet::Collision
     class ShipAsteroidCollisionResponse : public ICollisionResponse
     {
     public:
+
         ShipAsteroidCollisionResponse(
         // );
         CodeMonkeys::Engine::Engine::GameEngine* engine);

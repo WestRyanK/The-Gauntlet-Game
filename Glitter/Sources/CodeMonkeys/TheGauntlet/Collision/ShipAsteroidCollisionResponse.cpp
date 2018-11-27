@@ -18,11 +18,19 @@ bool ShipAsteroidCollisionResponse::can_respond(Object3D* object_a, Object3D* ob
     Ship* ship = dynamic_cast<Ship*> (object_a);
     Asteroid* asteroid = dynamic_cast<Asteroid*> (object_b);
 
-    return (ship != NULL && asteroid != NULL);
+    Ship* ship2 = dynamic_cast<Ship*> (object_b);
+    Asteroid* asteroid2 = dynamic_cast<Asteroid*> (object_a);
+
+    return (ship != NULL && asteroid != NULL) || (ship2 != NULL && asteroid2 != NULL);
 }
 
 void ShipAsteroidCollisionResponse::respond(Object3D* object_a, Object3D* object_b, float dt)
 {
+    Ship* ship = dynamic_cast<Ship*> (object_a);
+    Asteroid* asteroid = dynamic_cast<Asteroid*> (object_b);
+    if (ship == NULL && asteroid == NULL)
+        swap(object_a, object_b);
+
     if (object_b != NULL && object_b->get_parent() != NULL)
     {
         object_b->get_parent()->remove_child(object_b);
