@@ -37,7 +37,7 @@ void ShipAsteroidCollisionResponse::respond(Object3D* object_a, Object3D* object
 
     if (asteroid != NULL && asteroid->get_parent() != NULL)
     {
-        printf("Collide!");
+        ship->inflict_damage(asteroid->get_inflict_amount());
         asteroid->get_parent()->remove_child(asteroid);
         ParticleEmitter* emitter = NULL;
         for (Object3D* child : ship->get_children())

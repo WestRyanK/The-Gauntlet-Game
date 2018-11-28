@@ -17,16 +17,20 @@ vector<Material*> AsteroidFactory::asteroid_materials = vector<Material*>();
 Asteroid* AsteroidFactory::create_asteroid(int size_class)
 {
     unsigned int health = 0;
+    unsigned int inflict_amount = 0;
     if (size_class == Asteroid::SMALL)
     {
         health = Asteroid::SMALL_HEALTH;
+        inflict_amount = Asteroid::SMALL_INFLICT;
     } else if (size_class == Asteroid::MEDIUM)
     {
         health = Asteroid::MEDIUM_HEALTH;
+        inflict_amount = Asteroid::MEDIUM_INFLICT;
     } 
-    else 
+    else if (size_class == Asteroid::LARGE)
     {
-        health = Asteroid::SMALL_HEALTH;
+        health = Asteroid::LARGE_HEALTH;
+        inflict_amount = Asteroid::LARGE_INFLICT;
     }
 
     const int SCALE = 4;
@@ -34,7 +38,7 @@ Asteroid* AsteroidFactory::create_asteroid(int size_class)
     AsteroidFactory::add_noise_to_model(ml_model, size_class * SCALE, 1, true);
     Model3D* model = AsteroidFactory::create_asteroid_model(ml_model);
 
-    Asteroid* asteroid = new Asteroid(model, size_class, health, size_class * SCALE);
+    Asteroid* asteroid = new Asteroid(model, size_class, health, size_class * SCALE, inflict_amount);
 
     return asteroid;
 }

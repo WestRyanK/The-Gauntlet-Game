@@ -2,7 +2,7 @@
 
 using CodeMonkeys::TheGauntlet::Projectile;
 
-Projectile::Projectile(Model3D* model, string name, float total_lifespan, ParticleEmitter* emitter, float inflict_amount) 
+Projectile::Projectile(Model3D* model, string name, float total_lifespan, ParticleEmitter* emitter, unsigned int inflict_amount) 
     : Particle(model, name, total_lifespan, emitter), 
     IInflicter(inflict_amount)
 {
