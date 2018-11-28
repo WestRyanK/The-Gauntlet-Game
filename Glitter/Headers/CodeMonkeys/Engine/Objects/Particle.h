@@ -18,7 +18,7 @@ namespace CodeMonkeys::Engine::Objects
     public:
         Particle(Model3D* model, string name, float total_lifespan, ParticleEmitter* emitter);
         virtual Particle* clone();
-        void update(float dt);
+        virtual void update(float dt);
         ParticleEmitter* get_emitter();
         virtual void draw(mat4 total_transform, ShaderProgram* shader);
         void set_collision_region(BoundingMultiSphere* collision_region);

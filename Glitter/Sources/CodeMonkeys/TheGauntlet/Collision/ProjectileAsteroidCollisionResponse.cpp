@@ -48,7 +48,7 @@ void ProjectileAsteroidCollisionResponse::respond(Object3D* object_a, Object3D* 
 
     if (asteroid != NULL && projectile->get_parent() != NULL && asteroid->get_parent() != NULL)
     {
-        asteroid->inflict_damage(projectile->get_inflict_amount());
+        projectile->inflict_damage(asteroid);
         this->projectile_impact_emitter->set_position(asteroid->get_position() - glm::normalize(projectile->get_velocity()) * asteroid->get_size());
         projectile->get_parent()->remove_child(projectile);
         // asteroid->get_parent()->remove_child(asteroid);

@@ -15,3 +15,9 @@ void IInflicter::set_inflict_amount(unsigned int inflict_amount)
 {
     this->inflict_amount = inflict_amount;
 }
+
+
+void IInflicter::inflict_damage(IDamageable* damageable)
+{
+    damageable->take_damage(this->inflict_amount);
+}

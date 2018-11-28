@@ -20,3 +20,8 @@ Particle* Projectile::clone()
     projectile_clone->set_collision_region(this->collision_region);
     return projectile_clone;
 }
+
+void Projectile::update(float dt)
+{
+    Particle::update(dt);
+}
