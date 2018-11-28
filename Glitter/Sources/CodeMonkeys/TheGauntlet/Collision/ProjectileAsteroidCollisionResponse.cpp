@@ -4,8 +4,10 @@
 #include "CodeMonkeys/TheGauntlet/Projectile.h"
 #include "CodeMonkeys/Engine/Engine/GameEngine.h"
 #include "CodeMonkeys/Engine/Objects/ParticleEmitter.h"
+#include "CodeMonkeys/Engine/Objects/BillboardParticle.h"
 
 using CodeMonkeys::TheGauntlet::Collision::ProjectileAsteroidCollisionResponse;
+using namespace glm;
 using namespace CodeMonkeys::TheGauntlet::GameObjects;
 using namespace CodeMonkeys::TheGauntlet;
 using namespace CodeMonkeys::Engine::Engine;
@@ -13,6 +15,13 @@ using namespace CodeMonkeys::Engine::Objects;
 
 ProjectileAsteroidCollisionResponse::ProjectileAsteroidCollisionResponse(CodeMonkeys::Engine::Engine::GameEngine* engine) : ICollisionResponse(engine) 
 {
+    this->projectile_impact_emitter = new ParticleEmitter("projectile_impact_emitter");
+    this->engine->get_world_root()->add_child(this->projectile_impact_emitter);
+
+    AnimatedTexture* explosion_animation = new AnimatedTexture("Assets/Textures/Explosions/explosion_03/explosion", "png", 64);
+    Billboard* explosion_billboard = new Billboard("projectile_impact_billboard", explosion_animation, 80, 80);
+    BillboardParticle* explosion_particle = new BillboardParticle(explosion_billboard, "projectile_impact_particle", 1, this->projectile_impact_emitter);
+    projectile_impact_emitter->set_particle(explosion_particle);
 }
 
 bool ProjectileAsteroidCollisionResponse::can_respond(Object3D* object_a, Object3D* object_b)
@@ -40,17 +49,9 @@ void ProjectileAsteroidCollisionResponse::respond(Object3D* object_a, Object3D* 
     if (asteroid != NULL && projectile->get_parent() != NULL && asteroid->get_parent() != NULL)
     {
         asteroid->inflict_damage(projectile->get_inflict_amount());
+        this->projectile_impact_emitter->set_position(asteroid->get_position() - glm::normalize(projectile->get_velocity()) * asteroid->get_size());
         projectile->get_parent()->remove_child(projectile);
-        asteroid->get_parent()->remove_child(asteroid);
-        ParticleEmitter* emitter = NULL;
-        for (Object3D* child : object_a->get_children())
-        {
-            if (child->get_name() == "ship_explosion_emitter")
-            {
-                emitter = dynamic_cast<ParticleEmitter*> (child);
-            }
-        }
-        if (emitter != NULL)
-            emitter->emit(dt);
+        // asteroid->get_parent()->remove_child(asteroid);
+        this->projectile_impact_emitter->emit(dt);
     }
 }

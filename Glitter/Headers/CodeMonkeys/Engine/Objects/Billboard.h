@@ -28,5 +28,9 @@ namespace CodeMonkeys::Engine::Objects
         void update(float dt);
         static void init_billboard_class();
         void reset();
+        float get_width();
+        void set_width(float width);
+        float get_height();
+        void set_height(float height);
     };
 }

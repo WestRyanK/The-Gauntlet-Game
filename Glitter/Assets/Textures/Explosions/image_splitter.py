@@ -5,8 +5,8 @@ width = 512
 height = 512
 rows = 8
 columns = 8
-input_filename = "explosion_02/Explosion.png"
-output_filename = "explosion_02/explosion"
+input_filename = "explosion_03/Explosion.png"
+output_filename = "explosion_03/explosion"
 
 img = cv2.imread(input_filename, -1)
 for y in range(rows):

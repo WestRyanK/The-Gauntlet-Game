@@ -24,9 +24,9 @@ Asteroid* AsteroidFactory::create_asteroid(int size_class)
     {
         health = Asteroid::MEDIUM_HEALTH;
     } 
-    else 
+    else if (size_class == Asteroid::LARGE)
     {
-        health = Asteroid::SMALL_HEALTH;
+        health = Asteroid::LARGE_HEALTH;
     }
 
     const int SCALE = 4;

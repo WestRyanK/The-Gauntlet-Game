@@ -22,9 +22,9 @@ LaserTurret::LaserTurret(ShaderProgram* shader, ParticleEmitter* projectile_emit
 
     BoundingMultiSphere* bounding_multisphere = new BoundingMultiSphere(vec3(), vec3());
     bounding_multisphere->add_sphere(new BoundingSphere(vec3(0.0f, 0.0f, 0.0f), 5.0f));
-    bounding_multisphere->add_sphere(new BoundingSphere(vec3(0.0f, 0.0f, 10.0f), 5.0f));
-    bounding_multisphere->add_sphere(new BoundingSphere(vec3(0.0f, 0.0f, 5.0f), 5.0f));
     bounding_multisphere->add_sphere(new BoundingSphere(vec3(0.0f, 0.0f, -5.0f), 5.0f));
     bounding_multisphere->add_sphere(new BoundingSphere(vec3(0.0f, 0.0f, -10.0f), 5.0f));
+    bounding_multisphere->add_sphere(new BoundingSphere(vec3(0.0f, 0.0f, 10.0f), 5.0f));
+    bounding_multisphere->add_sphere(new BoundingSphere(vec3(0.0f, 0.0f, 5.0f), 5.0f));
     this->projectile_prototype->set_collision_region(bounding_multisphere);
 }

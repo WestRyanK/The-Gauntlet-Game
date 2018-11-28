@@ -3,6 +3,7 @@
 #include "CodeMonkeys/Engine/Collision/ICollisionResponse.h"
 #include "CodeMonkeys/Engine/Assets/AnimatedTexture.h"
 #include "CodeMonkeys/Engine/Objects/Billboard.h"
+#include "CodeMonkeys/Engine/Objects/ParticleEmitter.h"
 
 using namespace CodeMonkeys::Engine::Assets;
 using namespace CodeMonkeys::Engine::Objects;
@@ -11,8 +12,9 @@ namespace CodeMonkeys::TheGauntlet::Collision
 {
     class ProjectileAsteroidCollisionResponse : public ICollisionResponse
     {
+    private:
+        ParticleEmitter* projectile_impact_emitter;
     public:
-
         ProjectileAsteroidCollisionResponse(
         // );
         CodeMonkeys::Engine::Engine::GameEngine* engine);

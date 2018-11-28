@@ -85,3 +85,23 @@ void Billboard::reset()
 {
     this->billboard_texture->reset();
 }
+
+float Billboard::get_width()
+{
+    return this->width;
+}
+
+void Billboard::set_width(float width)
+{
+    this->width = width;
+}
+
+float Billboard::get_height()
+{
+    return this->height;
+}
+
+void Billboard::set_height(float height)
+{
+    this->height = height;
+}
