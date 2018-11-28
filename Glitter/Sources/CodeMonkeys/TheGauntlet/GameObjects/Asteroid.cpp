@@ -4,6 +4,7 @@
 #include "CodeMonkeys/TheGauntlet/GameObjects/AsteroidFactory.h"
 #include "CodeMonkeys/Engine/Objects/ParticleEmitter.h"
 #include "CodeMonkeys/Engine/Assets/AnimatedTexture.h"
+#include "CodeMonkeys/TheGauntlet/IInflicter.h"
 #include "CodeMonkeys/Engine/Objects/BillboardParticle.h"
 #include "NIE.h"
 
@@ -15,7 +16,7 @@ using namespace CodeMonkeys::TheGauntlet::GameObjects;
 ParticleEmitter* Asteroid::asteroid_death_emitter = NULL;
 Billboard* Asteroid::asteroid_death_billboard = NULL;
 
-Asteroid::Asteroid(Model3D* model, unsigned int size_class, unsigned int health, float size) : PhysicalObject3D(model, "asteroid"), IDamageable(health, health)
+Asteroid::Asteroid(Model3D* model, unsigned int size_class, unsigned int health, float size, unsigned int inflict_amount) : PhysicalObject3D(model, "asteroid"), IDamageable(health, health), IInflicter(inflict_amount)
 {
     this->size_class = size_class;
     this->size = size;
