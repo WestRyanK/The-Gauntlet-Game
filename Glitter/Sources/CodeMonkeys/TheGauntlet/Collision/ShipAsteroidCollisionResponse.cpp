@@ -38,15 +38,15 @@ void ShipAsteroidCollisionResponse::respond(Object3D* object_a, Object3D* object
     if (asteroid != NULL && asteroid->get_parent() != NULL)
     {
         printf("Collide!");
-        // asteroid->get_parent()->remove_child(asteroid);
-        // ParticleEmitter* emitter = NULL;
-        // for (Object3D* child : ship->get_children())
-        // {
-        //     if (child->get_name() == "ship_explosion_emitter")
-        //     {
-        //         emitter = dynamic_cast<ParticleEmitter*> (child);
-        //     }
-        // }
-        // emitter->emit(dt);
+        asteroid->get_parent()->remove_child(asteroid);
+        ParticleEmitter* emitter = NULL;
+        for (Object3D* child : ship->get_children())
+        {
+            if (child->get_name() == "ship_explosion_emitter")
+            {
+                emitter = dynamic_cast<ParticleEmitter*> (child);
+            }
+        }
+        emitter->emit(dt);
     }
 }
