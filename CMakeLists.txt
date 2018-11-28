@@ -33,7 +33,6 @@ include_directories(Glitter/Headers/
                     Glitter/Headers/CodeMonkeys/TheGauntlet/
                     Glitter/Headers/CodeMonkeys/TheGauntlet/Control/
                     Glitter/Headers/CodeMonkeys/TheGauntlet/GameObjects/
-                    Glitter/Headers/CodeMonkeys/Lab04/
                     Glitter/Vendor/assimp/include/
                     Glitter/Vendor/bullet/src/
                     Glitter/Vendor/glad/include/
@@ -52,7 +51,6 @@ file(GLOB PROJECT_HEADERS Glitter/Headers/*.hpp
                           Glitter/Headers/CodeMonkeys/TheGauntlet/*.h
                           Glitter/Headers/CodeMonkeys/TheGauntlet/Control/*.h
                           Glitter/Headers/CodeMonkeys/TheGauntlet/GameObjects/*.h
-                          Glitter/Headers/CodeMonkeys/Lab04/*.h
                           )
 file(GLOB PROJECT_SOURCES Glitter/Sources/*.cpp
                           Glitter/Sources/CodeMonkeys/Engine/Assets/*.cpp
@@ -63,7 +61,6 @@ file(GLOB PROJECT_SOURCES Glitter/Sources/*.cpp
                           Glitter/Sources/CodeMonkeys/TheGauntlet/*.cpp
                           Glitter/Sources/CodeMonkeys/TheGauntlet/Control/*.cpp
                           Glitter/Sources/CodeMonkeys/TheGauntlet/GameObjects/*.cpp
-                          Glitter/Sources/CodeMonkeys/Lab04/*.cpp
 )
 file(GLOB PROJECT_SHADERS Glitter/Shaders/*.comp
                           Glitter/Shaders/*.frag
@@ -84,7 +81,7 @@ add_definitions(-DGLFW_INCLUDE_NONE
                 -DPROJECT_SOURCE_DIR=\"${PROJECT_SOURCE_DIR}\")
 add_executable(${PROJECT_NAME} ${PROJECT_SOURCES} ${PROJECT_HEADERS}
                                ${PROJECT_SHADERS} ${PROJECT_CONFIGS}
-                               ${VENDORS_SOURCES})
+                               ${VENDORS_SOURCES} Glitter/Headers/CodeMonkeys/TheGauntlet/GameObjects/Portal.h Glitter/Sources/CodeMonkeys/TheGauntlet/GameObjects/Portal.cpp Glitter/Headers/CodeMonkeys/TheGauntlet/GameObjects/PortalFactory.h Glitter/Sources/CodeMonkeys/TheGauntlet/GameObjects/PortalFactory.cpp)
 target_link_libraries(${PROJECT_NAME} assimp glfw
                       ${GLFW_LIBRARIES} ${GLAD_LIBRARIES}
                       BulletDynamics BulletCollision LinearMath)

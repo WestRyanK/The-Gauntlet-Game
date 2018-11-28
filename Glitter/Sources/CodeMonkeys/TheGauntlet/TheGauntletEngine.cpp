@@ -13,6 +13,8 @@
 #include "CodeMonkeys/Engine/Assets/LoopSubdivider.h"
 #include "CodeMonkeys/TheGauntlet/GameObjects/AsteroidFactory.h"
 #include "CodeMonkeys/TheGauntlet/GameObjects/Asteroid.h"
+#include "CodeMonkeys/TheGauntlet/GameObjects/Portal.h"
+#include "CodeMonkeys/TheGauntlet/GameObjects/PortalFactory.h"
 
 using namespace std;
 using CodeMonkeys::TheGauntlet::TheGauntletEngine;
@@ -41,6 +43,7 @@ void TheGauntletEngine::init()
     this->shaders.insert(shader);
     CodeMonkeys::TheGauntlet::GameObjects::AsteroidFactory::init_asteroid_factory(0, shader);
     CodeMonkeys::TheGauntlet::GameObjects::ShipFactory::init(shader);
+    CodeMonkeys::TheGauntlet::GameObjects::PortalFactory::init(shader);
     
     // create skybox
     std::vector<std::string> skybox_faces
@@ -71,6 +74,12 @@ void TheGauntletEngine::init()
         asteroid->set_angular_velocity(vec3(rand() % A - A / 2, rand() % A - A / 2, rand() % A - A / 2));
     }
 
+    // Draw Portal
+    auto portal = CodeMonkeys::TheGauntlet::GameObjects::PortalFactory::create_portal();
+    portal->set_position(vec3(0, 0, -500));
+    this->world_root->add_child(portal);
+
+
     SpringArm* spring_arm = new SpringArm(10.0f, 1.0f, 1.0f);
     this->camera = new Camera3D();
     ship->add_child(spring_arm);
@@ -88,6 +97,6 @@ void TheGauntletEngine::init()
     DirectionalLight* directional = new DirectionalLight(vec3(1.0f, 1.0f, 1.0f), 0.6f, vec3(-1, -1, 0));
     this->lights.insert(directional);
 
-    // this->renderer = new FrameBufferRenderer(this->get_window(), 1280, 480);
-    this->renderer = new Renderer3D(this->get_window(), this->get_width(), this->get_height(), 2);
+    this->renderer = new FrameBufferRenderer(this->get_window(), this->get_width() * 2, this->get_height() * 2);
+    // this->renderer = new Renderer3D(this->get_window(), this->get_width() * 2, this->get_height() * 2, 2);
 }
