@@ -1,28 +1,50 @@
 #include "CodeMonkeys/Engine/Objects/Particle.h"
 #include "CodeMonkeys/Engine/Objects/ParticleEmitter.h"
 
-
 using CodeMonkeys::Engine::Objects::Particle;
+using namespace CodeMonkeys::Engine::Objects;
 
-Particle::Particle(string name, Texture* texture, float width, float height, float total_lifespan) : Billboard(name, texture, width, height)
+Particle::Particle(Model3D* model, string name, float total_lifespan, ParticleEmitter* emitter) : PhysicalObject3D(model, name)
 {
     this->total_lifespan = total_lifespan;
     this->current_lifespan = 0;
+    this->emitter = emitter;
 }
 
-Particle::Particle(const Particle& particle) : Particle(particle.name, particle.billboard_texture, particle.width, particle.height, particle.total_lifespan)
+Particle* Particle::clone()
 {
-    this->billboard_texture->reset();
+    Particle* particle_clone = new Particle(this->model, this->name, this->total_lifespan, this->emitter);
+    particle_clone->set_angular_velocity(this->get_angular_velocity());
+    particle_clone->set_velocity(this->get_velocity());
+    particle_clone->set_position(this->get_position());
+    particle_clone->set_rotation(this->get_rotation());
+    particle_clone->set_scale(this->get_scale());
+    particle_clone->set_collision_region(this->get_collision_region());
+    return particle_clone;
 }
 
 void Particle::update(float dt)
 {
-    Billboard::update(dt);
+    PhysicalObject3D::update(dt);
 
     this->current_lifespan += dt;
     if (this->current_lifespan > this->total_lifespan)
     {
-        ParticleEmitter* emitter = (ParticleEmitter*)this->parent;
-        emitter->kill_particle(this);
+        this->emitter->kill_particle(this);
     }
+}
+
+ParticleEmitter* Particle::get_emitter()
+{
+    return this->emitter;
+}
+
+void Particle::draw(mat4 total_transform, ShaderProgram* shader)
+{
+    PhysicalObject3D::draw(total_transform, shader);
+}
+
+void Particle::set_collision_region(ICollisionRegion* collision_region)
+{
+    this->collision_region = collision_region;
 }

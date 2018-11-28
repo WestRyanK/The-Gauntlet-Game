@@ -3,9 +3,8 @@
 
 using CodeMonkeys::Engine::Objects::ParticleEmitter;
 
-ParticleEmitter::ParticleEmitter(string name, Particle* particle_prototype) : PhysicalObject3D(NULL, name)
+ParticleEmitter::ParticleEmitter(string name) : PhysicalObject3D(NULL, name)
 {
-    this->particle_prototype = particle_prototype;
 }
 
 void ParticleEmitter::start()
@@ -44,11 +43,16 @@ void ParticleEmitter::update(float dt)
 
 void ParticleEmitter::emit(float dt)
 {
-    Particle* particle = new Particle(*this->particle_prototype);
+    Particle* particle = this->particle_prototype->clone();
     this->emit(particle);
 }
 
 void ParticleEmitter::emit(Particle* particle_to_emit)
 {
     this->add_child(particle_to_emit);
+}
+
+void ParticleEmitter::set_particle(Particle* particle_prototype)
+{
+    this->particle_prototype = particle_prototype;
 }

@@ -27,5 +27,6 @@ namespace CodeMonkeys::Engine::Objects
         static ShaderProgram* get_shader();
         void update(float dt);
         static void init_billboard_class();
+        void reset();
     };
 }
