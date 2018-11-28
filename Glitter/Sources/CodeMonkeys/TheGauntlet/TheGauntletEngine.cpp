@@ -19,7 +19,7 @@
 #include "CodeMonkeys/TheGauntlet/Collision/AsteroidAsteroidCollisionResponse.h"
 #include "CodeMonkeys/Engine/Objects/Billboard.h"
 #include "CodeMonkeys/Engine/Objects/ParticleEmitter.h"
-#include "CodeMonkeys/Engine/Objects/Particle.h"
+#include "CodeMonkeys/Engine/Objects/BillboardParticle.h"
 #include "CodeMonkeys/Engine/Assets/AnimatedTexture.h"
 
 using namespace std;
@@ -91,16 +91,30 @@ void TheGauntletEngine::init()
     auto ship = CodeMonkeys::TheGauntlet::GameObjects::ShipFactory::create_x_wing_ship();
     this->world_root->add_child(ship);
 
-    AnimatedTexture* explosion_animation = new AnimatedTexture("Assets/Textures/Explosions/explosion_01/explosion", "png", 64);
-    Texture* awesome = new Texture("Assets/Textures/awesome.png");
-    Particle* explosion_particle = new Particle("ship_explosion", explosion_animation, 80, 80, 1);
-    ParticleEmitter* emitter = new ParticleEmitter("ship_explosion_emitter", explosion_particle );
+    ParticleEmitter* emitter = new ParticleEmitter("ship_explosion_emitter");
     emitter->set_position(vec3(0, 0, 15));
     ship->add_child(emitter);
 
-    // auto ship2 = CodeMonkeys::TheGauntlet::GameObjects::ShipFactory::create_x_wing_ship();
-    // this->world_root->add_child(ship2);
-    // ship2->set_position(vec3(0, 0, 0));
+
+
+    // // This is a test of creating a particle using a 3D Model instead of a billboard
+    Material* test_material = new ColorMaterial(shader, true, 10.0f, vec3(0.8f), vec3(0.9f, 0.0f, 0.9f));
+    vector<Material*> materials;
+    materials.push_back(test_material);
+    mlModel* ml_model = new mlModel();
+    LoadModel("Assets", "crayon.obj", *ml_model);
+    Model3D* model = new Model3D(ml_model, materials);
+    Particle* particle = new Particle(model, "test_particle", 5, emitter);
+    particle->set_velocity(vec3(10,0,0));
+    emitter->set_particle(particle);
+
+
+
+
+    AnimatedTexture* explosion_animation = new AnimatedTexture("Assets/Textures/Explosions/explosion_01/explosion", "png", 64);
+    Billboard* explosion_billboard = new Billboard("billboard_explosion", explosion_animation, 80, 80);
+    BillboardParticle* explosion_particle = new BillboardParticle(explosion_billboard, "explosion_particle", 1, emitter);
+    // emitter->set_particle(explosion_particle);
 
     // Draw Asteroid
     const int S = 800;

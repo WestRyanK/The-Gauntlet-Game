@@ -80,3 +80,8 @@ void Billboard::update(float dt)
     PhysicalObject3D::update(dt);
     this->billboard_texture->update(dt);
 }
+
+void Billboard::reset()
+{
+    this->billboard_texture->reset();
+}

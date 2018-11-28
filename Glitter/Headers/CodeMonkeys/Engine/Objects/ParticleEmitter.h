@@ -13,12 +13,13 @@ namespace CodeMonkeys::Engine::Objects
         void emit(Particle* particle_to_emit);
         Particle* particle_prototype;
     public:
-        ParticleEmitter(string name, Particle* particle_prototype);
+        ParticleEmitter(string name);
         void start();
         void stop();
         void cancel();
         void kill_particle(Particle* particle);
         void update(float dt);
         virtual void emit(float dt);
+        void set_particle(Particle* particle_prototype);
     };
 }
