@@ -23,8 +23,8 @@ Ship::Ship(Model3D* model, std::string name,
     float max_z_velocity,
     float min_z_velocity,
 
-    IFireable* primary_weapon,
-    IFireable* secondary_weapon) : 
+    Weapon* primary_weapon,
+    Weapon* secondary_weapon) : 
 
         PhysicalObject3D(model, name), 
         IDamageable(initial_health, max_health), 
@@ -48,6 +48,9 @@ Ship::Ship(Model3D* model, std::string name,
     this->bounding_multisphere->add_sphere(new BoundingSphere(vec3(-2.0f, 0.0f, 3.0f), 3.0f));
     this->bounding_multisphere->add_sphere(new BoundingSphere(vec3(-11.0f, 0.0f, 3.0f), 3.0f));
     this->bounding_multisphere->add_sphere(new BoundingSphere(vec3(11.0f, 0.0f, 3.0f), 3.0f));
+
+    this->add_child(this->primary_weapon);
+    this->add_child(this->secondary_weapon);
 }
 
 void Ship::on_death()
@@ -163,11 +166,13 @@ void Ship::control(std::string control_name, float value, float dt)
     const float R = 10;
     if (control_name == "boost")
     {
-        this->rotation = vec3(this->rotation.x, this->rotation.y, this->rotation.z+ R);
+        this->position += vec3(0, 1, 0) * dt * value * velocity * 0.25f;
+        // this->rotation = vec3(this->rotation.x, this->rotation.y, this->rotation.z + R);
     }
     if (control_name == "brake")
     {
-        this->rotation = vec3(this->rotation.x, this->rotation.y, this->rotation.z- R);
+        this->position -= vec3(0, 1, 0) * dt * value * velocity * 0.25f;
+        // this->rotation = vec3(this->rotation.x, this->rotation.y, this->rotation.z - R);
     }
 
     // if (control_name == "move_y")
@@ -283,7 +288,7 @@ void Ship::control(std::string control_name, float value, float dt)
 
 void Ship::control(std::string control_name, int value, float dt)
 {
-    IFireable* weapon = NULL;
+    Weapon* weapon = NULL;
     if (control_name == "fire_primary")
     {
         weapon = this->primary_weapon;

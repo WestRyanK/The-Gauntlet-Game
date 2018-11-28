@@ -29,19 +29,24 @@ void ShipAsteroidCollisionResponse::respond(Object3D* object_a, Object3D* object
     Ship* ship = dynamic_cast<Ship*> (object_a);
     Asteroid* asteroid = dynamic_cast<Asteroid*> (object_b);
     if (ship == NULL && asteroid == NULL)
-        swap(object_a, object_b);
-
-    if (object_b != NULL && object_b->get_parent() != NULL)
     {
-        object_b->get_parent()->remove_child(object_b);
-        ParticleEmitter* emitter = NULL;
-        for (Object3D* child : object_a->get_children())
-        {
-            if (child->get_name() == "ship_explosion_emitter")
-            {
-                emitter = dynamic_cast<ParticleEmitter*> (child);
-            }
-        }
-        emitter->emit(dt);
+        swap(object_a, object_b);
+        ship = dynamic_cast<Ship*> (object_a);
+        asteroid = dynamic_cast<Asteroid*> (object_b);
+    }
+
+    if (asteroid != NULL && asteroid->get_parent() != NULL)
+    {
+        printf("Collide!");
+        // asteroid->get_parent()->remove_child(asteroid);
+        // ParticleEmitter* emitter = NULL;
+        // for (Object3D* child : ship->get_children())
+        // {
+        //     if (child->get_name() == "ship_explosion_emitter")
+        //     {
+        //         emitter = dynamic_cast<ParticleEmitter*> (child);
+        //     }
+        // }
+        // emitter->emit(dt);
     }
 }

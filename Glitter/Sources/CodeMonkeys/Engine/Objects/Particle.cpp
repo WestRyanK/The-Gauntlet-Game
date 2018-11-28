@@ -19,13 +19,17 @@ Particle* Particle::clone()
     particle_clone->set_position(this->get_position());
     particle_clone->set_rotation(this->get_rotation());
     particle_clone->set_scale(this->get_scale());
-    particle_clone->set_collision_region(this->get_collision_region());
+    particle_clone->set_collision_region(this->collision_region);
     return particle_clone;
 }
 
 void Particle::update(float dt)
 {
     PhysicalObject3D::update(dt);
+    if (this->collision_region != NULL)
+    {
+        this->collision_region->set_center(this->get_position());
+    }
 
     this->current_lifespan += dt;
     if (this->current_lifespan > this->total_lifespan)
@@ -44,7 +48,12 @@ void Particle::draw(mat4 total_transform, ShaderProgram* shader)
     PhysicalObject3D::draw(total_transform, shader);
 }
 
-void Particle::set_collision_region(ICollisionRegion* collision_region)
+void Particle::set_collision_region(BoundingSphere* collision_region)
 {
     this->collision_region = collision_region;
+}
+
+ICollisionRegion* Particle::get_collision_region()
+{
+    return this->collision_region;
 }

@@ -16,6 +16,7 @@
 #include "CodeMonkeys/Engine/Collision/GridCollisionDetector.h"
 #include "CodeMonkeys/Engine/Collision/SimpleCollisionDetector.h"
 #include "CodeMonkeys/TheGauntlet/Collision/ShipAsteroidCollisionResponse.h"
+#include "CodeMonkeys/TheGauntlet/Collision/ProjectileAsteroidCollisionResponse.h"
 #include "CodeMonkeys/TheGauntlet/Collision/AsteroidAsteroidCollisionResponse.h"
 #include "CodeMonkeys/Engine/Objects/Billboard.h"
 #include "CodeMonkeys/Engine/Objects/ParticleEmitter.h"
@@ -84,63 +85,42 @@ void TheGauntletEngine::init()
     Billboard::init_billboard_class();
     this->shaders.insert(Billboard::get_shader());
     CodeMonkeys::TheGauntlet::GameObjects::AsteroidFactory::init_asteroid_factory(0, shader);
-    CodeMonkeys::TheGauntlet::GameObjects::ShipFactory::init(shader);
+    ParticleEmitter* projectile_emitter = new ParticleEmitter("projectile_emitter");
+    this->world_root->add_child(projectile_emitter);
+    CodeMonkeys::TheGauntlet::GameObjects::ShipFactory::init(shader, projectile_emitter);
     this->init_skybox();
     
 
     auto ship = CodeMonkeys::TheGauntlet::GameObjects::ShipFactory::create_x_wing_ship();
     this->world_root->add_child(ship);
 
-    ParticleEmitter* emitter = new ParticleEmitter("ship_explosion_emitter");
-    emitter->set_position(vec3(0, 0, 15));
-    ship->add_child(emitter);
-
-
-
-    // // This is a test of creating a particle using a 3D Model instead of a billboard
-    Material* test_material = new ColorMaterial(shader, true, 10.0f, vec3(0.8f), vec3(0.9f, 0.0f, 0.9f));
-    vector<Material*> materials;
-    materials.push_back(test_material);
-    mlModel* ml_model = new mlModel();
-    LoadModel("Assets", "crayon.obj", *ml_model);
-    Model3D* model = new Model3D(ml_model, materials);
-    Particle* particle = new Particle(model, "test_particle", 5, emitter);
-    particle->set_velocity(vec3(10,0,0));
-    emitter->set_particle(particle);
-
-
-
-
-    AnimatedTexture* explosion_animation = new AnimatedTexture("Assets/Textures/Explosions/explosion_01/explosion", "png", 64);
-    Billboard* explosion_billboard = new Billboard("billboard_explosion", explosion_animation, 80, 80);
-    BillboardParticle* explosion_particle = new BillboardParticle(explosion_billboard, "explosion_particle", 1, emitter);
-    // emitter->set_particle(explosion_particle);
 
     // Draw Asteroid
-    const int S = 800;
-    const int T = 800;
-    const int V = 25;
-    const int A = 60;
-    for (int i = 0; i < 2000; i++)
-    {
-        Asteroid* asteroid = CodeMonkeys::TheGauntlet::GameObjects::AsteroidFactory::create_asteroid_random_size();
-        this->world_root->add_child(asteroid);
-        // asteroid->set_position(vec3(rand() % T - T / 2, 0, rand() % S - S));
-        asteroid->set_position(vec3(rand() % T - T / 2, rand() % T - T / 2, rand() % S - S));
-        // asteroid->set_velocity(vec3(rand() % V - V / 2, 0, rand() % V - V / 2));
-        asteroid->set_velocity(vec3(rand() % V - V / 2, rand() % V - V / 2, rand() % V - V / 2));
-        asteroid->set_angular_velocity(vec3(rand() % A - A / 2, rand() % A - A / 2, rand() % A - A / 2));
-    }
+    // const int S = 800;
+    // const int T = 800;
+    // const int V = 25;
+    // const int A = 60;
+    // for (int i = 0; i < 2000; i++)
+    // {
+    //     Asteroid* asteroid = CodeMonkeys::TheGauntlet::GameObjects::AsteroidFactory::create_asteroid_random_size();
+    //     this->world_root->add_child(asteroid);
+    //     // asteroid->set_position(vec3(rand() % T - T / 2, 0, rand() % S - S));
+    //     asteroid->set_position(vec3(rand() % T - T / 2, rand() % T - T / 2, rand() % S - S));
+    //     // asteroid->set_velocity(vec3(rand() % V - V / 2, 0, rand() % V - V / 2));
+    //     asteroid->set_velocity(vec3(rand() % V - V / 2, rand() % V - V / 2, rand() % V - V / 2));
+    //     asteroid->set_angular_velocity(vec3(rand() % A - A / 2, rand() % A - A / 2, rand() % A - A / 2));
+    // }
 
-    // Asteroid* asteroid = CodeMonkeys::TheGauntlet::GameObjects::AsteroidFactory::create_asteroid(1);
-    // this->world_root->add_child(asteroid);
-    // asteroid->set_position(vec3(40, 0, 40));
-    // asteroid->set_angular_velocity(vec3(40));
+    Asteroid* asteroid = CodeMonkeys::TheGauntlet::GameObjects::AsteroidFactory::create_asteroid(1);
+    this->world_root->add_child(asteroid);
+    asteroid->set_position(vec3(40, 0, 40));
+    asteroid->set_angular_velocity(vec3(40));
 
-    // Asteroid* asteroi2 = CodeMonkeys::TheGauntlet::GameObjects::AsteroidFactory::create_asteroid(3);
-    // this->world_root->add_child(asteroi2);
-    // asteroi2->set_position(vec3(-40, 0, -40));
-    // asteroi2->set_angular_velocity(vec3(-40));
+    Asteroid* asteroi2 = CodeMonkeys::TheGauntlet::GameObjects::AsteroidFactory::create_asteroid(3);
+    this->world_root->add_child(asteroi2);
+    asteroi2->set_position(vec3(-40, 0, -40));
+    asteroi2->set_velocity(vec3(0, 1, 0));
+    asteroi2->set_angular_velocity(vec3(-40));
 
 
     this->init_light_and_camera(ship);
@@ -150,6 +130,7 @@ void TheGauntletEngine::init()
 
     this->collision_responses.insert(new ShipAsteroidCollisionResponse(this));
     this->collision_responses.insert(new AsteroidAsteroidCollisionResponse(this));
+    this->collision_responses.insert(new ProjectileAsteroidCollisionResponse(this));
 
     this->renderer = new Renderer(this->get_window(), this->get_width(), this->get_height());
     // this->renderer = new FrameBufferRenderer(this->get_window(), this->get_width(), this->get_height());
