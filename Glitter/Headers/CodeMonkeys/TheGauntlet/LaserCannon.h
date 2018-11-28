@@ -1,15 +1,12 @@
 #pragma once
 
-#include "CodeMonkeys/TheGauntlet/IFireable.h"
+#include "CodeMonkeys/TheGauntlet/Weapon.h"
 
 namespace CodeMonkeys::TheGauntlet
 {
-    class LaserCannon : public IFireable
+    class LaserCannon : public Weapon
     {
-    private:
-        void on_fire();
-
     public:
-        LaserCannon();
+        LaserCannon(ShaderProgram* shader, ParticleEmitter* projectile_emitter);
     };
 }

@@ -2,7 +2,7 @@
 
 #include <string>
 #include "glitter.hpp"
-#include "CodeMonkeys/TheGauntlet/IFireable.h"
+#include "CodeMonkeys/TheGauntlet/Weapon.h"
 #include "CodeMonkeys/TheGauntlet/IFlyable.h"
 #include "CodeMonkeys/TheGauntlet/IDamageable.h"
 #include "CodeMonkeys/Engine/Control/IControllable.h"
@@ -20,8 +20,8 @@ namespace CodeMonkeys::TheGauntlet::GameObjects
     class Ship : public PhysicalObject3D, public IDamageable, public IControllable, public IFlyable
     {
     protected:
-        IFireable* primary_weapon = NULL;
-        IFireable* secondary_weapon = NULL;
+        Weapon* primary_weapon = NULL;
+        Weapon* secondary_weapon = NULL;
 
         void on_death();
         void control(std::string control_name, float value, float dt);
@@ -45,8 +45,8 @@ namespace CodeMonkeys::TheGauntlet::GameObjects
             float max_xy_velocity,
             float max_z_velocity,
             float min_z_velocity,
-            IFireable* primary_weapon,
-            IFireable* secondary_weapon);
+            Weapon* primary_weapon,
+            Weapon* secondary_weapon);
 
         ICollisionRegion* get_collision_region();
     };
