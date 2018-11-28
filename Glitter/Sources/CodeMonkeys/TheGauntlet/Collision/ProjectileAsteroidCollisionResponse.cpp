@@ -37,7 +37,7 @@ void ProjectileAsteroidCollisionResponse::respond(Object3D* object_a, Object3D* 
         asteroid = dynamic_cast<Asteroid*> (object_b);
     }
 
-    if (asteroid != NULL && projectile->get_parent() != NULL)
+    if (asteroid != NULL && projectile->get_parent() != NULL && asteroid->get_parent() != NULL)
     {
         asteroid->inflict_damage(projectile->get_inflict_amount());
         projectile->get_parent()->remove_child(projectile);

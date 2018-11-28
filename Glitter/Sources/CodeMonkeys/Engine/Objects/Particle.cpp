@@ -48,7 +48,7 @@ void Particle::draw(mat4 total_transform, ShaderProgram* shader)
     PhysicalObject3D::draw(total_transform, shader);
 }
 
-void Particle::set_collision_region(BoundingSphere* collision_region)
+void Particle::set_collision_region(BoundingMultiSphere* collision_region)
 {
     this->collision_region = collision_region;
 }
