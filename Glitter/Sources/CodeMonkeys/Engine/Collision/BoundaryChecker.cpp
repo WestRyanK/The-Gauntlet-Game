@@ -12,6 +12,9 @@ void BoundaryChecker::check_boundary(Object3D* obj)
 
 void BoundaryChecker::check_boundary(PhysicalObject3D* obj)
 {
+    if (obj->get_name() == "laser_turret_particle")
+        return;
+
     vec3 position = obj->get_transformed_position();
     vec3 velocity = obj->get_velocity();
 
