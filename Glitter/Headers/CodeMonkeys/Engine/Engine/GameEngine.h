@@ -8,6 +8,7 @@
 #include "CodeMonkeys/Engine/Objects/Camera3D.h"
 // #include "CodeMonkeys/Engine/Collision/ICollisionResponse.h"
 #include "CodeMonkeys/Engine/Collision/ICollisionDetector.h"
+#include "CodeMonkeys/Engine/Collision/BoundaryChecker.h"
 #include "CodeMonkeys/Engine/Engine/Stopwatch.h"
 #include "CodeMonkeys/Engine/Engine/UpdateObjectsIterator.h"
 #include "CodeMonkeys/Engine/Engine/Renderer.h"
@@ -29,6 +30,7 @@ namespace CodeMonkeys::Engine::Engine
         UpdateObjectsIterator update_objects_iterator;
         GLuint width;
         GLuint height;
+        BoundaryChecker* boundary_checker;
 
     protected:
         set<Controller*> controllers;
@@ -48,6 +50,7 @@ namespace CodeMonkeys::Engine::Engine
         void set_width(GLuint width);
         void set_height(GLuint height);
         virtual void set_collision_detector(ICollisionDetector* collision_detector);
+        void set_boundary_checker(BoundaryChecker* checker);
 
         virtual void handle_controllers(float dt);
         virtual void update_objects(float dt);

@@ -21,6 +21,7 @@ GameEngine::GameEngine(GLFWwindow* window, GLuint width, GLuint height)
     this->height = height;
     this->world_root = new Object3D(NULL, "world_root");
     this->skybox = NULL;
+    this->boundary_checker = NULL;
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); // GL_LINE or GL_FILL
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LESS);  
@@ -73,6 +74,12 @@ void GameEngine::draw()
 void GameEngine::update_objects(float dt)
 {
     this->update_objects_iterator.update(this->world_root, dt);
+}
+
+void GameEngine::set_boundary_checker(BoundaryChecker* checker)
+{
+    this->boundary_checker = checker;
+    this->update_objects_iterator.set_boundary_checker(checker);
 }
         
 void GameEngine::handle_collisions(float dt)

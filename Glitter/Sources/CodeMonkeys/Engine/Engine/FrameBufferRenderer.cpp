@@ -64,7 +64,7 @@ void screenshot (char filename[160],int x, int y)
     int xa= x % 256;
     int xb= (x-xa)/256;int ya= y % 256;
     int yb= (y-ya)/256;//assemble the header
-    unsigned char header[18]={0,0,2,0,0,0,0,0,0,0,0,0,(char)xa,(char)xb,(char)ya,(char)yb,24,0};
+    unsigned char header[18]={0,0,2,0,0,0,0,0,0,0,0,0,(unsigned char)xa,(unsigned char)xb,(unsigned char)ya,(unsigned char)yb,24,0};
     // write header and data to file
     fstream File(filename, ios::out | ios::binary);
     File.write (reinterpret_cast<char *>(header), sizeof (char)*18);

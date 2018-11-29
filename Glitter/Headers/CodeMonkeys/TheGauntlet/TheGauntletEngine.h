@@ -12,6 +12,7 @@ namespace CodeMonkeys::TheGauntlet
         void update_frame(float dt);
         void init_skybox();
         void init_light_and_camera(Object3D* camera_parent);
+        void setup_course();
 
     public:
         TheGauntletEngine(GLFWwindow* window, GLuint width, GLuint height);
