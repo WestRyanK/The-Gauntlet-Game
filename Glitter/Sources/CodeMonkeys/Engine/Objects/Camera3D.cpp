@@ -40,26 +40,14 @@ void Camera3D::set_up(vec3 up)
     this->up = up;
 }
 
-mat4 Camera3D::get_hierarchical_transform(Object3D* object)
-{
-    mat4 transform;
-    Object3D* parent_object = object;
-    while (parent_object != NULL)
-    {
-        transform = parent_object->get_transform() * transform;
-        parent_object = parent_object->get_parent();
-    }
-
-    return transform;
-}
-
 void Camera3D::update_shader_with_camera(ShaderProgram* shader)
 {
     mat4 view = this->get_view_transform();
+    vec4 hierarchical_position = this->get_hierarchical_transform() * vec4(0,0,0,1);
 
     shader->setUniform("view_transform", view);
     shader->setUniform("projection_transform", this->perspective_projection);
-    shader->setUniform("camera_position", this->position);
+    shader->setUniform("camera_position", vec3(hierarchical_position.x, hierarchical_position.y, hierarchical_position.z));
 }
 
 Object3D* Camera3D::get_look_at_parent()
@@ -75,16 +63,17 @@ mat4 Camera3D::get_perpective_projection()
 
 mat4 Camera3D::get_view_transform()
 {
-    mat4 hierarchical_transform = this->get_hierarchical_transform(this);
+    mat4 hierarchical_transform = this->get_hierarchical_transform();
     vec3 transformed_look_at;
     if (this->look_at_parent != NULL)
     {
-        mat4 look_hierarchical_transform = this->get_hierarchical_transform(this->look_at_parent);
+        mat4 look_hierarchical_transform = this->look_at_parent->get_hierarchical_transform();
         transformed_look_at = vec3(look_hierarchical_transform * vec4(transformed_look_at, 1.0f));
     }
     else
     {
-        transformed_look_at = vec3(hierarchical_transform * vec4(this->look_at, 1));
+        transformed_look_at = this->look_at;
+        // transformed_look_at = vec3(hierarchical_transform * vec4(this->look_at, 1));
     }
     vec3 transformed_position = vec3(hierarchical_transform * vec4(0,0,0, 1));
     
@@ -95,8 +84,8 @@ mat4 Camera3D::get_view_transform()
 //braising - moist heat method of cooking less tender cuts of meat
 void Camera3D::control(std::string control_name, float value, float dt)
 {
-    const float velocity = 10.0f;
-    const float angular_velocity = 1.0f;
+    const float velocity = 60.0f;
+    const float angular_velocity = 10.0f;
     vec3 forward = glm::normalize(this->look_at - this->position);
     vec3 sideways = -glm::normalize(glm::cross(this->up, this->look_at - this->position));
     if (control_name == "move_x")
@@ -106,8 +95,8 @@ void Camera3D::control(std::string control_name, float value, float dt)
     }
     if (control_name == "move_y")
     {
-        this->position.y += value * dt * velocity;
-        this->look_at.y += value * dt * velocity;
+        this->position.y -= value * dt * velocity;
+        this->look_at.y -= value * dt * velocity;
     }
     if (control_name == "move_z")
     {

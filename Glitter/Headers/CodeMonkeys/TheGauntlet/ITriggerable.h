@@ -21,7 +21,7 @@ namespace CodeMonkeys::TheGauntlet
      * on the IFireable and when it senses it is released, it should call release_trigger()
      * so that automatic and non-automatic firing works.
      */
-    class IFireable
+    class ITriggerable
     {
     private:
         // The amount of time it takes to recharge the weapon, measured in seconds. 
@@ -32,14 +32,25 @@ namespace CodeMonkeys::TheGauntlet
         // it down to rapid fire. See class comments for how to implement.
         bool is_automatic_fire;
         // If the controller has indicated that the user released the fire button, this is true.
-        bool was_fire_held;
+        bool was_trigger_held;
         // The amount of time that has elapsed since the last shot was fired.
         float recharge_time_elapsed;
         Stopwatch recharge_timer;
         void update_recharge_time();
+    protected:
+        // This is called when the weapon actually fires.
+        // I think there is enough documentation in the rest
+        // of the class to explain what it does.
+        virtual void on_fire() = 0;
+        // This is called when a call to pull_trigger() does not
+        // generate a call to on_fire(). You probably don't need
+        // to overload or do anything special with it unless you
+        // want to play some 'gun click' type sound effect.
+        virtual void on_misfire();
+
 
     public:
-        IFireable(float recharge_delay, bool is_automatic_fire);
+        ITriggerable(float recharge_delay, bool is_automatic_fire);
         // This method is called when the user presses the fire button.
         // However, nothing is actually fired unless 'recharge_delay' 
         // amount of time has passed and the conditions of 'is_automatic_fire'
@@ -59,14 +70,5 @@ namespace CodeMonkeys::TheGauntlet
         // This is useful if we want to somehow display
         // a weapon loading/charging animation of some sort.
         float get_recharge_time_remaining();
-        // This is called when the weapon actually fires.
-        // I think there is enough documentation in the rest
-        // of the class to explain what it does.
-        virtual void on_fire() = 0;
-        // This is called when a call to pull_trigger() does not
-        // generate a call to on_fire(). You probably don't need
-        // to overload or do anything special with it unless you
-        // want to play some 'gun click' type sound effect.
-        virtual void on_misfire();
     };
 }

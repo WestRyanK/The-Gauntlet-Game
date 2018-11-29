@@ -1,23 +1,23 @@
-#include "CodeMonkeys/TheGauntlet/IFireable.h"
+#include "CodeMonkeys/TheGauntlet/ITriggerable.h"
 #include <algorithm>
 
-using CodeMonkeys::TheGauntlet::IFireable;
+using CodeMonkeys::TheGauntlet::ITriggerable;
 
-IFireable::IFireable(float recharge_delay, bool is_automatic_fire)
+ITriggerable::ITriggerable(float recharge_delay, bool is_automatic_fire)
 {
     this->recharge_delay = recharge_delay;
     this->is_automatic_fire = is_automatic_fire;
     this->recharge_time_elapsed = 0.0f;
-    this->was_fire_held = true;
+    this->was_trigger_held = true;
 
     this->recharge_timer.get_seconds_from_last_measurement();
 }
 
-void IFireable::pull_trigger()
+void ITriggerable::pull_trigger()
 {
     this->update_recharge_time();
 
-    bool can_fire = this->is_automatic_fire || !this->was_fire_held;
+    bool can_fire = this->is_automatic_fire || !this->was_trigger_held;
 
     if (can_fire && this->recharge_time_elapsed >= this->recharge_delay)
     {
@@ -29,30 +29,30 @@ void IFireable::pull_trigger()
         this->on_misfire();
     }
 
-    this->was_fire_held = true;
+    this->was_trigger_held = true;
 }
 
-void IFireable::update_recharge_time()
+void ITriggerable::update_recharge_time()
 {
     this->recharge_time_elapsed += this->recharge_timer.get_seconds_from_last_measurement();
 }
 
-void IFireable::on_misfire()
+void ITriggerable::on_misfire()
 {
 
 }
 
-void IFireable::release_trigger()
+void ITriggerable::release_trigger()
 {
-    this->was_fire_held = false;
+    this->was_trigger_held = false;
 }
 
-float IFireable::get_recharge_delay()
+float ITriggerable::get_recharge_delay()
 {
     return this->recharge_delay;
 }
 
-float IFireable::get_recharge_time_remaining()
+float ITriggerable::get_recharge_time_remaining()
 {
     this->update_recharge_time();
     return std::max(0.0f, this->recharge_delay - this->recharge_time_elapsed);

@@ -8,6 +8,7 @@
 #include "CodeMonkeys/Engine/Objects/DirectionalLight.h"
 #include "NIE.h"
 #include <stdexcept>
+#include "CodeMonkeys/Engine/Collision/ICollisionResponse.h"
 
 using CodeMonkeys::Engine::Engine::GameEngine;
 using namespace CodeMonkeys::Engine::Objects;
@@ -20,10 +21,14 @@ GameEngine::GameEngine(GLFWwindow* window, GLuint width, GLuint height)
     this->height = height;
     this->world_root = new Object3D(NULL, "world_root");
     this->skybox = NULL;
+    this->boundary_checker = NULL;
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); // GL_LINE or GL_FILL
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LESS);  
+    glEnable(GL_BLEND);  
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);  
 }
+
 
 GLuint GameEngine::get_width()
 {
@@ -70,6 +75,12 @@ void GameEngine::update_objects(float dt)
 {
     this->update_objects_iterator.update(this->world_root, dt);
 }
+
+void GameEngine::set_boundary_checker(BoundaryChecker* checker)
+{
+    this->boundary_checker = checker;
+    this->update_objects_iterator.set_boundary_checker(checker);
+}
         
 void GameEngine::handle_collisions(float dt)
 {
@@ -79,11 +90,13 @@ void GameEngine::handle_collisions(float dt)
         
         for (pair<Object3D*, Object3D*> collision : collisions)
         {
+            // printf("Collision between %s and %s!\n", collision.first->get_name().c_str(), collision.second->get_name().c_str());
+
             for (ICollisionResponse* collision_response : this->collision_responses)
             {
                 if (collision_response->can_respond(collision.first, collision.second))
                 {
-                    collision_response->respond(collision.first, collision.second);
+                    collision_response->respond(collision.first, collision.second, dt);
                 }
             }
         }
@@ -110,3 +123,13 @@ void GameEngine::run()
     }
 }
 
+void GameEngine::set_collision_detector(ICollisionDetector* collision_detector)
+{
+    this->collision_detector = collision_detector;
+    this->update_objects_iterator.set_collision_detector(collision_detector);
+}
+
+Object3D* GameEngine::get_world_root()
+{
+    return this->world_root;
+}

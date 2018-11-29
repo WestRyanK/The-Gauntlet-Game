@@ -15,7 +15,6 @@ namespace CodeMonkeys::Engine::Objects
         vec3 look_at;
         vec3 up = vec4(0.0f, 1.0f, 0.0f, 1.0f);
         mat4 perspective_projection;
-        mat4 get_hierarchical_transform(Object3D* object);
         Object3D* look_at_parent = NULL;
 
     public:
