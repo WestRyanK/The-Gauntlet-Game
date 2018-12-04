@@ -76,7 +76,6 @@ void Renderer::render(set<ShaderProgram*> shaders, set<ILight3D*> lights, Camera
     glfwSwapBuffers(this->window);
 }
 
-
 GLuint Renderer::get_width()
 {
     return this->width;

@@ -87,7 +87,7 @@ add_definitions(-DGLFW_INCLUDE_NONE
                 -DPROJECT_SOURCE_DIR=\"${PROJECT_SOURCE_DIR}\")
 add_executable(${PROJECT_NAME} ${PROJECT_SOURCES} ${PROJECT_HEADERS}
                                ${PROJECT_SHADERS} ${PROJECT_CONFIGS}
-                               ${VENDORS_SOURCES} Glitter/Headers/CodeMonkeys/Engine/Collision/BoundaryChecker.h Glitter/Sources/CodeMonkeys/Engine/Collision/BoundaryChecker.cpp Glitter/Headers/CodeMonkeys/TheGauntlet/GameObjects/Portal.h Glitter/Sources/CodeMonkeys/TheGauntlet/GameObjects/Portal.cpp Glitter/Headers/CodeMonkeys/TheGauntlet/GameObjects/PortalFactory.h Glitter/Sources/CodeMonkeys/TheGauntlet/GameObjects/PortalFactory.cpp)
+                               ${VENDORS_SOURCES} Glitter/Headers/CodeMonkeys/Engine/Collision/BoundaryChecker.h Glitter/Sources/CodeMonkeys/Engine/Collision/BoundaryChecker.cpp Glitter/Headers/CodeMonkeys/TheGauntlet/GameObjects/Portal.h Glitter/Sources/CodeMonkeys/TheGauntlet/GameObjects/Portal.cpp Glitter/Headers/CodeMonkeys/TheGauntlet/GameObjects/PortalFactory.h Glitter/Sources/CodeMonkeys/TheGauntlet/GameObjects/PortalFactory.cpp Glitter/Headers/CodeMonkeys/TheGauntlet/Collision/ShipPortalCollisionResponse.h Glitter/Sources/CodeMonkeys/TheGauntlet/Collision/ShipPortalCollisionResponse.cpp)
 target_link_libraries(${PROJECT_NAME} assimp glfw
                       ${GLFW_LIBRARIES} ${GLAD_LIBRARIES}
                       BulletDynamics BulletCollision LinearMath)

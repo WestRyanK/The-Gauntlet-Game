@@ -18,6 +18,7 @@
 #include "CodeMonkeys/Engine/Collision/GridCollisionDetector.h"
 #include "CodeMonkeys/Engine/Collision/SimpleCollisionDetector.h"
 #include "CodeMonkeys/TheGauntlet/Collision/ShipAsteroidCollisionResponse.h"
+#include "CodeMonkeys/TheGauntlet/Collision/ShipPortalCollisionResponse.h"
 #include "CodeMonkeys/TheGauntlet/Collision/ProjectileAsteroidCollisionResponse.h"
 #include "CodeMonkeys/TheGauntlet/Collision/AsteroidAsteroidCollisionResponse.h"
 #include "CodeMonkeys/Engine/Objects/Billboard.h"
@@ -120,6 +121,7 @@ void TheGauntletEngine::init()
     this->collision_responses.insert(new ShipAsteroidCollisionResponse(this));
     this->collision_responses.insert(new AsteroidAsteroidCollisionResponse(this));
     this->collision_responses.insert(new ProjectileAsteroidCollisionResponse(this));
+    this->collision_responses.insert(new ShipPortalCollisionResponse(this));
 
     this->renderer = new Renderer(this->get_window(), this->get_width(), this->get_height());
     // this->renderer = new FrameBufferRenderer(this->get_window(), this->get_width(), this->get_height());
@@ -127,7 +129,7 @@ void TheGauntletEngine::init()
 }
 
 void TheGauntletEngine::setup_course() {
-    const int S = 800;
+    const int S = 1000;
     const int T = 800;
     const int V = 25;
     const int A = 60;
@@ -140,11 +142,11 @@ void TheGauntletEngine::setup_course() {
         asteroid->set_angular_velocity(vec3(rand() % A - A / 2, rand() % A - A / 2, rand() % A - A / 2));
     }
 
-    auto checker = new BoundaryChecker(T, T, S, -T, -T, 0);
+    auto checker = new BoundaryChecker(T, T, -S, -T, -T, 0);
     this->set_boundary_checker(checker);
 
     // Draw Portal
     auto portal = CodeMonkeys::TheGauntlet::GameObjects::PortalFactory::create_portal();
-    portal->set_position(vec3(0, 0, S));
+    portal->set_position(vec3(0, 0, -S));
     this->world_root->add_child(portal);
 }

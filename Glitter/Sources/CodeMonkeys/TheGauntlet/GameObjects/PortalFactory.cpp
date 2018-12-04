@@ -16,8 +16,9 @@ vector<Material*> PortalFactory::materials = vector<Material*>();
 
 void PortalFactory::init(ShaderProgram* shader)
 {
-    auto texture = new Texture("Assets/Textures/portal-texture.jpg");
-    Material* material = new TextureMaterial(shader, false, 1.0f, vec3(1.0f, 1.0f, 1.0f), texture);
+    //auto texture = new Texture("Assets/Textures/portal-texture.jpg");
+    //Material* material = new TextureMaterial(shader, false, 1.0f, vec3(1.0f, 1.0f, 1.0f), texture);
+    Material* material = new ColorMaterial(shader, true, 10.0f, vec3(0.8f), vec3(0.6f, 0.6f, 0.9f));
     vector<Material*> materials;
     materials.push_back(material);
     PortalFactory::materials = materials;
