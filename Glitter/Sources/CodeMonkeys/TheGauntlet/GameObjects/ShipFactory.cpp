@@ -51,6 +51,7 @@ Ship* ShipFactory::create_x_wing_ship()
     // const float MIN_Z_VELOCITY = 5;
 
     Weapon* laser_turret = new LaserTurret(ShipFactory::projectile_shader, ShipFactory::projectile_emitter);
+    laser_turret->set_position(vec3(12,1,0));
     Weapon* laser_cannon = new LaserCannon(ShipFactory::projectile_shader, ShipFactory::projectile_emitter);
 
     Ship* ship = new Ship(model, "x_wing_ship",

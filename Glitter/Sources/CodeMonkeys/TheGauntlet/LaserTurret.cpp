@@ -23,11 +23,22 @@ LaserTurret::LaserTurret(ShaderProgram* shader, ParticleEmitter* projectile_emit
     this->projectile_prototype = new Projectile(model, projectile_billboard, "laser_turret_particle", 5, projectile_emitter, 1);
 
     BoundingMultiSphere* bounding_multisphere = new BoundingMultiSphere(vec3(), vec3());
-    bounding_multisphere->add_sphere(new BoundingSphere(vec3(0.0f, 0.0f, 0.0f), 5.0f));
-    bounding_multisphere->add_sphere(new BoundingSphere(vec3(0.0f, 0.0f, -5.0f), 5.0f));
-    bounding_multisphere->add_sphere(new BoundingSphere(vec3(0.0f, 0.0f, -10.0f), 5.0f));
-    bounding_multisphere->add_sphere(new BoundingSphere(vec3(0.0f, 0.0f, 15.0f), 5.0f));
-    bounding_multisphere->add_sphere(new BoundingSphere(vec3(0.0f, 0.0f, 20.0f), 5.0f));
-    bounding_multisphere->add_sphere(new BoundingSphere(vec3(0.0f, 0.0f, 5.0f), 5.0f));
+    float r = 6;
+    bounding_multisphere->add_sphere(new BoundingSphere(vec3(0.0f, 0.0f, 0.0f), r));
+    bounding_multisphere->add_sphere(new BoundingSphere(vec3(0.0f, 0.0f, -5.0f), r));
+    bounding_multisphere->add_sphere(new BoundingSphere(vec3(0.0f, 0.0f, -10.0f), r));
+    bounding_multisphere->add_sphere(new BoundingSphere(vec3(0.0f, 0.0f, 15.0f), r));
+    bounding_multisphere->add_sphere(new BoundingSphere(vec3(0.0f, 0.0f, 20.0f), r));
+    bounding_multisphere->add_sphere(new BoundingSphere(vec3(0.0f, 0.0f, -15.0f), r));
+    bounding_multisphere->add_sphere(new BoundingSphere(vec3(0.0f, 0.0f, -20.0f), r));
+    bounding_multisphere->add_sphere(new BoundingSphere(vec3(0.0f, 0.0f, 5.0f), r));
     this->projectile_prototype->set_collision_region(bounding_multisphere);
+}
+
+void LaserTurret::on_fire()
+{
+    vec3 new_position = this->get_position();
+    new_position.x = -new_position.x;
+    this->set_position(new_position);
+    Weapon::on_fire();
 }
