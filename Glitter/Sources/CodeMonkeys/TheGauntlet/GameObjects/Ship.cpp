@@ -1,5 +1,5 @@
 #include "CodeMonkeys/TheGauntlet/GameObjects/Ship.h"
-#include "CodeMonkeys/TheGauntlet/IDamageable.h"
+#include "CodeMonkeys/TheGauntlet/Weapons/IDamageable.h"
 #include <string>
 #include "CodeMonkeys/TheGauntlet/IFlyable.h"
 #include "CodeMonkeys/Engine/Control/IControllable.h"
@@ -8,6 +8,7 @@
 
 using CodeMonkeys::TheGauntlet::GameObjects::Ship;
 using namespace CodeMonkeys::TheGauntlet;
+using namespace CodeMonkeys::TheGauntlet::Weapons;
 
 const float maxVerticalAngle = 45.0f;
 const float maxLateralAccleration = 1.0f;
@@ -49,8 +50,10 @@ Ship::Ship(Model3D* model, std::string name,
     this->bounding_multisphere->add_sphere(new BoundingSphere(vec3(-11.0f, 0.0f, 3.0f), 3.0f));
     this->bounding_multisphere->add_sphere(new BoundingSphere(vec3(11.0f, 0.0f, 3.0f), 3.0f));
 
-    this->add_child(this->primary_weapon);
-    this->add_child(this->secondary_weapon);
+    if (this->primary_weapon != NULL)
+        this->add_child(this->primary_weapon);
+    if (this->secondary_weapon != NULL)
+        this->add_child(this->secondary_weapon);
 }
 
 void Ship::on_death()

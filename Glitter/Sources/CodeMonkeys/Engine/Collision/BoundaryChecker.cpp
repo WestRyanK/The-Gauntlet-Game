@@ -5,9 +5,12 @@ using namespace CodeMonkeys::Engine::Collision;
 void BoundaryChecker::check_boundary(Object3D* obj)
 {
     // TODO: Dynamic casts are extremely expensive at runtime, consider doing object type enums instead
-    auto phys_obj = dynamic_cast<PhysicalObject3D*> (obj);
-    if (phys_obj != NULL)
-        check_boundary(phys_obj);
+    if (obj != NULL)
+    {
+        auto phys_obj = dynamic_cast<PhysicalObject3D*> (obj);
+        if (phys_obj != NULL)
+            check_boundary(phys_obj);
+    }
 }
 
 void BoundaryChecker::check_boundary(PhysicalObject3D* obj)

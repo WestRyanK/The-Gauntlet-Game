@@ -1,7 +1,7 @@
 #include "CodeMonkeys/TheGauntlet/Collision/ProjectileAsteroidCollisionResponse.h"
 #include "CodeMonkeys/TheGauntlet/GameObjects/Asteroid.h"
 #include "CodeMonkeys/TheGauntlet/GameObjects/Ship.h"
-#include "CodeMonkeys/TheGauntlet/Projectile.h"
+#include "CodeMonkeys/TheGauntlet/Weapons/Projectile.h"
 #include "CodeMonkeys/Engine/Engine/GameEngine.h"
 #include "CodeMonkeys/Engine/Objects/ParticleEmitter.h"
 
@@ -11,6 +11,7 @@ using namespace CodeMonkeys::TheGauntlet::GameObjects;
 using namespace CodeMonkeys::TheGauntlet;
 using namespace CodeMonkeys::Engine::Engine;
 using namespace CodeMonkeys::Engine::Objects;
+using namespace CodeMonkeys::TheGauntlet::Weapons;
 
 ProjectileAsteroidCollisionResponse::ProjectileAsteroidCollisionResponse(CodeMonkeys::Engine::Engine::GameEngine* engine) : ICollisionResponse(engine) 
 {

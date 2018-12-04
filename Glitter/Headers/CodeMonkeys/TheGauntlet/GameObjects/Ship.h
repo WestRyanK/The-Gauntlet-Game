@@ -2,9 +2,9 @@
 
 #include <string>
 #include "glitter.hpp"
-#include "CodeMonkeys/TheGauntlet/Weapon.h"
+#include "CodeMonkeys/TheGauntlet/Weapons/Weapon.h"
 #include "CodeMonkeys/TheGauntlet/IFlyable.h"
-#include "CodeMonkeys/TheGauntlet/IDamageable.h"
+#include "CodeMonkeys/TheGauntlet/Weapons/IDamageable.h"
 #include "CodeMonkeys/Engine/Control/IControllable.h"
 #include "CodeMonkeys/Engine/Objects/PhysicalObject3D.h"
 #include "CodeMonkeys/Engine/Assets/Model3D.h"
@@ -14,6 +14,7 @@ using namespace CodeMonkeys::TheGauntlet;
 using namespace CodeMonkeys::Engine::Control;
 using namespace CodeMonkeys::Engine::Objects;
 using namespace CodeMonkeys::Engine::Assets;
+using namespace CodeMonkeys::TheGauntlet::Weapons;
 
 namespace CodeMonkeys::TheGauntlet::GameObjects
 {

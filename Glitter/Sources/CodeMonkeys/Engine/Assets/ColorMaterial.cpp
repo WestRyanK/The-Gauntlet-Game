@@ -12,6 +12,20 @@ ColorMaterial::ColorMaterial(ShaderProgram* shader, bool use_phong_highlight, fl
 void ColorMaterial::apply_material_to_shader()
 {
     Material::apply_material_to_shader();
+    this->apply_color_to_shader();
+}
 
+void ColorMaterial::apply_color_to_shader()
+{
     this->shader->setUniform("object_color", this->color);
+}
+
+vec3 ColorMaterial::get_color()
+{
+    return this->color;
+}
+
+void ColorMaterial::set_color(vec3 color)
+{
+    this->color = color;
 }
