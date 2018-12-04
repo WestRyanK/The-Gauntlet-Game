@@ -5,6 +5,7 @@ using CodeMonkeys::TheGauntlet::IDamageable;
 IDamageable::IDamageable(unsigned int initial_health, unsigned int max_health)
 {
     this->initial_health = initial_health;
+    this->max_health = max_health;
     this->reset_health();
 }
 
@@ -13,10 +14,9 @@ unsigned int IDamageable::get_health()
     return this->health;
 }
 
-void IDamageable::inflict_damage(unsigned int damage_amount)
+void IDamageable::take_damage(unsigned int damage_amount)
 {
     this->health -= damage_amount;
-    this->max_health = max_health;
 
     if (this->health <= 0)
     {
@@ -24,7 +24,7 @@ void IDamageable::inflict_damage(unsigned int damage_amount)
     }
 }
 
-void IDamageable::heal_damamge(unsigned int heal_amount)
+void IDamageable::heal_health(unsigned int heal_amount)
 {
     this->health += heal_amount;
 

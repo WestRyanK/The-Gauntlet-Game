@@ -1,5 +1,6 @@
 #pragma once
 
+#include "CodeMonkeys/Engine/Objects/Billboard.h";
 #include "CodeMonkeys/Engine/Objects/PhysicalObject3D.h"
 #include "CodeMonkeys/Engine/Collision/BoundingMultiSphere.h"
 
@@ -15,10 +16,11 @@ namespace CodeMonkeys::Engine::Objects
         float current_lifespan;
         ParticleEmitter* emitter = NULL;
         BoundingMultiSphere* collision_region = NULL;
+        Billboard* billboard = NULL;
     public:
-        Particle(Model3D* model, string name, float total_lifespan, ParticleEmitter* emitter);
+        Particle(Model3D* model, Billboard* billboard, string name, float total_lifespan, ParticleEmitter* emitter);
         virtual Particle* clone();
-        void update(float dt);
+        virtual void update(float dt);
         ParticleEmitter* get_emitter();
         virtual void draw(mat4 total_transform, ShaderProgram* shader);
         void set_collision_region(BoundingMultiSphere* collision_region);
