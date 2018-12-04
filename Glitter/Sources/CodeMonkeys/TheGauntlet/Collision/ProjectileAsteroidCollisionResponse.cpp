@@ -4,7 +4,6 @@
 #include "CodeMonkeys/TheGauntlet/Projectile.h"
 #include "CodeMonkeys/Engine/Engine/GameEngine.h"
 #include "CodeMonkeys/Engine/Objects/ParticleEmitter.h"
-#include "CodeMonkeys/Engine/Objects/BillboardParticle.h"
 
 using CodeMonkeys::TheGauntlet::Collision::ProjectileAsteroidCollisionResponse;
 using namespace glm;
@@ -20,7 +19,7 @@ ProjectileAsteroidCollisionResponse::ProjectileAsteroidCollisionResponse(CodeMon
 
     AnimatedTexture* explosion_animation = new AnimatedTexture("Assets/Textures/Explosions/explosion_03/explosion", "png", 64);
     Billboard* explosion_billboard = new Billboard("projectile_impact_billboard", explosion_animation, 80, 80);
-    BillboardParticle* explosion_particle = new BillboardParticle(explosion_billboard, "projectile_impact_particle", 1, this->projectile_impact_emitter);
+    Particle* explosion_particle = new Particle(NULL, explosion_billboard, "projectile_impact_particle", 1, this->projectile_impact_emitter);
     projectile_impact_emitter->set_particle(explosion_particle);
 }
 

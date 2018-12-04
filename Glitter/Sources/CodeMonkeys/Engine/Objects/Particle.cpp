@@ -4,27 +4,38 @@
 using CodeMonkeys::Engine::Objects::Particle;
 using namespace CodeMonkeys::Engine::Objects;
 
-Particle::Particle(Model3D* model, string name, float total_lifespan, ParticleEmitter* emitter) : PhysicalObject3D(model, name)
+Particle::Particle(Model3D* model, Billboard* billboard, string name, float total_lifespan, ParticleEmitter* emitter) : PhysicalObject3D(model, name)
 {
     this->total_lifespan = total_lifespan;
     this->current_lifespan = 0;
     this->emitter = emitter;
+    this->billboard = billboard;
 }
 
 Particle* Particle::clone()
 {
-    Particle* particle_clone = new Particle(this->model, this->name, this->total_lifespan, this->emitter);
+    Particle* particle_clone = new Particle(this->model, this->billboard, this->name, this->total_lifespan, this->emitter);
     particle_clone->set_angular_velocity(this->get_angular_velocity());
     particle_clone->set_velocity(this->get_velocity());
     particle_clone->set_position(this->get_position());
     particle_clone->set_rotation(this->get_rotation());
     particle_clone->set_scale(this->get_scale());
     particle_clone->set_collision_region(this->collision_region);
+
+    if (this->billboard != NULL)
+    {
+        this->billboard->reset();
+    }
+
     return particle_clone;
 }
 
 void Particle::update(float dt)
 {
+    if (this->billboard != NULL)
+    {
+        this->billboard->update(dt);
+    }
     PhysicalObject3D::update(dt);
     if (this->collision_region != NULL)
     {
@@ -45,6 +56,11 @@ ParticleEmitter* Particle::get_emitter()
 
 void Particle::draw(mat4 total_transform, ShaderProgram* shader)
 {
+    if (this->billboard != NULL)
+    {
+        this->billboard->draw(total_transform, shader);
+    }
+
     PhysicalObject3D::draw(total_transform, shader);
 }
 

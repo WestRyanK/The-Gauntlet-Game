@@ -1,5 +1,6 @@
 #include "CodeMonkeys/TheGauntlet/LaserCannon.h"
 #include "CodeMonkeys/Engine/Assets/ColorMaterial.h"
+#include "CodeMonkeys/Engine/Assets/AnimatedTexture.h"
 #include "CodeMonkeys/Engine/Objects/Particle.h"
 #include "CodeMonkeys/TheGauntlet/GravityProjectile.h"
 
@@ -10,10 +11,10 @@ LaserCannon::LaserCannon(ShaderProgram* shader, ParticleEmitter* projectile_emit
     Material* projectile_material = new ColorMaterial(shader, true, 10.0f, vec3(0.8f), vec3(0.9f, 0.0f, 0.9f));
     vector<Material*> projectile_materials;
     projectile_materials.push_back(projectile_material);
-    mlModel* ml_model = new mlModel();
-    LoadModel("Assets", "crayon.obj", *ml_model);
-    Model3D* model = new Model3D(ml_model, projectile_materials);
-    this->projectile_prototype = new GravityProjectile(model, "laser_cannon_particle", 5, projectile_emitter, 5);
+    AnimatedTexture* projectile_animation = new AnimatedTexture("Assets/Textures/Projectiles/projectile_01/projectile", "png", 16);
+    Billboard* projectile_billboard = new Billboard("billboard_explosion", projectile_animation, 15, 15);
+    this->projectile_prototype = new GravityProjectile(NULL, projectile_billboard, "laser_cannon_particle", 5, projectile_emitter, 5);
+
 
     BoundingMultiSphere* bounding_multisphere = new BoundingMultiSphere(vec3(), vec3());
     bounding_multisphere->add_sphere(new BoundingSphere(vec3(0.0f, 0.0f, 0.0f), 10.0f));

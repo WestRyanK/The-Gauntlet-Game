@@ -4,7 +4,6 @@
 #include "CodeMonkeys/TheGauntlet/IDamageable.h"
 #include "CodeMonkeys/TheGauntlet/IInflicter.h"
 #include "CodeMonkeys/Engine/Collision/BoundingSphere.h"
-#include "CodeMonkeys/Engine/Objects/BillboardParticle.h"
 #include "CodeMonkeys/Engine/Objects/Billboard.h"
 #include "CodeMonkeys/Engine/Objects/ParticleEmitter.h"
 

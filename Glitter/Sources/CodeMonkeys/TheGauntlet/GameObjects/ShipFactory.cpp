@@ -4,7 +4,7 @@
 #include "CodeMonkeys/Engine/Assets/ModelLoader.h"
 #include "CodeMonkeys/Engine/Assets/ColorMaterial.h"
 #include "CodeMonkeys/Engine/Objects/ParticleEmitter.h"
-#include "CodeMonkeys/Engine/Objects/BillboardParticle.h"
+#include "CodeMonkeys/Engine/Objects/Particle.h"
 #include "CodeMonkeys/Engine/Assets/AnimatedTexture.h"
 #include "CodeMonkeys/TheGauntlet/LaserCannon.h"
 #include "CodeMonkeys/TheGauntlet/LaserTurret.h"
@@ -18,15 +18,17 @@ using namespace CodeMonkeys::Engine::Assets;
 using namespace CodeMonkeys::Engine::Objects;
 
 ParticleEmitter* ShipFactory::projectile_emitter = NULL;
+ShaderProgram* ShipFactory::projectile_shader = NULL;
 vector<Material*> ShipFactory::ship_materials = vector<Material*>();
 
-void ShipFactory::init(ShaderProgram* shader, ParticleEmitter* projectile_emitter)
+void ShipFactory::init(ShaderProgram* shader, ParticleEmitter* projectile_emitter, ShaderProgram* projectile_shader)
 {
     Material* ship_material = new ColorMaterial(shader, true, 10.0f, vec3(0.8f), vec3(0.9f, 0.9f, 0.9f));
     vector<Material*> materials;
     materials.push_back(ship_material);
     ShipFactory::ship_materials = materials;
     ShipFactory::projectile_emitter = projectile_emitter;
+    ShipFactory::projectile_shader = projectile_shader;
 }
 
 Ship* ShipFactory::create_x_wing_ship()
@@ -48,8 +50,8 @@ Ship* ShipFactory::create_x_wing_ship()
     const float MIN_Z_VELOCITY = 0;
     // const float MIN_Z_VELOCITY = 5;
 
-    Weapon* laser_turret = new LaserTurret(ship_materials[0]->get_shader(), ShipFactory::projectile_emitter);
-    Weapon* laser_cannon = new LaserCannon(ship_materials[0]->get_shader(), ShipFactory::projectile_emitter);
+    Weapon* laser_turret = new LaserTurret(ShipFactory::projectile_shader, ShipFactory::projectile_emitter);
+    Weapon* laser_cannon = new LaserCannon(ShipFactory::projectile_shader, ShipFactory::projectile_emitter);
 
     Ship* ship = new Ship(model, "x_wing_ship",
                           INTITIAL_HEALTH, MAX_HEALTH,
@@ -68,7 +70,7 @@ Ship* ShipFactory::create_x_wing_ship()
 
     AnimatedTexture* explosion_animation = new AnimatedTexture("Assets/Textures/Explosions/explosion_01/explosion", "png", 64);
     Billboard* explosion_billboard = new Billboard("billboard_explosion", explosion_animation, 80, 80);
-    BillboardParticle* explosion_particle = new BillboardParticle(explosion_billboard, "explosion_particle", 1, ship_explosion_emitter);
+    Particle* explosion_particle = new Particle(NULL, explosion_billboard, "explosion_particle", 1, ship_explosion_emitter);
     ship_explosion_emitter->set_particle(explosion_particle);
 
     return ship;

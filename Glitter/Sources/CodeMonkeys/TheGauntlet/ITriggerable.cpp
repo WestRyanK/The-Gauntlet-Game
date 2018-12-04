@@ -7,7 +7,7 @@ ITriggerable::ITriggerable(float recharge_delay, bool is_automatic_fire)
 {
     this->recharge_delay = recharge_delay;
     this->is_automatic_fire = is_automatic_fire;
-    this->recharge_time_elapsed = 0.0f;
+    this->recharge_time_elapsed = this->recharge_delay;
     this->was_trigger_held = true;
 
     this->recharge_timer.get_seconds_from_last_measurement();
