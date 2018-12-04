@@ -10,7 +10,8 @@ namespace CodeMonkeys::TheGauntlet
     class Projectile : public Particle, public IInflicter
     {
     public:
-        Projectile(Model3D* model, string name, float total_lifespan, ParticleEmitter* emitter, unsigned int inflict_amount);
+        Projectile(Model3D* model, Billboard* billboard, string name, float total_lifespan, ParticleEmitter* emitter, unsigned int inflict_amount);
         virtual Particle* clone();
+        virtual void update(float dt);
     };
 }

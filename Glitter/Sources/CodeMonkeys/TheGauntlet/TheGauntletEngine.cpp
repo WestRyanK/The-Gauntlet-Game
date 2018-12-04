@@ -20,7 +20,7 @@
 #include "CodeMonkeys/TheGauntlet/Collision/AsteroidAsteroidCollisionResponse.h"
 #include "CodeMonkeys/Engine/Objects/Billboard.h"
 #include "CodeMonkeys/Engine/Objects/ParticleEmitter.h"
-#include "CodeMonkeys/Engine/Objects/BillboardParticle.h"
+#include "CodeMonkeys/Engine/Objects/Particle.h"
 #include "CodeMonkeys/Engine/Assets/AnimatedTexture.h"
 
 using namespace std;
@@ -79,16 +79,18 @@ void TheGauntletEngine::init()
     this->set_collision_detector(new GridCollisionDetector(vec3(1000), vec3(-1000), 50)); // this->set_collision_detector(new SimpleCollisionDetector());
 
     ShaderProgram* shader = new ShaderProgram("Shaders/basic.vert", "Shaders/basic.frag");
+    ShaderProgram* projectile_shader = new ShaderProgram("Shaders/basic.vert", "Shaders/self_illuminated.frag");
     // Make sure that every shader used in the scene is added to the engine's list of shaders so
     // that lighting can be calculated.
     this->shaders.insert(shader);
+    this->shaders.insert(projectile_shader);
     Billboard::init_billboard_class();
     this->shaders.insert(Billboard::get_shader());
     CodeMonkeys::TheGauntlet::GameObjects::AsteroidFactory::init_asteroid_factory(0, shader);
     CodeMonkeys::TheGauntlet::GameObjects::Asteroid::init(this->world_root);
     ParticleEmitter* projectile_emitter = new ParticleEmitter("projectile_emitter");
     this->world_root->add_child(projectile_emitter);
-    CodeMonkeys::TheGauntlet::GameObjects::ShipFactory::init(shader, projectile_emitter);
+    CodeMonkeys::TheGauntlet::GameObjects::ShipFactory::init(shader, projectile_emitter, projectile_shader);
     this->init_skybox();
     
 

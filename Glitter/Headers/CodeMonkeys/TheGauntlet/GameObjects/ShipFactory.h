@@ -14,8 +14,9 @@ namespace CodeMonkeys::TheGauntlet::GameObjects
     private:
         static ParticleEmitter* projectile_emitter;
         static vector<Material*> ship_materials;
+        static ShaderProgram* projectile_shader;
     public:
         static Ship* create_x_wing_ship();
-        static void init(ShaderProgram* shader, ParticleEmitter* projectile_emitter);
+        static void init(ShaderProgram* shader, ParticleEmitter* projectile_emitter, ShaderProgram* projectile_shader);
     };
 }
