@@ -16,6 +16,7 @@ namespace CodeMonkeys::Engine::Assets
         TextureMaterial(ShaderProgram* shader, bool use_phong_highlight, float phong_exponent, vec3 phong_color, vec3 color, Texture* texture);
         TextureMaterial(ShaderProgram* shader, bool use_phong_highlight, float phong_exponent, vec3 phong_color, Texture* texture);
         Texture* get_texture();
+        virtual Material* clone();
         virtual void apply_material_to_shader();
         virtual int get_material_type_id() { return 2; };
     };

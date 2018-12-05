@@ -18,7 +18,14 @@ void GravityProjectile::update(float dt)
 
 Particle* GravityProjectile::clone()
 {
-    GravityProjectile* projectile_clone = new GravityProjectile(this->model, this->billboard, this->name, this->total_lifespan, this->emitter, this->get_inflict_amount());
+    Model3D* model_clone = NULL;
+    Billboard* billboard_clone = NULL;
+    if (this->model != NULL)
+        model_clone = this->model->clone();
+    if (this->billboard != NULL)
+        billboard_clone = this->billboard->clone();
+
+    GravityProjectile* projectile_clone = new GravityProjectile(model_clone, billboard_clone, this->name, this->total_lifespan, this->emitter, this->get_inflict_amount());
     projectile_clone->set_angular_velocity(this->get_angular_velocity());
     projectile_clone->set_velocity(this->get_velocity());
     projectile_clone->set_position(this->get_position());

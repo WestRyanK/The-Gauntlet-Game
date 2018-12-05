@@ -1,24 +1,29 @@
 #include "CodeMonkeys/Engine/Assets/AnimatedTexture.h"
+#include "CodeMonkeys/Engine/Assets/Texture.h"
 #include <sstream>
 #include <string>
 #include <iostream>
 
 using CodeMonkeys::Engine::Assets::AnimatedTexture;
+using namespace CodeMonkeys::Engine::Assets;
 
 AnimatedTexture::AnimatedTexture(const char* filename, const char* extension, int count) : Texture(NULL)
 {
-    this->frames = new Texture*[count] { 0 };
-    for (int i = 0; i < count; i++)
+    if (filename != NULL && extension != NULL && count > 0)
     {
-        std::ostringstream os;
-        os << filename << "_" << i << "." << extension;
-        string s = os.str();
-        Texture* texture = new Texture(s.c_str());
-        this->frames[i] = texture;
-    }
+        this->frames = new Texture*[count] { 0 };
+        for (int i = 0; i < count; i++)
+        {
+            std::ostringstream os;
+            os << filename << "_" << i << "." << extension;
+            string s = os.str();
+            Texture* texture = new Texture(s.c_str());
+            this->frames[i] = texture;
+        }
 
-    this->current_frame = 0;
-    this->frame_count = count;
+        this->current_frame = 0;
+        this->frame_count = count;
+    }
 }
 
 void AnimatedTexture::set_current_frame(int frame)
@@ -74,4 +79,14 @@ void AnimatedTexture::set_animation_speed(int animation_speed)
 void AnimatedTexture::reset()
 {
     this->set_current_frame(0);
+}
+
+Texture* AnimatedTexture::clone()
+{
+    AnimatedTexture* texture_clone = new AnimatedTexture(NULL, NULL, 0);
+    texture_clone->frames = this->frames;
+    texture_clone->frame_count = this->frame_count;
+    texture_clone->current_frame = 0;
+    texture_clone->animation_speed = this->animation_speed;
+    return texture_clone;
 }

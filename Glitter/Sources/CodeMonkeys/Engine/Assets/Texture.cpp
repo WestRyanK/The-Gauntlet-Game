@@ -69,3 +69,13 @@ void Texture::reset()
 {
 
 }
+
+Texture* Texture::clone()
+{
+    Texture* texture_clone = new Texture(NULL);
+    texture_clone->width = this->width;
+    texture_clone->height = this->height;
+    texture_clone->channel_count = this->channel_count;
+    texture_clone->texture_id = this->texture_id;
+    texture_clone->texture_path = this->texture_path;
+}

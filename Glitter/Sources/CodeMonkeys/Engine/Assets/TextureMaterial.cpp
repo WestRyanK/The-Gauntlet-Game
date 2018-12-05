@@ -23,3 +23,9 @@ void TextureMaterial::apply_material_to_shader()
     glBindTexture(GL_TEXTURE_2D, this->texture->get_texture_id());
     this->shader->setUniform("texture_0", 0);
 }
+
+Material* TextureMaterial::clone()
+{
+    Material* material_clone = new TextureMaterial(this->shader, this->use_phong_highlight, this->phong_exponent, this->phong_color, this->color, this->texture->clone());
+    return material_clone;
+}

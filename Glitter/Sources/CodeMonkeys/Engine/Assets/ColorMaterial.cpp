@@ -29,3 +29,9 @@ void ColorMaterial::set_color(vec3 color)
 {
     this->color = color;
 }
+
+Material* ColorMaterial::clone()
+{
+    Material* material_clone = new ColorMaterial(this->shader, this->use_phong_highlight, this->phong_exponent, this->phong_color, this->color);
+    return material_clone;
+}

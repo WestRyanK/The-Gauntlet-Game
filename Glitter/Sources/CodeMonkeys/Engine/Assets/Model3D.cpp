@@ -6,12 +6,19 @@ using CodeMonkeys::Engine::Assets::Model3D;
 
 Model3D::Model3D(mlModel* ml_model, vector<Material*> materials)
 {
-    for (int i = 0; i < ml_model->meshes.size(); i++)
+    if (ml_model != NULL)
     {
-        this->create_vao_ebo(ml_model->meshes[i]);
+        for (int i = 0; i < ml_model->meshes.size(); i++)
+        {
+            this->create_vao_ebo(ml_model->meshes[i]);
+        }
     }
     
-    this->materials = materials;
+    this->ml_model = ml_model;
+    for (int i = 0; i < materials.size(); i++)
+    {
+        this->materials.push_back(materials[i]);
+    }
 }
 
 void Model3D::create_vao_ebo(mlMesh* mesh)
@@ -60,4 +67,20 @@ void Model3D::draw(mat4 transform, ShaderProgram* shader)
             glBindVertexArray(0);
         }
     }
+}
+
+Model3D* Model3D::clone()
+{
+    vector<Material*> materials_clone;
+    for(int i = 0; i < this->materials.size(); i++)
+    {
+        Material* material_clone = this->materials[i]->clone();
+        materials_clone.push_back(material_clone);
+    }
+    Model3D* model_clone = new Model3D(NULL, materials_clone);
+    model_clone->vaos = this->vaos;
+    model_clone->ml_model = this->ml_model;
+    model_clone->ebos = this->ebos;
+    model_clone->ebo_sizes = this->ebo_sizes;
+    return model_clone;
 }
