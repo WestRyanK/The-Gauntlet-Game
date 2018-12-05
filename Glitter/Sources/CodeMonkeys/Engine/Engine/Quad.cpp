@@ -50,6 +50,8 @@ Quad::Quad(float x, float y, float width, float height)
 
 void Quad::draw()
 { 
+    glDepthMask(GL_FALSE);
+    glDepthFunc(GL_ALWAYS);
     Quad::quad_shader->use_program();
 
     // // Bind our texture in Texture Unit 0
@@ -65,6 +67,8 @@ void Quad::draw()
 
     glBindVertexArray(0);
     // glBindTexture(GL_TEXTURE_2D, 0);
+    glDepthFunc(GL_LESS);
+    glDepthMask(GL_TRUE);
 }
 
 void Quad::set_texture(GLuint texture)

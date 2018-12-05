@@ -50,5 +50,7 @@ namespace CodeMonkeys::TheGauntlet::GameObjects
             Weapon* secondary_weapon);
 
         ICollisionRegion* get_collision_region();
+        Weapon* get_primary_weapon();
+        Weapon* get_secondary_weapon();
     };
 }

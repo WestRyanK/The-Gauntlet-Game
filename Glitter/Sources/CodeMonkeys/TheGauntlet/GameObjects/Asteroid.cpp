@@ -16,6 +16,8 @@ using namespace CodeMonkeys::TheGauntlet::Weapons;
 
 ParticleEmitter* Asteroid::asteroid_death_emitter = NULL;
 Billboard* Asteroid::asteroid_death_billboard = NULL;
+sf::SoundBuffer* Asteroid::sound_buffer = NULL;
+sf::Sound* Asteroid::sound = NULL;
 
 Asteroid::Asteroid(Model3D* model, unsigned int size_class, unsigned int health, float size, unsigned int inflict_amount) : PhysicalObject3D(model, "asteroid"), IDamageable(health, health), IInflicter(inflict_amount)
 {
@@ -34,6 +36,12 @@ void Asteroid::init(Object3D* world_root)
     Asteroid::asteroid_death_billboard = new Billboard("projectile_impact_billboard", asteroid_death_animation, 120, 120);
     Particle* asteroid_death_particle = new Particle(NULL, asteroid_death_billboard, "asteroid_death_particle", 1.5, Asteroid::asteroid_death_emitter);
     Asteroid::asteroid_death_emitter->set_particle(asteroid_death_particle);
+
+    Asteroid::sound = new sf::Sound();
+    Asteroid::sound_buffer = new sf::SoundBuffer();
+    if (!Asteroid::sound_buffer->loadFromFile("Assets/Explosions/Explosion_02/explosion_02.wav"))
+        printf("Could not load 'explosion_02.wav' file!\n");
+    Asteroid::sound->setBuffer(*Asteroid::sound_buffer);
 }
 
 void Asteroid::update(float dt)
@@ -59,6 +67,8 @@ float Asteroid::get_size()
 
 void Asteroid::on_death()
 {
+    Asteroid::sound->play();
+
     if (this->size_class > 1)
     {
         const int MAX_VELOCITY = 20;
@@ -72,7 +82,6 @@ void Asteroid::on_death()
     }
     else
     {
-
     }
     Asteroid::asteroid_death_billboard->set_height(this->size * 20);
     Asteroid::asteroid_death_billboard->set_width(this->size * 20);

@@ -11,6 +11,11 @@ using namespace CodeMonkeys::Engine::Objects;
 
 ShipAsteroidCollisionResponse::ShipAsteroidCollisionResponse(CodeMonkeys::Engine::Engine::GameEngine* engine) : ICollisionResponse(engine) 
 {
+    this->sound_buffer = new sf::SoundBuffer();
+    if (!this->sound_buffer->loadFromFile("Assets/Explosions/Explosion_01/explosion_01.wav"))
+        printf("Could not load 'explosion_01.wav' file!\n");
+    this->sound = new sf::Sound();
+    this->sound->setBuffer(*this->sound_buffer);
 }
 
 bool ShipAsteroidCollisionResponse::can_respond(Object3D* object_a, Object3D* object_b)
@@ -37,6 +42,8 @@ void ShipAsteroidCollisionResponse::respond(Object3D* object_a, Object3D* object
 
     if (asteroid != NULL && asteroid->get_parent() != NULL)
     {
+        this->sound->play();
+
         asteroid->inflict_damage(ship);
         asteroid->get_parent()->remove_child(asteroid);
         ParticleEmitter* emitter = NULL;

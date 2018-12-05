@@ -1,5 +1,6 @@
 #pragma once
 
+#include <SFML/Audio.hpp>
 #include "CodeMonkeys/Engine/Collision/ICollisionResponse.h"
 #include "CodeMonkeys/Engine/Assets/AnimatedTexture.h"
 #include "CodeMonkeys/Engine/Objects/Billboard.h"
@@ -11,11 +12,12 @@ namespace CodeMonkeys::TheGauntlet::Collision
 {
     class ShipAsteroidCollisionResponse : public ICollisionResponse
     {
-    public:
+    private:
+        sf::SoundBuffer* sound_buffer = NULL;
+        sf::Sound* sound = NULL;
 
-        ShipAsteroidCollisionResponse(
-        // );
-        CodeMonkeys::Engine::Engine::GameEngine* engine);
+    public:
+        ShipAsteroidCollisionResponse( CodeMonkeys::Engine::Engine::GameEngine* engine);
         virtual bool can_respond(Object3D* object_a, Object3D* object_b);
         virtual void respond(Object3D* object_a, Object3D* object_b, float dt);
     };

@@ -30,10 +30,12 @@ include_directories(Glitter/Headers/
                     Glitter/Headers/CodeMonkeys/Engine/Control/
                     Glitter/Headers/CodeMonkeys/Engine/Engine/
                     Glitter/Headers/CodeMonkeys/Engine/Objects/
+                    Glitter/Headers/CodeMonkeys/Engine/UI/
                     Glitter/Headers/CodeMonkeys/TheGauntlet/
                     Glitter/Headers/CodeMonkeys/TheGauntlet/Control/
                     Glitter/Headers/CodeMonkeys/TheGauntlet/GameObjects/
                     Glitter/Headers/CodeMonkeys/TheGauntlet/Weapons/
+                    Glitter/Headers/CodeMonkeys/TheGauntlet/UI/
                     Glitter/Headers/CodeMonkeys/TheGauntlet/Collision/
                     Glitter/Vendor/assimp/include/
                     Glitter/Vendor/bullet/src/
@@ -50,10 +52,12 @@ file(GLOB PROJECT_HEADERS Glitter/Headers/*.hpp
                           Glitter/Headers/CodeMonkeys/Engine/Control/*.h
                           Glitter/Headers/CodeMonkeys/Engine/Engine/*.h
                           Glitter/Headers/CodeMonkeys/Engine/Objects/*.h
+                          Glitter/Headers/CodeMonkeys/Engine/UI/*.h
                           Glitter/Headers/CodeMonkeys/TheGauntlet/*.h
                           Glitter/Headers/CodeMonkeys/TheGauntlet/Control/*.h
                           Glitter/Headers/CodeMonkeys/TheGauntlet/GameObjects/*.h
                           Glitter/Headers/CodeMonkeys/TheGauntlet/Weapons/*.h
+                          Glitter/Headers/CodeMonkeys/TheGauntlet/UI/*.h
                           Glitter/Headers/CodeMonkeys/TheGauntlet/Collision/*.h
                           )
 file(GLOB PROJECT_SOURCES Glitter/Sources/*.cpp
@@ -62,10 +66,12 @@ file(GLOB PROJECT_SOURCES Glitter/Sources/*.cpp
                           Glitter/Sources/CodeMonkeys/Engine/Control/*.cpp
                           Glitter/Sources/CodeMonkeys/Engine/Engine/*.cpp
                           Glitter/Sources/CodeMonkeys/Engine/Objects/*.cpp
+                          Glitter/Sources/CodeMonkeys/Engine/UI/*.cpp
                           Glitter/Sources/CodeMonkeys/TheGauntlet/*.cpp
                           Glitter/Sources/CodeMonkeys/TheGauntlet/Control/*.cpp
                           Glitter/Sources/CodeMonkeys/TheGauntlet/GameObjects/*.cpp
                           Glitter/Sources/CodeMonkeys/TheGauntlet/Weapons/*.cpp
+                          Glitter/Sources/CodeMonkeys/TheGauntlet/UI/*.cpp
                           Glitter/Sources/CodeMonkeys/TheGauntlet/Collision/*.cpp
 )
 file(GLOB PROJECT_SHADERS Glitter/Assets/Shaders/*.comp
@@ -83,6 +89,15 @@ source_group("Shaders" FILES ${PROJECT_SHADERS})
 source_group("Sources" FILES ${PROJECT_SOURCES})
 source_group("Vendors" FILES ${VENDORS_SOURCES})
 
+# Detect and add SFML
+set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/Glitter" ${CMAKE_MODULE_PATH})
+#Find any version 2.X of SFML
+#See the FindSFML.cmake file for additional details and instructions
+find_package(SFML 2 REQUIRED audio)
+  include_directories(${SFML_INCLUDE_DIR})
+
+
+
 add_definitions(-DGLFW_INCLUDE_NONE
                 -DPROJECT_SOURCE_DIR=\"${PROJECT_SOURCE_DIR}\")
 add_executable(${PROJECT_NAME} ${PROJECT_SOURCES} ${PROJECT_HEADERS}
@@ -90,7 +105,7 @@ add_executable(${PROJECT_NAME} ${PROJECT_SOURCES} ${PROJECT_HEADERS}
                                ${VENDORS_SOURCES} )
 target_link_libraries(${PROJECT_NAME} assimp glfw
                       ${GLFW_LIBRARIES} ${GLAD_LIBRARIES}
-                      BulletDynamics BulletCollision LinearMath)
+                      BulletDynamics BulletCollision LinearMath ${SFML_LIBRARIES} ${SFML_DEPENDENCIES})
 set_target_properties(${PROJECT_NAME} PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${PROJECT_NAME})
                        

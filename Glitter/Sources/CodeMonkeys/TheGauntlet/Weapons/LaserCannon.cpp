@@ -19,4 +19,9 @@ LaserCannon::LaserCannon(ShaderProgram* shader, ParticleEmitter* projectile_emit
     BoundingMultiSphere* bounding_multisphere = new BoundingMultiSphere(vec3(), vec3());
     bounding_multisphere->add_sphere(new BoundingSphere(vec3(0.0f, 0.0f, 0.0f), 10.0f));
     this->projectile_prototype->set_collision_region(bounding_multisphere);
+
+    this->sound_buffer = new sf::SoundBuffer();
+    if (!this->sound_buffer->loadFromFile("Assets/Projectiles/LaserCannon/laser_cannon.wav"))
+        printf("Could not load 'laser_cannon.wav' file!\n");
+    this->sound->setBuffer(*this->sound_buffer);
 }
