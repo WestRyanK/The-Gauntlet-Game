@@ -30,11 +30,12 @@ include_directories(Glitter/Headers/
                     Glitter/Headers/CodeMonkeys/Engine/Control/
                     Glitter/Headers/CodeMonkeys/Engine/Engine/
                     Glitter/Headers/CodeMonkeys/Engine/Objects/
-                    Glitter/Headers/CodeMonkeys/Engine/Sound/
+                    Glitter/Headers/CodeMonkeys/Engine/UI/
                     Glitter/Headers/CodeMonkeys/TheGauntlet/
                     Glitter/Headers/CodeMonkeys/TheGauntlet/Control/
                     Glitter/Headers/CodeMonkeys/TheGauntlet/GameObjects/
                     Glitter/Headers/CodeMonkeys/TheGauntlet/Weapons/
+                    Glitter/Headers/CodeMonkeys/TheGauntlet/UI/
                     Glitter/Headers/CodeMonkeys/TheGauntlet/Collision/
                     Glitter/Vendor/assimp/include/
                     Glitter/Vendor/bullet/src/
@@ -51,11 +52,12 @@ file(GLOB PROJECT_HEADERS Glitter/Headers/*.hpp
                           Glitter/Headers/CodeMonkeys/Engine/Control/*.h
                           Glitter/Headers/CodeMonkeys/Engine/Engine/*.h
                           Glitter/Headers/CodeMonkeys/Engine/Objects/*.h
-                          Glitter/Headers/CodeMonkeys/Engine/Sound/*.h
+                          Glitter/Headers/CodeMonkeys/Engine/UI/*.h
                           Glitter/Headers/CodeMonkeys/TheGauntlet/*.h
                           Glitter/Headers/CodeMonkeys/TheGauntlet/Control/*.h
                           Glitter/Headers/CodeMonkeys/TheGauntlet/GameObjects/*.h
                           Glitter/Headers/CodeMonkeys/TheGauntlet/Weapons/*.h
+                          Glitter/Headers/CodeMonkeys/TheGauntlet/UI/*.h
                           Glitter/Headers/CodeMonkeys/TheGauntlet/Collision/*.h
                           )
 file(GLOB PROJECT_SOURCES Glitter/Sources/*.cpp
@@ -64,11 +66,12 @@ file(GLOB PROJECT_SOURCES Glitter/Sources/*.cpp
                           Glitter/Sources/CodeMonkeys/Engine/Control/*.cpp
                           Glitter/Sources/CodeMonkeys/Engine/Engine/*.cpp
                           Glitter/Sources/CodeMonkeys/Engine/Objects/*.cpp
-                          Glitter/Sources/CodeMonkeys/Engine/Sound/*.cpp
+                          Glitter/Sources/CodeMonkeys/Engine/UI/*.cpp
                           Glitter/Sources/CodeMonkeys/TheGauntlet/*.cpp
                           Glitter/Sources/CodeMonkeys/TheGauntlet/Control/*.cpp
                           Glitter/Sources/CodeMonkeys/TheGauntlet/GameObjects/*.cpp
                           Glitter/Sources/CodeMonkeys/TheGauntlet/Weapons/*.cpp
+                          Glitter/Sources/CodeMonkeys/TheGauntlet/UI/*.cpp
                           Glitter/Sources/CodeMonkeys/TheGauntlet/Collision/*.cpp
 )
 file(GLOB PROJECT_SHADERS Glitter/Assets/Shaders/*.comp

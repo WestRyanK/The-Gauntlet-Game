@@ -319,3 +319,13 @@ ICollisionRegion* Ship::get_collision_region()
 {
     return this->bounding_multisphere;
 }
+
+Weapon* Ship::get_primary_weapon()
+{
+    return this->primary_weapon;
+}
+
+Weapon* Ship::get_secondary_weapon()
+{
+    return this->secondary_weapon;
+}

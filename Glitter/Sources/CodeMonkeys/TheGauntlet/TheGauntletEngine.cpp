@@ -22,7 +22,8 @@
 #include "CodeMonkeys/TheGauntlet/Collision/ShipPortalCollisionResponse.h"
 #include "CodeMonkeys/TheGauntlet/Collision/ProjectileAsteroidCollisionResponse.h"
 #include "CodeMonkeys/TheGauntlet/Collision/AsteroidAsteroidCollisionResponse.h"
-#include "CodeMonkeys/TheGauntlet/Healthbar.h"
+#include "CodeMonkeys/TheGauntlet/UI/HealthBar.h"
+#include "CodeMonkeys/TheGauntlet/UI/RechargeBar.h"
 #include "CodeMonkeys/Engine/Objects/Billboard.h"
 #include "CodeMonkeys/Engine/Objects/ParticleEmitter.h"
 #include "CodeMonkeys/Engine/Objects/Particle.h"
@@ -106,8 +107,15 @@ void TheGauntletEngine::init()
 
     setup_course();
 
-    Healthbar* healthbar = new Healthbar(ship, -1, 0.85, 0.5f, 0.15f);
-    this->quads.insert(healthbar);
+    HealthBar* health_bar = new HealthBar(ship, -1, 0.65, 0.75f, 0.40f);
+    this->quads.insert(health_bar);
+
+    if (ship->get_secondary_weapon() != NULL)
+    {
+        RechargeBar* recharge_bar = new RechargeBar(ship->get_secondary_weapon(), -1, 0.45f, 0.75f, 0.40f);
+        // RechargeBar* recharge_bar = new RechargeBar(ship->get_secondary_weapon(), -1, 0.65, 0.75f, 0.40f);
+        this->quads.insert(recharge_bar);
+    }
 
 //    Asteroid* asteroid = CodeMonkeys::TheGauntlet::GameObjects::AsteroidFactory::create_asteroid(2);
 //    this->world_root->add_child(asteroid);
