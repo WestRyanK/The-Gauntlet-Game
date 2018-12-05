@@ -25,5 +25,6 @@ namespace CodeMonkeys::Engine::Assets
         virtual const char* get_texture_path();
         virtual void update(float dt);
         virtual void reset();
+        virtual Texture* clone();
     };
 }

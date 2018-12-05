@@ -1,13 +1,14 @@
 #pragma once
 
 #include "CodeMonkeys/Engine/Objects/PhysicalObject3D.h"
-#include "CodeMonkeys/TheGauntlet/IDamageable.h"
-#include "CodeMonkeys/TheGauntlet/IInflicter.h"
+#include "CodeMonkeys/TheGauntlet/Weapons/IDamageable.h"
+#include "CodeMonkeys/TheGauntlet/Weapons/IInflicter.h"
 #include "CodeMonkeys/Engine/Collision/BoundingSphere.h"
 #include "CodeMonkeys/Engine/Objects/Billboard.h"
 #include "CodeMonkeys/Engine/Objects/ParticleEmitter.h"
 
 using namespace CodeMonkeys::Engine::Objects;
+using namespace CodeMonkeys::TheGauntlet::Weapons;
 
 namespace CodeMonkeys::TheGauntlet::GameObjects
 {

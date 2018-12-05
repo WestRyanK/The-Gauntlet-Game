@@ -27,13 +27,14 @@ namespace CodeMonkeys::Engine::Assets
         vector<unsigned int> ebos;
         vector<unsigned int> ebo_sizes;
         vector<VAO> vaos;
-        mlModel* ml_model;
+        mlModel* ml_model = NULL;
         vector<Material*> materials;
 
         void create_vao_ebo(mlMesh* mesh);
 
     public:
         Model3D(mlModel* ml_model, vector<Material*> material);
+        Model3D* clone();
         // Render the Model3D using its model, textures, and shaders.
         void draw(mat4 transform, ShaderProgram* shader);
     };

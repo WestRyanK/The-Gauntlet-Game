@@ -5,13 +5,14 @@
 #include "CodeMonkeys/Engine/Objects/ParticleEmitter.h"
 #include "CodeMonkeys/Engine/Objects/Particle.h"
 #include "CodeMonkeys/Engine/Assets/AnimatedTexture.h"
-#include "CodeMonkeys/TheGauntlet/IInflicter.h"
+#include "CodeMonkeys/TheGauntlet/Weapons/IInflicter.h"
 #include "NIE.h"
 
 using namespace std;
 using CodeMonkeys::TheGauntlet::GameObjects::Asteroid;
 using namespace CodeMonkeys::Engine::Objects;
 using namespace CodeMonkeys::TheGauntlet::GameObjects;
+using namespace CodeMonkeys::TheGauntlet::Weapons;
 
 ParticleEmitter* Asteroid::asteroid_death_emitter = NULL;
 Billboard* Asteroid::asteroid_death_billboard = NULL;

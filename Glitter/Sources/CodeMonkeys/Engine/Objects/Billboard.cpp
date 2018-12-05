@@ -105,3 +105,12 @@ void Billboard::set_height(float height)
 {
     this->height = height;
 }
+
+Billboard* Billboard::clone()
+{
+    Texture* texture_clone = NULL;
+    if (this->billboard_texture != NULL)
+        texture_clone = this->billboard_texture->clone();
+    Billboard* billboard_clone = new Billboard(this->name, this->billboard_texture->clone(), this->width, this->height);
+    return billboard_clone;
+}

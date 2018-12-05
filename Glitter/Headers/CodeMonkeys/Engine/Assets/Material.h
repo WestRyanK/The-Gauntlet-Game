@@ -20,6 +20,7 @@ namespace CodeMonkeys::Engine::Assets
         vec3 get_phong_color();
         float get_phong_exponent();
         bool get_use_phong_highlight();
+        virtual Material* clone() = 0;
         ShaderProgram* get_shader();
         virtual void apply_material_to_shader();
         // This must be an id unique to the Material type;

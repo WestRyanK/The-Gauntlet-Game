@@ -25,5 +25,6 @@ namespace CodeMonkeys::Engine::Assets
         void set_animation_speed(int animation_speed);
         virtual void update(float dt);
         virtual void reset();
+        virtual Texture* clone();
     };
 }

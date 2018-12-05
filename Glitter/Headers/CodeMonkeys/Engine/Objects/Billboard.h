@@ -32,5 +32,6 @@ namespace CodeMonkeys::Engine::Objects
         void set_width(float width);
         float get_height();
         void set_height(float height);
+        Billboard* clone();
     };
 }

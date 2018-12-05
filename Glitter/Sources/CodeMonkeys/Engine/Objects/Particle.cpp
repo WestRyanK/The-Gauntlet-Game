@@ -14,7 +14,14 @@ Particle::Particle(Model3D* model, Billboard* billboard, string name, float tota
 
 Particle* Particle::clone()
 {
-    Particle* particle_clone = new Particle(this->model, this->billboard, this->name, this->total_lifespan, this->emitter);
+    Model3D* model_clone = NULL;
+    Billboard* billboard_clone = NULL;
+    if (this->model != NULL)
+        model_clone = this->model->clone();
+    if (this->billboard != NULL)
+        billboard_clone = this->billboard->clone();
+
+    Particle* particle_clone = new Particle(model_clone, billboard_clone, this->name, this->total_lifespan, this->emitter);
     particle_clone->set_angular_velocity(this->get_angular_velocity());
     particle_clone->set_velocity(this->get_velocity());
     particle_clone->set_position(this->get_position());
