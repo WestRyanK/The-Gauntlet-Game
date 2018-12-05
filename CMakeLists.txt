@@ -35,7 +35,6 @@ include_directories(Glitter/Headers/
                     Glitter/Headers/CodeMonkeys/TheGauntlet/GameObjects/
                     Glitter/Headers/CodeMonkeys/TheGauntlet/Weapons/
                     Glitter/Headers/CodeMonkeys/TheGauntlet/Collision/
-                    Glitter/Headers/CodeMonkeys/Lab04/
                     Glitter/Vendor/assimp/include/
                     Glitter/Vendor/bullet/src/
                     Glitter/Vendor/glad/include/
@@ -56,7 +55,6 @@ file(GLOB PROJECT_HEADERS Glitter/Headers/*.hpp
                           Glitter/Headers/CodeMonkeys/TheGauntlet/GameObjects/*.h
                           Glitter/Headers/CodeMonkeys/TheGauntlet/Weapons/*.h
                           Glitter/Headers/CodeMonkeys/TheGauntlet/Collision/*.h
-                          Glitter/Headers/CodeMonkeys/Lab04/*.h
                           )
 file(GLOB PROJECT_SOURCES Glitter/Sources/*.cpp
                           Glitter/Sources/CodeMonkeys/Engine/Assets/*.cpp
@@ -69,12 +67,11 @@ file(GLOB PROJECT_SOURCES Glitter/Sources/*.cpp
                           Glitter/Sources/CodeMonkeys/TheGauntlet/GameObjects/*.cpp
                           Glitter/Sources/CodeMonkeys/TheGauntlet/Weapons/*.cpp
                           Glitter/Sources/CodeMonkeys/TheGauntlet/Collision/*.cpp
-                          Glitter/Sources/CodeMonkeys/Lab04/*.cpp
 )
-file(GLOB PROJECT_SHADERS Glitter/Shaders/*.comp
-                          Glitter/Shaders/*.frag
-                          Glitter/Shaders/*.geom
-                          Glitter/Shaders/*.vert)
+file(GLOB PROJECT_SHADERS Glitter/Assets/Shaders/*.comp
+                          Glitter/Assets/Shaders/*.frag
+                          Glitter/Assets/Shaders/*.geom
+                          Glitter/Assets/Shaders/*.vert)
 file(GLOB PROJECT_CONFIGS CMakeLists.txt
                           Readme.md
                          .gitattributes
@@ -90,17 +87,13 @@ add_definitions(-DGLFW_INCLUDE_NONE
                 -DPROJECT_SOURCE_DIR=\"${PROJECT_SOURCE_DIR}\")
 add_executable(${PROJECT_NAME} ${PROJECT_SOURCES} ${PROJECT_HEADERS}
                                ${PROJECT_SHADERS} ${PROJECT_CONFIGS}
-                               ${VENDORS_SOURCES} Glitter/Headers/CodeMonkeys/Engine/Collision/BoundaryChecker.h Glitter/Sources/CodeMonkeys/Engine/Collision/BoundaryChecker.cpp Glitter/Headers/CodeMonkeys/TheGauntlet/GameObjects/Portal.h Glitter/Sources/CodeMonkeys/TheGauntlet/GameObjects/Portal.cpp Glitter/Headers/CodeMonkeys/TheGauntlet/GameObjects/PortalFactory.h Glitter/Sources/CodeMonkeys/TheGauntlet/GameObjects/PortalFactory.cpp Glitter/Headers/CodeMonkeys/TheGauntlet/Collision/ShipPortalCollisionResponse.h Glitter/Sources/CodeMonkeys/TheGauntlet/Collision/ShipPortalCollisionResponse.cpp)
+                               ${VENDORS_SOURCES} )
 target_link_libraries(${PROJECT_NAME} assimp glfw
                       ${GLFW_LIBRARIES} ${GLAD_LIBRARIES}
                       BulletDynamics BulletCollision LinearMath)
 set_target_properties(${PROJECT_NAME} PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${PROJECT_NAME})
-
-add_custom_command(TARGET Glitter POST_BUILD
-                   COMMAND ${CMAKE_COMMAND} -E copy_directory
-                       ${CMAKE_SOURCE_DIR}/Glitter/Shaders $<TARGET_FILE_DIR:Glitter>/Shaders)
                        
-add_custom_command(TARGET Glitter POST_BUILD
+add_custom_command(TARGET Glitter PRE_BUILD
                    COMMAND ${CMAKE_COMMAND} -E copy_directory
                        ${CMAKE_SOURCE_DIR}/Glitter/Assets $<TARGET_FILE_DIR:Glitter>/Assets)

@@ -48,16 +48,16 @@ void TheGauntletEngine::update_frame(float dt)
 
 void TheGauntletEngine::init_skybox()
 {
-    ShaderProgram* skybox_shader = new ShaderProgram("Shaders/skybox.vert", "Shaders/skybox.frag");
+    ShaderProgram* skybox_shader = new ShaderProgram("Assets/Shaders/skybox.vert", "Assets/Shaders/skybox.frag");
     // create skybox
     std::vector<std::string> skybox_faces
     {
-        "Assets/Textures/Skybox/right.png",
-        "Assets/Textures/Skybox/left.png",
-        "Assets/Textures/Skybox/top.png",
-        "Assets/Textures/Skybox/bottom.png",
-        "Assets/Textures/Skybox/front.png",
-        "Assets/Textures/Skybox/back.png"
+        "Assets/Skybox/right.png",
+        "Assets/Skybox/left.png",
+        "Assets/Skybox/top.png",
+        "Assets/Skybox/bottom.png",
+        "Assets/Skybox/front.png",
+        "Assets/Skybox/back.png"
     };
     this->skybox = new Skybox(skybox_faces, skybox_shader);
 }
@@ -81,8 +81,8 @@ void TheGauntletEngine::init()
 {
     this->set_collision_detector(new GridCollisionDetector(vec3(1000), vec3(-1000), 50)); // this->set_collision_detector(new SimpleCollisionDetector());
 
-    ShaderProgram* shader = new ShaderProgram("Shaders/basic.vert", "Shaders/basic.frag");
-    ShaderProgram* projectile_shader = new ShaderProgram("Shaders/basic.vert", "Shaders/self_illuminated.frag");
+    ShaderProgram* shader = new ShaderProgram("Assets/Shaders/basic.vert", "Assets/Shaders/basic.frag");
+    ShaderProgram* projectile_shader = new ShaderProgram("Assets/Shaders/basic.vert", "Assets/Shaders/self_illuminated.frag");
     // Make sure that every shader used in the scene is added to the engine's list of shaders so
     // that lighting can be calculated.
     this->shaders.insert(shader);
@@ -96,10 +96,9 @@ void TheGauntletEngine::init()
     this->world_root->add_child(projectile_emitter);
     CodeMonkeys::TheGauntlet::GameObjects::ShipFactory::init(shader, projectile_emitter, projectile_shader);
     this->init_skybox();
-    
 
-    // auto ship = CodeMonkeys::TheGauntlet::GameObjects::ShipFactory::create_x_wing_ship();
-    auto ship = CodeMonkeys::TheGauntlet::GameObjects::ShipFactory::create_crayon_ship();
+    auto ship = CodeMonkeys::TheGauntlet::GameObjects::ShipFactory::create_x_wing_ship();
+    // auto ship = CodeMonkeys::TheGauntlet::GameObjects::ShipFactory::create_crayon_ship();
     this->world_root->add_child(ship);
 
     setup_course();
