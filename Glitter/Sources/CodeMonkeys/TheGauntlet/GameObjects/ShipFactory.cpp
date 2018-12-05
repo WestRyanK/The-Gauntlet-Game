@@ -77,7 +77,7 @@ void ShipFactory::add_explosion_particles(Ship* ship)
     ship_explosion_emitter->set_position(vec3(0, 0, 15));
     ship->add_child(ship_explosion_emitter);
 
-    AnimatedTexture* explosion_animation = new AnimatedTexture("Assets/Textures/Explosions/explosion_01/explosion", "png", 64);
+    AnimatedTexture* explosion_animation = new AnimatedTexture("Assets/Explosions/Explosion_01/explosion", "png", 64);
     Billboard* explosion_billboard = new Billboard("billboard_explosion", explosion_animation, 80, 80);
     Particle* explosion_particle = new Particle(NULL, explosion_billboard, "explosion_particle", 1, ship_explosion_emitter);
     ship_explosion_emitter->set_particle(explosion_particle);
@@ -86,7 +86,7 @@ void ShipFactory::add_explosion_particles(Ship* ship)
 Ship* ShipFactory::create_x_wing_ship()
 {
     mlModel* ml_model = new mlModel();
-    LoadModel("Assets/Ships/XWingShip", "XWingShip.obj", *ml_model);
+    LoadModel("Assets/Ships/XWingShip", "x_wing_ship.obj", *ml_model);
 
 
     Model3D* model = new Model3D(ml_model, ShipFactory::ship_materials);
