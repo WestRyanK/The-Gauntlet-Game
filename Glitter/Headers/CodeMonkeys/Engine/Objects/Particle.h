@@ -19,6 +19,7 @@ namespace CodeMonkeys::Engine::Objects
         Billboard* billboard = NULL;
     public:
         Particle(Model3D* model, Billboard* billboard, string name, float total_lifespan, ParticleEmitter* emitter);
+        ~Particle();
         void kill();
         virtual Particle* clone();
         virtual void update(float dt);

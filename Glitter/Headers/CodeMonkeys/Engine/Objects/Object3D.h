@@ -25,7 +25,8 @@ namespace CodeMonkeys::Engine::Objects
         std::string name;
     public:
         Object3D(Model3D* model, std::string name);
-
+        ~Object3D();
+        
         vec3 get_position();
         void set_position(vec3 position);
         vec3 get_rotation();
