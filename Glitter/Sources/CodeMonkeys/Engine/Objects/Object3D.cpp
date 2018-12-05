@@ -14,6 +14,11 @@ Object3D::Object3D(Model3D* model, std::string name)
     this->name = name;
 }
 
+Object3D::~Object3D()
+{
+    model = nullptr;
+}
+
 vec3 Object3D::get_position()
 {
     return this->position;

@@ -12,6 +12,12 @@ Particle::Particle(Model3D* model, Billboard* billboard, string name, float tota
     this->billboard = billboard;
 }
 
+Particle::~Particle()
+{
+    billboard = nullptr;
+    emitter = nullptr;
+}
+
 Particle* Particle::clone()
 {
     Model3D* model_clone = NULL;
@@ -54,6 +60,11 @@ void Particle::update(float dt)
     {
         this->emitter->kill_particle(this);
     }
+}
+
+void Particle::kill()
+{
+    emitter->kill_particle(this);
 }
 
 ParticleEmitter* Particle::get_emitter()
