@@ -98,8 +98,8 @@ void TheGauntletEngine::init()
     this->init_skybox();
 
     // auto ship = CodeMonkeys::TheGauntlet::GameObjects::ShipFactory::create_jet_fighter();
-    // auto ship = CodeMonkeys::TheGauntlet::GameObjects::ShipFactory::create_x_wing_ship();
-    auto ship = CodeMonkeys::TheGauntlet::GameObjects::ShipFactory::create_crayon_ship();
+    auto ship = CodeMonkeys::TheGauntlet::GameObjects::ShipFactory::create_x_wing_ship();
+    // auto ship = CodeMonkeys::TheGauntlet::GameObjects::ShipFactory::create_crayon_ship();
     this->world_root->add_child(ship);
 
     setup_course();

@@ -104,7 +104,7 @@ Ship* ShipFactory::create_x_wing_ship()
     // const float MIN_Z_VELOCITY = 5;
 
     Weapon* laser_turret = new LaserTurret(ShipFactory::projectile_shader, ShipFactory::projectile_emitter);
-    laser_turret->set_position(vec3(12,1,0));
+    laser_turret->set_position(vec3(3.7f,-2.4f,0));
     Weapon* laser_cannon = new LaserCannon(ShipFactory::projectile_shader, ShipFactory::projectile_emitter);
 
     Ship* ship = new Ship(model, "ship",
@@ -142,7 +142,7 @@ Ship* ShipFactory::create_jet_fighter()
     // const float MIN_Z_VELOCITY = 5;
 
     Weapon* beam_gun = new BeamGun(ShipFactory::projectile_shader, ShipFactory::projectile_emitter);
-    beam_gun->set_position(vec3(12,1,0));
+    beam_gun->set_position(vec3(5,-1,0));
     Weapon* antimatter_cannon = new AntiMatterCannon(ShipFactory::projectile_shader, ShipFactory::projectile_emitter);
 
     Ship* ship = new Ship(model, "ship",
