@@ -1,10 +1,12 @@
 #include "CodeMonkeys/Engine/Engine/Renderer.h"
 #include "CodeMonkeys/Engine/Objects/AmbientLight.h"
+#include "CodeMonkeys/Engine/Engine/Quad.h"
 #include "CodeMonkeys/Engine/Objects/DirectionalLight.h"
 #include "CodeMonkeys/Engine/Assets/ShaderProgram.h"
 #include "glitter.hpp"
 
 using CodeMonkeys::Engine::Engine::Renderer;
+using namespace CodeMonkeys::Engine::Engine;
 
 Renderer::Renderer(GLFWwindow* window, GLuint width, GLuint height)
 {
@@ -52,12 +54,21 @@ void Renderer::set_camera(ShaderProgram* shader, Camera3D* camera)
     camera->update_shader_with_camera(shader);
 }
 
-void Renderer::draw_objects(Object3D* world_root, ShaderProgram* shader)
+void Renderer::draw_objects(Object3D* world_root, set<Quad*> quads, ShaderProgram* shader)
 {
     this->draw_objects_iterator.draw(world_root, shader);
+    this->draw_quads(quads);
+}
+
+void Renderer::draw_quads(set<Quad*> quads)
+{
+    for (auto iter = quads.begin(); iter != quads.end(); iter++)
+    {
+        (*iter)->draw();
+    }
 }
         
-void Renderer::render(set<ShaderProgram*> shaders, set<ILight3D*> lights, Camera3D* camera, Object3D* world_root, Skybox* skybox)
+void Renderer::render(set<ShaderProgram*> shaders, set<ILight3D*> lights, Camera3D* camera, Object3D* world_root, Skybox* skybox, set<Quad*> quads)
 {
     this->clear();
 
@@ -70,7 +81,7 @@ void Renderer::render(set<ShaderProgram*> shaders, set<ILight3D*> lights, Camera
         this->set_lighting(shader, lights); // TODO: investigate 1282 error
         this->set_camera(shader, camera); // TODO: investigate 1282 error
 
-        this->draw_objects(world_root, shader);
+        this->draw_objects(world_root, quads, shader);
     }
 
     glfwSwapBuffers(this->window);

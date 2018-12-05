@@ -1,15 +1,18 @@
 #pragma once
 
+#include <set>
 #include "glitter.hpp"
 #include "CodeMonkeys/Engine/Objects/ILight3D.h"
 #include "CodeMonkeys/Engine/Objects/Camera3D.h"
 #include "CodeMonkeys/Engine/Objects/Skybox.h"
 #include "CodeMonkeys/Engine/Engine/DrawObjectsIterator.h"
+#include "CodeMonkeys/Engine/Engine/Quad.h"
 #include "CodeMonkeys/Engine/Assets/ShaderProgram.h"
 
 #include "CodeMonkeys/Engine/Assets/Texture.h"
 
 using namespace glm;
+using namespace std;
 
 namespace CodeMonkeys::Engine::Engine
 {
@@ -30,12 +33,13 @@ namespace CodeMonkeys::Engine::Engine
 
 
         void clear();
+        void draw_quads(set<Quad*> quads);
         void set_lighting(ShaderProgram* shader, set<ILight3D*> lights);
         void set_camera(ShaderProgram* shader, Camera3D* camera);
-        void draw_objects(Object3D* world_root, ShaderProgram* shader);
+        void draw_objects(Object3D* world_root, set<Quad*> quads, ShaderProgram* shader);
 
     public:
         Renderer(GLFWwindow* window, GLuint width, GLuint height);
-        virtual void render(set<ShaderProgram*> shaders, set<ILight3D*> lights, Camera3D* camera, Object3D* world_root, Skybox* skybox);
+        virtual void render(set<ShaderProgram*> shaders, set<ILight3D*> lights, Camera3D* camera, Object3D* world_root, Skybox* skybox, set<Quad*> quads);
     };
 }

@@ -66,7 +66,7 @@ void GameEngine::handle_controllers(float dt)
 void GameEngine::draw()
 {
     if (this->renderer != NULL)
-        this->renderer->render(this->shaders, this->lights, this->camera, this->world_root, this->skybox);
+        this->renderer->render(this->shaders, this->lights, this->camera, this->world_root, this->skybox, this->quads);
     else
         throw "Must specify renderer for engine!";
 }
@@ -74,6 +74,11 @@ void GameEngine::draw()
 void GameEngine::update_objects(float dt)
 {
     this->update_objects_iterator.update(this->world_root, dt);
+
+    for (auto iter = this->quads.begin(); iter != this->quads.end(); iter++)
+    {
+        (*iter)->update(dt);
+    }
 }
 
 void GameEngine::set_boundary_checker(BoundaryChecker* checker)

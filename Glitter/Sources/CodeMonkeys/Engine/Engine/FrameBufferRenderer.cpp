@@ -75,7 +75,7 @@ void screenshot (char filename[160],int x, int y)
     data=NULL;
 }
 
-void FrameBufferRenderer::render(set<ShaderProgram*> shaders, set<ILight3D*> lights, Camera3D* camera, Object3D* world_root, Skybox* skybox)
+void FrameBufferRenderer::render(set<ShaderProgram*> shaders, set<ILight3D*> lights, Camera3D* camera, Object3D* world_root, Skybox* skybox, set<Quad*> quads)
 {
     glBindFramebuffer(GL_FRAMEBUFFER, this->frame_buffer);
     glViewport(0, 0, this->get_width(), this->get_height()); 
@@ -91,12 +91,13 @@ void FrameBufferRenderer::render(set<ShaderProgram*> shaders, set<ILight3D*> lig
         this->set_lighting(shader, lights); // TODO: investigate 1282 error
         this->set_camera(shader, camera); // TODO: investigate 1282 error
 
-        this->draw_objects(world_root, shader);
+        this->draw_objects(world_root, quads, shader);
     }
 
 
     // this->draw_frame_buffer(tex->get_texture_id());
     this->draw_frame_buffer(this->rendered_texture);
-    this->quad->draw(rendered_texture);
+    this->quad->set_texture(this->rendered_texture);
+    this->quad->draw();
     glfwSwapBuffers(this->get_window());
 }
