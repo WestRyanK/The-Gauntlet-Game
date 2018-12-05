@@ -3,8 +3,8 @@ import cv2
 
 rows = 4
 columns = 4
-input_filename = "projectile_01/Projectile.png"
-output_filename = "projectile_01/projectile"
+input_filename = "Projectiles/BlueMatterCannon/BlueMatterCannon2.png"
+output_filename = "Projectiles/BlueMatterCannon/anti_matter_cannon"
 
 img = cv2.imread(input_filename, -1)
 h, w, d = img.shape

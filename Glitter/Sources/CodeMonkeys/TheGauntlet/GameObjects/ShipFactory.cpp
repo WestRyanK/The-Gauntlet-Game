@@ -7,7 +7,9 @@
 #include "CodeMonkeys/Engine/Objects/Particle.h"
 #include "CodeMonkeys/Engine/Assets/AnimatedTexture.h"
 #include "CodeMonkeys/TheGauntlet/Weapons/LaserCannon.h"
+#include "CodeMonkeys/TheGauntlet/Weapons/AntiMatterCannon.h"
 #include "CodeMonkeys/TheGauntlet/Weapons/LaserTurret.h"
+#include "CodeMonkeys/TheGauntlet/Weapons/BeamGun.h"
 #include "CodeMonkeys/TheGauntlet/Weapons/CrayonLauncher.h"
 #include "CodeMonkeys/TheGauntlet/Weapons/Weapon.h"
 #include <vector>
@@ -88,7 +90,6 @@ Ship* ShipFactory::create_x_wing_ship()
     mlModel* ml_model = new mlModel();
     LoadModel("Assets/Ships/XWingShip", "x_wing_ship.obj", *ml_model);
 
-
     Model3D* model = new Model3D(ml_model, ShipFactory::ship_materials);
 
     const unsigned int INTITIAL_HEALTH = 100;
@@ -103,7 +104,7 @@ Ship* ShipFactory::create_x_wing_ship()
     // const float MIN_Z_VELOCITY = 5;
 
     Weapon* laser_turret = new LaserTurret(ShipFactory::projectile_shader, ShipFactory::projectile_emitter);
-    laser_turret->set_position(vec3(12,1,0));
+    laser_turret->set_position(vec3(3.7f,-2.4f,0));
     Weapon* laser_cannon = new LaserCannon(ShipFactory::projectile_shader, ShipFactory::projectile_emitter);
 
     Ship* ship = new Ship(model, "ship",
@@ -116,6 +117,44 @@ Ship* ShipFactory::create_x_wing_ship()
                           MIN_Z_VELOCITY,
                           laser_turret,
                           laser_cannon);
+
+    ShipFactory::add_explosion_particles(ship);
+
+    return ship;
+}
+
+Ship* ShipFactory::create_jet_fighter()
+{
+    mlModel* ml_model = new mlModel();
+    LoadModel("Assets/Ships/JetFighter", "jet_fighter.obj", *ml_model);
+
+    Model3D* model = new Model3D(ml_model, ShipFactory::ship_materials);
+
+    const unsigned int INTITIAL_HEALTH = 100;
+    const unsigned int MAX_HEALTH =100;
+    const float XY_ACCELERATION = 50;
+    const float BOOST_ACCELERATION = 10;
+    const float BRAKE_ACCELERATION = 2;
+    const float MAX_XY_VELOCITY = 10;
+    const float MAX_Z_VELOCITY = 0;
+    // const float MAX_Z_VELOCITY = 20;
+    const float MIN_Z_VELOCITY = 0;
+    // const float MIN_Z_VELOCITY = 5;
+
+    Weapon* beam_gun = new BeamGun(ShipFactory::projectile_shader, ShipFactory::projectile_emitter);
+    beam_gun->set_position(vec3(5,-1,0));
+    Weapon* antimatter_cannon = new AntiMatterCannon(ShipFactory::projectile_shader, ShipFactory::projectile_emitter);
+
+    Ship* ship = new Ship(model, "ship",
+                          INTITIAL_HEALTH, MAX_HEALTH,
+                          XY_ACCELERATION,
+                          BOOST_ACCELERATION,
+                          BRAKE_ACCELERATION,
+                          MAX_XY_VELOCITY,
+                          MAX_Z_VELOCITY,
+                          MIN_Z_VELOCITY,
+                          beam_gun,
+                          antimatter_cannon);
 
     ShipFactory::add_explosion_particles(ship);
 

@@ -19,6 +19,7 @@ namespace CodeMonkeys::TheGauntlet::GameObjects
         static void add_explosion_particles(Ship* ship);
     public:
         static Ship* create_x_wing_ship();
+        static Ship* create_jet_fighter();
         static Ship* create_crayon_ship();
         static void init(ShaderProgram* shader, ParticleEmitter* projectile_emitter, ShaderProgram* projectile_shader);
     };
