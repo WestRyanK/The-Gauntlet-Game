@@ -19,6 +19,6 @@ namespace CodeMonkeys::Engine::Engine
         vector<Camera3D*> create_3d_cameras(Camera3D* camera);
     public:
         Renderer3D(GLFWwindow* window, int width, int height, float camera_spacing);
-        void render(set<ShaderProgram*> shaders, set<ILight3D*> lights, Camera3D* camera, Object3D* world_root, Skybox* skybox);
+        void render(set<ShaderProgram*> shaders, set<ILight3D*> lights, Camera3D* camera, Object3D* world_root, Skybox* skybox, set<Quad*> quads);
     };
 }

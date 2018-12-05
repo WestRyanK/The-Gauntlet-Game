@@ -32,7 +32,7 @@ vector<Camera3D*> Renderer3D::create_3d_cameras(Camera3D* camera)
     return cameras;
 }
 
-void Renderer3D::render(set<ShaderProgram*> shaders, set<ILight3D*> lights, Camera3D* camera, Object3D* world_root, Skybox* skybox)
+void Renderer3D::render(set<ShaderProgram*> shaders, set<ILight3D*> lights, Camera3D* camera, Object3D* world_root, Skybox* skybox, set<Quad*> quads)
 {
     vector<Camera3D*> cameras = create_3d_cameras(camera);
 
@@ -53,13 +53,15 @@ void Renderer3D::render(set<ShaderProgram*> shaders, set<ILight3D*> lights, Came
             this->set_lighting(shader, lights); // TODO: investigate 1282 error
             this->set_camera(shader, cameras[i]); // TODO: investigate 1282 error
 
-            this->draw_objects(world_root, shader);
+            this->draw_objects(world_root, quads, shader);
         }
     }
 
     this->draw_frame_buffer(this->rendered_texture);
-    this->quads[0]->draw(rendered_textures[0]);
-    this->quads[1]->draw(rendered_textures[1]);
+    this->quads[0]->set_texture(rendered_textures[0]);
+    this->quads[0]->draw();
+    this->quads[1]->set_texture(rendered_textures[1]);
+    this->quads[1]->draw();
     glfwSwapBuffers(this->get_window());
 
     free(cameras[0]);

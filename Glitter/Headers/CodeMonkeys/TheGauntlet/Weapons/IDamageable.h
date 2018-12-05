@@ -12,7 +12,8 @@ namespace CodeMonkeys::TheGauntlet::Weapons
         
         public:
             IDamageable(unsigned int initial_health, unsigned int max_health);
-            unsigned int get_health();
+            int get_health();
+            int get_max_health();
             void take_damage(unsigned int damage_amount);
             void heal_health(unsigned int heal_amount);
             void reset_health();

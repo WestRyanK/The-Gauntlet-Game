@@ -9,9 +9,14 @@ IDamageable::IDamageable(unsigned int initial_health, unsigned int max_health)
     this->reset_health();
 }
 
-unsigned int IDamageable::get_health()
+int IDamageable::get_health()
 {
     return this->health;
+}
+
+int IDamageable::get_max_health()
+{
+    return this->max_health;
 }
 
 void IDamageable::take_damage(unsigned int damage_amount)

@@ -1,4 +1,5 @@
 #include "CodeMonkeys/Engine/Engine/Quad.h"
+#include "CodeMonkeys/Engine/Assets/Texture.h"
 
 using CodeMonkeys::Engine::Engine::Quad;
 
@@ -8,7 +9,7 @@ ShaderProgram* Quad::quad_shader = NULL;
 Quad::Quad(float x, float y, float width, float height)
 {
     if (Quad::quad_shader == NULL)
-        Quad::quad_shader = new ShaderProgram("Shaders/frame_buffer.vert", "Shaders/frame_buffer.frag");
+        Quad::quad_shader = new ShaderProgram("Assets/Shaders/quad.vert", "Assets/Shaders/quad.frag");
 
     // The fullscreen quad's FBO
     glGenVertexArrays(1, &this->quad_vao);
@@ -47,16 +48,16 @@ Quad::Quad(float x, float y, float width, float height)
     glBindVertexArray(0);
 }
 
-void Quad::draw(GLuint rendered_texture)
+void Quad::draw()
 { 
     Quad::quad_shader->use_program();
 
     // // Bind our texture in Texture Unit 0
     glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, rendered_texture);
+    glBindTexture(GL_TEXTURE_2D, this->quad_texture_id);
     // // Set our "renderedTexture" sampler to use Texture Unit 0
-    GLuint quad_texture_id = glGetUniformLocation(this->quad_shader->get_shader_id(), "rendered_texture");
-    glUniform1i(quad_texture_id, 0);
+    GLuint quad_texture_location = glGetUniformLocation(this->quad_shader->get_shader_id(), "quad_texture");
+    glUniform1i(quad_texture_location, 0);
     // this->quad_shader->setUniform("rendered_texture", (int)rendered_texture);
 
     glBindVertexArray(this->quad_vao);
@@ -64,4 +65,19 @@ void Quad::draw(GLuint rendered_texture)
 
     glBindVertexArray(0);
     // glBindTexture(GL_TEXTURE_2D, 0);
+}
+
+void Quad::set_texture(GLuint texture)
+{
+    this->quad_texture_id = texture;
+}
+
+GLuint Quad::get_texture()
+{
+    return this->quad_texture_id;
+}
+
+void Quad::update(float dt)
+{
+
 }

@@ -20,7 +20,7 @@ namespace CodeMonkeys::Engine::Engine
     
     public:
         FrameBufferRenderer(GLFWwindow* window, GLuint width, GLuint height);
-        virtual void render(set<ShaderProgram*> shaders, set<ILight3D*> lights, Camera3D* camera, Object3D* world_root, Skybox* skybox);
+        virtual void render(set<ShaderProgram*> shaders, set<ILight3D*> lights, Camera3D* camera, Object3D* world_root, Skybox* skybox, set<Quad*> quads);
 
     };
 }

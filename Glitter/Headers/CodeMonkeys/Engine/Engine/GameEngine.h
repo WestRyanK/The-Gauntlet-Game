@@ -10,6 +10,7 @@
 #include "CodeMonkeys/Engine/Collision/ICollisionDetector.h"
 #include "CodeMonkeys/Engine/Collision/BoundaryChecker.h"
 #include "CodeMonkeys/Engine/Engine/Stopwatch.h"
+#include "CodeMonkeys/Engine/Engine/Quad.h"
 #include "CodeMonkeys/Engine/Engine/UpdateObjectsIterator.h"
 #include "CodeMonkeys/Engine/Engine/Renderer.h"
 #include "CodeMonkeys/Engine/Objects/Skybox.h"
@@ -38,6 +39,7 @@ namespace CodeMonkeys::Engine::Engine
         set<ILight3D*> lights;
         set<ShaderProgram*> shaders;
         set<ICollisionResponse*> collision_responses;
+        set<Quad*> quads;
         Camera3D* camera;
         Skybox* skybox;
         Renderer* renderer;

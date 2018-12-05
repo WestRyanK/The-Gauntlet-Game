@@ -27,7 +27,7 @@ void PortalFactory::init(ShaderProgram* shader)
 Portal* PortalFactory::create_portal()
 {
     mlModel* ml_model = new mlModel();
-    LoadModel("Assets/Other/", "portal.obj", *ml_model);
+    LoadModel("Assets/Portal", "portal.obj", *ml_model);
     Model3D* model = new Model3D(ml_model, PortalFactory::materials);
     Portal* portal = new Portal(model);
     return portal;

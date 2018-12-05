@@ -18,7 +18,7 @@ ProjectileAsteroidCollisionResponse::ProjectileAsteroidCollisionResponse(CodeMon
     this->projectile_impact_emitter = new ParticleEmitter("projectile_impact_emitter");
     this->engine->get_world_root()->add_child(this->projectile_impact_emitter);
 
-    AnimatedTexture* explosion_animation = new AnimatedTexture("Assets/Textures/Explosions/explosion_03/explosion", "png", 64);
+    AnimatedTexture* explosion_animation = new AnimatedTexture("Assets/Explosions/Explosion_03/explosion", "png", 64);
     Billboard* explosion_billboard = new Billboard("projectile_impact_billboard", explosion_animation, 80, 80);
     Particle* explosion_particle = new Particle(NULL, explosion_billboard, "projectile_impact_particle", 1, this->projectile_impact_emitter);
     projectile_impact_emitter->set_particle(explosion_particle);

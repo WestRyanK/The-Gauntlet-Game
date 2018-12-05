@@ -30,7 +30,7 @@ void Asteroid::init(Object3D* world_root)
     Asteroid::asteroid_death_emitter = new ParticleEmitter("asteroid_death_emitter");
     world_root->add_child(Asteroid::asteroid_death_emitter);
 
-    AnimatedTexture* asteroid_death_animation = new AnimatedTexture("Assets/Textures/Explosions/explosion_02/explosion", "png", 64);
+    AnimatedTexture* asteroid_death_animation = new AnimatedTexture("Assets/Explosions/Explosion_02/explosion", "png", 64);
     Asteroid::asteroid_death_billboard = new Billboard("projectile_impact_billboard", asteroid_death_animation, 120, 120);
     Particle* asteroid_death_particle = new Particle(NULL, asteroid_death_billboard, "asteroid_death_particle", 1.5, Asteroid::asteroid_death_emitter);
     Asteroid::asteroid_death_emitter->set_particle(asteroid_death_particle);

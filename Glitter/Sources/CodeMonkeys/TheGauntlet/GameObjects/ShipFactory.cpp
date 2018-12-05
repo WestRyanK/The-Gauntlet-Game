@@ -130,8 +130,8 @@ Ship* ShipFactory::create_jet_fighter()
 
     Model3D* model = new Model3D(ml_model, ShipFactory::ship_materials);
 
-    const unsigned int INTITIAL_HEALTH = 100;
-    const unsigned int MAX_HEALTH =100;
+    const unsigned int INTITIAL_HEALTH = 125;
+    const unsigned int MAX_HEALTH =125;
     const float XY_ACCELERATION = 50;
     const float BOOST_ACCELERATION = 10;
     const float BRAKE_ACCELERATION = 2;

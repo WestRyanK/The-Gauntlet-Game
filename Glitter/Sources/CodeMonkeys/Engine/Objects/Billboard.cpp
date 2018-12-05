@@ -23,7 +23,7 @@ Billboard::Billboard(std::string name, Texture* billboard_texture, float width, 
 
 void Billboard::init_billboard_class()
 {
-    Billboard::billboard_shader = new ShaderProgram("Shaders/billboard.vert", "Shaders/billboard.frag");
+    Billboard::billboard_shader = new ShaderProgram("Assets/Shaders/billboard.vert", "Assets/Shaders/billboard.frag");
 
     Billboard::billboard_vao = new GLuint();
     glGenVertexArrays(1, Billboard::billboard_vao);

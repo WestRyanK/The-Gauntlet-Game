@@ -21,6 +21,7 @@
 #include "CodeMonkeys/TheGauntlet/Collision/ShipPortalCollisionResponse.h"
 #include "CodeMonkeys/TheGauntlet/Collision/ProjectileAsteroidCollisionResponse.h"
 #include "CodeMonkeys/TheGauntlet/Collision/AsteroidAsteroidCollisionResponse.h"
+#include "CodeMonkeys/TheGauntlet/Healthbar.h"
 #include "CodeMonkeys/Engine/Objects/Billboard.h"
 #include "CodeMonkeys/Engine/Objects/ParticleEmitter.h"
 #include "CodeMonkeys/Engine/Objects/Particle.h"
@@ -104,6 +105,9 @@ void TheGauntletEngine::init()
 
     setup_course();
 
+    Healthbar* healthbar = new Healthbar(ship, -1, 0.85, 0.5f, 0.15f);
+    this->quads.insert(healthbar);
+
 //    Asteroid* asteroid = CodeMonkeys::TheGauntlet::GameObjects::AsteroidFactory::create_asteroid(2);
 //    this->world_root->add_child(asteroid);
 //    asteroid->set_position(vec3(40, 40, 40));
@@ -126,8 +130,8 @@ void TheGauntletEngine::init()
     this->collision_responses.insert(new ProjectileAsteroidCollisionResponse(this));
     this->collision_responses.insert(new ShipPortalCollisionResponse(this));
 
-    this->renderer = new Renderer(this->get_window(), this->get_width(), this->get_height());
-    // this->renderer = new FrameBufferRenderer(this->get_window(), this->get_width(), this->get_height());
+    // this->renderer = new Renderer(this->get_window(), this->get_width(), this->get_height());
+    this->renderer = new FrameBufferRenderer(this->get_window(), this->get_width(), this->get_height());
     // this->renderer = new Renderer3D(this->get_window(), this->get_width(), this->get_height(), 2);
 }
 
