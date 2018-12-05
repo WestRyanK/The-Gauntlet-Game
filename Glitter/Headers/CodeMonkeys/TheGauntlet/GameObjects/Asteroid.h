@@ -1,5 +1,6 @@
 #pragma once
 
+#include <SFML/Audio.hpp>
 #include "CodeMonkeys/Engine/Objects/PhysicalObject3D.h"
 #include "CodeMonkeys/TheGauntlet/Weapons/IDamageable.h"
 #include "CodeMonkeys/TheGauntlet/Weapons/IInflicter.h"
@@ -21,6 +22,8 @@ namespace CodeMonkeys::TheGauntlet::GameObjects
         void on_death();
         static ParticleEmitter* asteroid_death_emitter;
         static Billboard* asteroid_death_billboard;
+        static sf::SoundBuffer* sound_buffer;
+        static sf::Sound* sound;
 
     public:
         Asteroid(Model3D* model, unsigned int size_class, unsigned int health, float size, unsigned int inflict_amount);

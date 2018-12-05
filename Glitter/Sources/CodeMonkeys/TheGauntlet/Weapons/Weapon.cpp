@@ -10,10 +10,17 @@ Weapon::Weapon(string name, ShaderProgram* shader, ParticleEmitter* projectile_e
     this->projectile_emitter = projectile_emitter;
     this->initial_velocity = initial_velocity;
     this->shader = shader;
+
+    this->sound = new sf::Sound();
 }
 
 void Weapon::on_fire()
 { 
+    if (this->sound_buffer != NULL)
+    {
+        this->sound->play();
+    }
+
     vec4 rotation_vector = vec4(0, 0, 1, 0);
     mat4 transform = this->get_hierarchical_transform();
     vec4 forward_vector = rotation_vector * transform;

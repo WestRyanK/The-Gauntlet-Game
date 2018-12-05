@@ -22,6 +22,13 @@ ProjectileAsteroidCollisionResponse::ProjectileAsteroidCollisionResponse(CodeMon
     Billboard* explosion_billboard = new Billboard("projectile_impact_billboard", explosion_animation, 80, 80);
     Particle* explosion_particle = new Particle(NULL, explosion_billboard, "projectile_impact_particle", 1, this->projectile_impact_emitter);
     projectile_impact_emitter->set_particle(explosion_particle);
+
+
+    this->sound_buffer = new sf::SoundBuffer();
+    if (!this->sound_buffer->loadFromFile("Assets/Explosions/Explosion_03/explosion_03.wav"))
+        printf("Could not load 'explosion_03.wav' file!\n");
+    this->sound = new sf::Sound();
+    this->sound->setBuffer(*this->sound_buffer);
 }
 
 bool ProjectileAsteroidCollisionResponse::can_respond(Object3D* object_a, Object3D* object_b)
@@ -37,6 +44,7 @@ bool ProjectileAsteroidCollisionResponse::can_respond(Object3D* object_a, Object
 
 void ProjectileAsteroidCollisionResponse::respond(Object3D* object_a, Object3D* object_b, float dt)
 {
+
     Projectile* projectile = dynamic_cast<Projectile*> (object_a);
     Asteroid* asteroid = dynamic_cast<Asteroid*> (object_b);
     if (projectile == NULL && asteroid == NULL)
@@ -48,6 +56,8 @@ void ProjectileAsteroidCollisionResponse::respond(Object3D* object_a, Object3D* 
 
     if (asteroid != NULL && projectile != nullptr && projectile->get_parent() != NULL && asteroid->get_parent() != NULL)
     {
+        this->sound->play();
+
         projectile->inflict_damage(asteroid);
         this->projectile_impact_emitter->set_position(asteroid->get_position() - glm::normalize(projectile->get_velocity()) * asteroid->get_size());
         projectile->kill();

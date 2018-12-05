@@ -6,7 +6,6 @@
 #include "CodeMonkeys/Engine/Control/IControllable.h"
 #include "CodeMonkeys/Engine/Objects/ILight3D.h"
 #include "CodeMonkeys/Engine/Objects/Camera3D.h"
-// #include "CodeMonkeys/Engine/Collision/ICollisionResponse.h"
 #include "CodeMonkeys/Engine/Collision/ICollisionDetector.h"
 #include "CodeMonkeys/Engine/Collision/BoundaryChecker.h"
 #include "CodeMonkeys/Engine/Engine/Stopwatch.h"

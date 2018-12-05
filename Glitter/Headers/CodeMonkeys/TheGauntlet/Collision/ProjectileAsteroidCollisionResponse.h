@@ -1,5 +1,6 @@
 #pragma once
 
+#include <SFML/Audio.hpp>
 #include "CodeMonkeys/Engine/Collision/ICollisionResponse.h"
 #include "CodeMonkeys/Engine/Assets/AnimatedTexture.h"
 #include "CodeMonkeys/Engine/Objects/Billboard.h"
@@ -14,6 +15,8 @@ namespace CodeMonkeys::TheGauntlet::Collision
     {
     private:
         ParticleEmitter* projectile_impact_emitter;
+        sf::SoundBuffer* sound_buffer = NULL;
+        sf::Sound* sound = NULL;
     public:
         ProjectileAsteroidCollisionResponse(
         // );

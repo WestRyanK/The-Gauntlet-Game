@@ -1,5 +1,6 @@
 #include <vector>
 #include <stdlib.h>
+#include <SFML/Audio.hpp>
 #include "CodeMonkeys/Engine/Objects/AmbientLight.h"
 #include "CodeMonkeys/Engine/Engine/Renderer3D.h"
 #include "CodeMonkeys/Engine/Objects/SpringArm.h"
@@ -98,8 +99,8 @@ void TheGauntletEngine::init()
     CodeMonkeys::TheGauntlet::GameObjects::ShipFactory::init(shader, projectile_emitter, projectile_shader);
     this->init_skybox();
 
-    // auto ship = CodeMonkeys::TheGauntlet::GameObjects::ShipFactory::create_jet_fighter();
-    auto ship = CodeMonkeys::TheGauntlet::GameObjects::ShipFactory::create_x_wing_ship();
+    auto ship = CodeMonkeys::TheGauntlet::GameObjects::ShipFactory::create_jet_fighter();
+    // auto ship = CodeMonkeys::TheGauntlet::GameObjects::ShipFactory::create_x_wing_ship();
     // auto ship = CodeMonkeys::TheGauntlet::GameObjects::ShipFactory::create_crayon_ship();
     this->world_root->add_child(ship);
 
@@ -118,6 +119,7 @@ void TheGauntletEngine::init()
 //    asteroi2->set_position(vec3(-40, 0, -40));
 //    asteroi2->set_velocity(vec3(0, 1, 0));
 //    asteroi2->set_angular_velocity(vec3(-40));
+
 
 
     this->init_light_and_camera(ship);
@@ -156,4 +158,10 @@ void TheGauntletEngine::setup_course() {
     auto portal = CodeMonkeys::TheGauntlet::GameObjects::PortalFactory::create_portal();
     portal->set_position(vec3(0, 0, -S));
     this->world_root->add_child(portal);
+
+    sf::Music* music = new sf::Music();
+    if (!music->openFromFile("Assets/Music/system_shock.wav"))
+        printf("Could not load 'system_shock.wav' file!\n");
+    music->setLoop(true);
+    music->play();
 }

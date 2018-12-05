@@ -4,6 +4,7 @@
 #include "CodeMonkeys/Engine/Objects/PhysicalObject3D.h"
 #include "CodeMonkeys/Engine/Objects/ParticleEmitter.h"
 #include "CodeMonkeys/TheGauntlet/Weapons/Projectile.h"
+#include <SFML/Audio.hpp>
 #include <string>
 
 using namespace std;
@@ -18,7 +19,9 @@ namespace CodeMonkeys::TheGauntlet::Weapons
         Projectile* projectile_prototype = NULL;
         ParticleEmitter* projectile_emitter = NULL;
         float initial_velocity = 0;
-        ShaderProgram* shader;
+        ShaderProgram* shader = NULL;
+        sf::SoundBuffer* sound_buffer = NULL;
+        sf::Sound* sound = NULL;
     
     public:
         Weapon(string name, ShaderProgram* shader, ParticleEmitter* projectile_emitter, float initial_velocity, float recharge_delay, bool is_automatic_fire);
