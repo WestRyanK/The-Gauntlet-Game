@@ -4,9 +4,9 @@
 
 namespace CodeMonkeys::TheGauntlet::Weapons
 {
-    class LaserTurret : public AlternatingWeapon
+    class BeamGun : public AlternatingWeapon
     {
     public:
-        LaserTurret(ShaderProgram* shader, ParticleEmitter* projectile_emitter);
+        BeamGun(ShaderProgram* shader, ParticleEmitter* projectile_emitter);
     };
 }
