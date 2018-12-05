@@ -30,7 +30,8 @@ void ParticleEmitter::cancel()
 void ParticleEmitter::kill_particle(Particle* particle)
 {
     this->remove_child(particle);
-    free(particle);
+    //delete particle;
+    //particle = nullptr;
 }
 
 void ParticleEmitter::update(float dt)

@@ -45,11 +45,11 @@ void ProjectileAsteroidCollisionResponse::respond(Object3D* object_a, Object3D* 
         asteroid = dynamic_cast<Asteroid*> (object_b);
     }
 
-    if (asteroid != NULL && projectile->get_parent() != NULL && asteroid->get_parent() != NULL)
+    if (asteroid != NULL && projectile != nullptr && projectile->get_parent() != NULL && asteroid->get_parent() != NULL)
     {
         projectile->inflict_damage(asteroid);
         this->projectile_impact_emitter->set_position(asteroid->get_position() - glm::normalize(projectile->get_velocity()) * asteroid->get_size());
-        projectile->get_parent()->remove_child(projectile);
+        projectile->kill();
         // asteroid->get_parent()->remove_child(asteroid);
         this->projectile_impact_emitter->emit(dt);
     }
