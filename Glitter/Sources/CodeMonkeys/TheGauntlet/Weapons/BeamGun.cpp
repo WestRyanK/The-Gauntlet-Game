@@ -11,7 +11,7 @@ using namespace CodeMonkeys::Engine::Objects;
 using namespace CodeMonkeys::Engine::Collision;
 using CodeMonkeys::TheGauntlet::Weapons::BeamGun;
 
-BeamGun::BeamGun(ShaderProgram* shader, ParticleEmitter* projectile_emitter) : AlternatingWeapon("beam_gun", shader, projectile_emitter, 180, 0.4f, true)
+BeamGun::BeamGun(ShaderProgram* shader, ParticleEmitter* projectile_emitter) : AlternatingWeapon("beam_gun", shader, projectile_emitter, 360, 0.2f, true)
 {
     Material* projectile_material = new ColorMaterial(shader, true, 10.0f, vec3(0.8f), vec3(1.0f, 1.0f, 1.0f));
     vector<Material*> projectile_materials;
@@ -34,6 +34,7 @@ BeamGun::BeamGun(ShaderProgram* shader, ParticleEmitter* projectile_emitter) : A
     bounding_multisphere->add_sphere(new BoundingSphere(vec3(0.0f, 0.0f, -20.0f), r));
     bounding_multisphere->add_sphere(new BoundingSphere(vec3(0.0f, 0.0f, 5.0f), r));
     this->projectile_prototype->set_collision_region(bounding_multisphere);
+    this->projectile_prototype->set_velocity(this->projectile_prototype->get_velocity() * 2.0f);
 
     this->sound_buffer = new sf::SoundBuffer();
     if (!this->sound_buffer->loadFromFile("Assets/Projectiles/BeamGun/beam_gun.wav"))

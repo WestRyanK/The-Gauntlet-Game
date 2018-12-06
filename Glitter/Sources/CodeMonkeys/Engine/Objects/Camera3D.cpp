@@ -76,6 +76,7 @@ mat4 Camera3D::get_view_transform()
         // transformed_look_at = vec3(hierarchical_transform * vec4(this->look_at, 1));
     }
     vec3 transformed_position = vec3(hierarchical_transform * vec4(0,0,0, 1));
+    transformed_look_at = vec3(transformed_look_at.x, transformed_look_at.y + 10, transformed_look_at.z);
     
     return glm::lookAt(transformed_position, transformed_look_at, this->up);
 }

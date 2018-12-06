@@ -159,7 +159,7 @@ Ship* ShipFactory::create_jet_fighter()
     // const float MIN_Z_VELOCITY = 5;
 
     Weapon* beam_gun = new BeamGun(ShipFactory::projectile_shader, ShipFactory::projectile_emitter);
-    beam_gun->set_position(vec3(5,-1,0));
+    beam_gun->set_position(vec3(3,-1,0));
     Weapon* antimatter_cannon = new AntiMatterCannon(ShipFactory::projectile_shader, ShipFactory::projectile_emitter);
 
     AnimatedTexture* rocket_texture = new AnimatedTexture("Assets/Ships/JetFighter/rocket", "png", 8);

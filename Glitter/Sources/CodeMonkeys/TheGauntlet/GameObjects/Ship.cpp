@@ -11,7 +11,8 @@ using namespace CodeMonkeys::TheGauntlet;
 using namespace CodeMonkeys::TheGauntlet::Weapons;
 
 const float maxVerticalAngle = 45.0f;
-const float maxLateralAccleration = 1.0f; Ship::Ship(Model3D* model, std::string name,
+const float maxLateralVelocity = 200.0f;
+Ship::Ship(Model3D* model, std::string name,
     unsigned int initial_health,
     unsigned int max_health, 
 
@@ -68,25 +69,13 @@ void Ship::on_death()
 void Ship::update(float dt)
 {
     if (this->rocket_engine != NULL)
+    {
         this->rocket_engine->update(dt);
-    if (this->rocket_engine != NULL)
         this->rocket_engine->set_is_accelerating(false);
+    }
 
-    // this->update_vertical(dt);
-    // this->update_lateral(dt);
-    
-    vec4 facing_direction = vec4(0, 0, -1, 0);
-    mat4 rotation_matrix;
-    // rotation_matrix = glm::rotate(rotation_matrix, this->rotation.z, vec3(1,0,0));
-    rotation_matrix = glm::rotate(rotation_matrix, this->rotation.x, vec3(1,0,0));
-    rotation_matrix = glm::rotate(rotation_matrix, this->rotation.y, vec3(0,1,0));
-    facing_direction = rotation_matrix * facing_direction;
-
-    // float speed = 60;
-    // this->set_velocity(vec3(speed * facing_direction));
-
-    // vec3 forward = glm::normalize(this->look_at - this->position);
-    // vec3 sideways = -glm::normalize(glm::cross(this->up, this->look_at - this->position));
+    this->update_vertical(dt);
+    this->update_lateral(dt);
 
     PhysicalObject3D::update(dt);
     
@@ -97,211 +86,82 @@ void Ship::update(float dt)
     this->bounding_multisphere->set_rotation(this->rotation);
 }
 
+void Ship::update_lateral(float dt)
+{
+    if (!this->acclerating_laterally)
+        this->dampen_lateral(dt);
+
+    if (this->velocity.x > maxLateralVelocity)
+        this->velocity.x = maxLateralVelocity;
+
+    if (this->velocity.x < -maxLateralVelocity)
+        this->velocity.x = -maxLateralVelocity;
+
+     this->rotation.z = this->velocity.x / maxLateralVelocity * glm::radians(40.0f);
+     printf("{%f, %f, %f}\n", this->rotation.x, this->rotation.y, this->rotation.z);
+}
+
 void Ship::update_vertical(float dt)
 {
     if (!this->acclerating_vertically)
         this->dampen_vertical(dt);
     
-    if (this->rotation.x >= glm::radians(maxVerticalAngle))
-    {
-        this->rotation.x = glm::radians(maxVerticalAngle);
-        if (this->angular_velocity.x > 0)
-            this->set_angular_velocity(vec3(0, this->angular_velocity.y, this->angular_velocity.z));
-        
-    }
-    if (this->rotation.x <= -glm::radians(maxVerticalAngle))
-    {
-        this->rotation.x = -glm::radians(maxVerticalAngle);
-        if (this->angular_velocity.x < 0)
-        {
-            
-            this->set_angular_velocity(vec3(0, this->angular_velocity.y, this->angular_velocity.z));
-        }
-    }
-}
+    if (this->velocity.y > maxLateralVelocity)
+        this->velocity.y = maxLateralVelocity;
 
-void Ship::update_lateral(float dt)
-{
-    if (!this->acclerating_laterally)
-        this->dampen_lateral(dt);
-    
-    if (this->angular_velocity.y > 1)
-        this->set_angular_velocity(vec3(this->angular_velocity.x, 1, this->angular_velocity.z));
-    
-    if (this->angular_velocity.y < -1)
-        this->set_angular_velocity(vec3(this->angular_velocity.x, -1, this->angular_velocity.z));
-    
-    this->rotation.z = this->angular_velocity.y * glm::radians(45.0f);
+    if (this->velocity.y < -maxLateralVelocity)
+        this->velocity.y = -maxLateralVelocity;
+
+    this->rotation.x = this->velocity.y / maxLateralVelocity * glm::radians(80.0f);
 }
 
 void Ship::dampen_lateral(float dt)
 {
-    if (this->angular_velocity.y > 0.0f)
-        this->angular_velocity.y = std::max(this->angular_velocity.y - dt, 0.0f);
-    
-    if (this->angular_velocity.y < 0.0f)
-        this->angular_velocity.y = std::min(this->angular_velocity.y + dt, 0.0f);
-    
-    if (this->angular_velocity.z > 0.0f)
-        this->angular_velocity.z = std::max(this->angular_velocity.z - dt, 0.0f);
-    
-    if (this->angular_velocity.z < 0.0f)
-        this->angular_velocity.z = std::min(this->angular_velocity.z + dt, 0.0f);
+    float dampen_factor = 100 * dt;
+    if (this->velocity.x > 0.0f)
+        this->velocity.x = std::max(this->velocity.x - dampen_factor, 0.0f);
+
+    if (this->velocity.x < 0.0f)
+        this->velocity.x = std::min(this->velocity.x + dampen_factor, 0.0f);
 }
 
 void Ship::dampen_vertical(float dt)
 {
-    if (this->angular_velocity.x > 0.0f)
-        this->angular_velocity.x = std::max(this->angular_velocity.x - dt, 0.0f);
-    
-    if (this->angular_velocity.x < 0.0f)
-        this->angular_velocity.x = std::min(this->angular_velocity.x + dt, 0.0f);
+    float dampen_factor = 100 * dt;
+    if (this->velocity.y > 0.0f)
+        this->velocity.y = std::max(this->velocity.y - dampen_factor, 0.0f);
+
+    if (this->velocity.y < 0.0f)
+        this->velocity.y = std::min(this->velocity.y + dampen_factor, 0.0f);
 }
 
 void Ship::control(std::string control_name, float value, float dt)
 {
-    if ((control_name == "move_x" || control_name == "move_y") && value != 0)
+    if ((control_name == "move_x" || control_name == "boost" || control_name == "move_y") && value != 0)
     {
         if (this->rocket_engine != NULL)
             this->rocket_engine->set_is_accelerating(true);
     }
-    // printf("%f %f %f\n", this->position.x, this->position.y, this->position.z);
     const float velocity = 100.0f;
     vec3 forward = vec3(0, 0, 1);
-    vec3 sideways = vec3(1, 0, 0);
+
     if (control_name == "move_x")
     {
-        this->position += sideways * dt * value * velocity;
+        if (value != 0.0f)
+            this->acclerating_laterally = true;
+        this->velocity.x += value * dt * 200;
     }
-    // if (control_name == "move_y")
-    // {
-    //     this->position.y += value * dt * velocity;
-    // }
     if (control_name == "move_y")
     {
-        this->position += forward * dt * value * velocity;
+        if (value != 0.0f)
+            this->acclerating_vertically = true;
+        this->velocity.y += value * dt * 200;
     }
-    const float R = 10;
+
     if (control_name == "boost")
     {
-        this->position += vec3(0, 1, 0) * dt * value * velocity * 0.25f;
-        // this->rotation = vec3(this->rotation.x, this->rotation.y, this->rotation.z + R);
+        this->position += forward * dt * value * velocity * 2.0f;
     }
-    if (control_name == "brake")
-    {
-        this->position -= vec3(0, 1, 0) * dt * value * velocity * 0.25f;
-        // this->rotation = vec3(this->rotation.x, this->rotation.y, this->rotation.z - R);
-    }
-
-    // if (control_name == "move_y")
-    // {
-    //     if (value != 0.0f)
-    //         this->acclerating_vertically = true;
-        
-    //     this->set_angular_velocity(vec3(this->angular_velocity.x + value * dt * 2, this->angular_velocity.y, this->angular_velocity.z));
-    //     // if (value == 0)
-    //     // {
-    //     //     if (this->rotation.x < 0 && this->angular_velocity.x < 0  || this->rotation.x > 0 && this->angular_velocity.x > 0)
-    //     //     {
-    //     //         float x_velocity = this->angular_velocity.x - dt * this->rotation.x * 0.8f;
-    //     //         this->set_angular_velocity(vec3(x_velocity, this->angular_velocity.y, this->angular_velocity.z));
-    //     //     }
-    //     //     if (this->rotation.x < 0 && this->angular_velocity.x >= 0 || this->rotation.x > 0 && this->angular_velocity.x <= 0)
-    //     //     {
-    //     //         float x_rotation = this->rotation.x * 0.97f;
-    //     //         this->set_rotation(vec3(x_rotation, this->rotation.y, this->rotation.z));
-    //     //     }
-    //     //     // float x_velocity = 0;
-    //     //     // if (this->rotation.x != 0)
-    //     //     //     x_velocity = this->angular_velocity.x - dt * this->rotation.x * 0.5f;
-
-
-    //     // }
-    //     // this->set_velocity(vec3(this->velocity.x, this->velocity.y + value * this->xy_acceleration * dt, this->velocity.z));
-    //     // // this->velocity.y += value * this->xy_acceleration * dt;
-
-    //     // // This math isn't technically correct, if you move in both x&y at 
-    //     // // same time at max_xy_velocity in each axis, you will actually be travelling max_xy_velocity * sqrt(2)
-    //     // if (this->velocity.y > this->max_xy_velocity)
-    //     // {
-    //     //     this->set_velocity(vec3(this->velocity.x, this->max_xy_velocity, this->velocity.z));
-    //     // }
-    //     // if (this->velocity.y < -this->max_xy_velocity)
-    //     // {
-    //     //     this->set_velocity(vec3(this->velocity.x, -this->max_xy_velocity, this->velocity.z));
-    //     // }
-    // }
-    // if (control_name == "move_x")
-    // {
-    //     if (value != 0.0f)
-    //         this->acclerating_laterally = true;
-    //     this->set_angular_velocity(vec3(this->angular_velocity.x, this->angular_velocity.y, this->angular_velocity.z - value * dt * 2));
-    //     this->set_angular_velocity(vec3(this->angular_velocity.x, this->angular_velocity.y- value * dt * 2, this->angular_velocity.z ));
-    //     // this->set_velocity(vec3(this->velocity.x + value * this->velocity.z * dt, this->velocity.y, this->velocity.z));
-
-    //     // this->set_angular_velocity(vec3(this->angular_velocity.x, this->angular_velocity.y, this->angular_velocity.z - value * this->roll_acceleration * dt));
-
-    //     // This math isn't technically correct, if you move in both x&y at 
-    //     // same time at max_xy_velocity in each axis, you will actually be travelling max_xy_velocity * sqrt(2)
-    //     // if (this->velocity.x > this->max_xy_velocity)
-    //     // {
-    //     //     this->set_velocity(vec3(this->max_xy_velocity, this->velocity.y, this->velocity.z));
-    //     //     // this->velocity.x = this->max_xy_velocity;
-    //     // }
-    //     // if (this->velocity.x < -this->max_xy_velocity)
-    //     // {
-    //     //     this->set_velocity(vec3(-this->max_xy_velocity, this->velocity.y, this->velocity.z));
-    //     // }
-
-
-    //     // if (this->rotation.z >= glm::radians(this->max_roll) && this->angular_velocity.z > 0)
-    //     // {
-    //     //     this->set_angular_velocity(vec3(this->angular_velocity.x, this->angular_velocity.y,0.0f));
-    //     //     // this->set_angular_velocity(vec3(this->angular_velocity.x, this->angular_velocity.y, this->angular_velocity.z - this->roll_acceleration * 0.2f));
-    //     //     // this->set_rotation(vec3(this->rotation.x, this->rotation.y, this->max_roll));
-    //     // }
-    //     // else if (this->rotation.z <= glm::radians(-this->max_roll) && this->angular_velocity.z < 0)
-    //     // {
-    //     //     this->set_angular_velocity(vec3(this->angular_velocity.x, this->angular_velocity.y,0.0f));
-    //     //     // this->set_angular_velocity(vec3(this->angular_velocity.x, this->angular_velocity.y, this->angular_velocity.z + this->roll_acceleration * 0.2f));
-    //     //     // this->set_rotation(vec3(this->rotation.x, this->rotation.y, -this->max_roll));
-    //     // }
-    //     // if (value == 0)
-    //     // {
-
-    //     //     // this->set_angular_velocity(vec3(this->angular_velocity.x, this->angular_velocity.y, this->angular_velocity.z * 0.5f));
-    //     //     this->set_angular_velocity(vec3(this->angular_velocity.x, this->angular_velocity.y,0.0f));
-    //     //     this->set_rotation(vec3(this->rotation.x, this->rotation.y, this->rotation.z * this->deroll_percent));
-    //     //     printf("No x\n");
-    //     // }
-    //     // else
-    //     // {
-    //     //     printf("x\n");
-    //     // }
-
-    // }
-    // if (control_name == "boost")
-    // {
-    //     // this->set_velocity(vec3(this->velocity.x, this->velocity.y, this->velocity.z - value * this->boost_acceleration * dt));
-    //     // // this->velocity.z -= value * this->boost_acceleration * dt;
-
-    //     // if (this->velocity.z < -this->max_z_velocity)
-    //     // {
-    //     //     this->set_velocity(vec3(this->velocity.x, this->velocity.y, -this->max_z_velocity));
-    //     //     // this->velocity.z = this->max_z_velocity;
-    //     // }
-    // }
-    // if (control_name == "brake")
-    // {
-    //     // this->set_velocity(vec3(this->velocity.x, this->velocity.y, this->velocity.z + value * this->boost_acceleration * dt));
-    //     // // this->velocity.z += value * this->brake_acceleration * dt;
-
-    //     // if (this->velocity.z > -this->min_z_velocity)
-    //     // {
-    //     //     // this->velocity.z = this->min_z_velocity;
-    //     //     this->set_velocity(vec3(this->velocity.x, this->velocity.y, -this->min_z_velocity));
-    //     // }
-    // }
 }
 
 void Ship::control(std::string control_name, int value, float dt)
