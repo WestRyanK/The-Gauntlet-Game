@@ -28,6 +28,7 @@ ProjectileAsteroidCollisionResponse::ProjectileAsteroidCollisionResponse(CodeMon
     if (!this->sound_buffer->loadFromFile("Assets/Explosions/Explosion_03/explosion_03.wav"))
         printf("Could not load 'explosion_03.wav' file!\n");
     this->sound = new sf::Sound();
+    this->sound->setVolume(95.0f);
     this->sound->setBuffer(*this->sound_buffer);
 }
 

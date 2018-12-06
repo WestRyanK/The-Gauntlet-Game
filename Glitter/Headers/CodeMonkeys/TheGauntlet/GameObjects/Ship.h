@@ -4,6 +4,7 @@
 #include "glitter.hpp"
 #include "CodeMonkeys/TheGauntlet/Weapons/Weapon.h"
 #include "CodeMonkeys/TheGauntlet/IFlyable.h"
+#include "CodeMonkeys/TheGauntlet/RocketEngine.h"
 #include "CodeMonkeys/TheGauntlet/Weapons/IDamageable.h"
 #include "CodeMonkeys/Engine/Control/IControllable.h"
 #include "CodeMonkeys/Engine/Objects/PhysicalObject3D.h"
@@ -23,6 +24,7 @@ namespace CodeMonkeys::TheGauntlet::GameObjects
     protected:
         Weapon* primary_weapon = NULL;
         Weapon* secondary_weapon = NULL;
+        RocketEngine* rocket_engine = NULL;
 
         void on_death();
         void control(std::string control_name, float value, float dt);
@@ -47,7 +49,8 @@ namespace CodeMonkeys::TheGauntlet::GameObjects
             float max_z_velocity,
             float min_z_velocity,
             Weapon* primary_weapon,
-            Weapon* secondary_weapon);
+            Weapon* secondary_weapon,
+            RocketEngine* rocket_engine);
 
         ICollisionRegion* get_collision_region();
         Weapon* get_primary_weapon();

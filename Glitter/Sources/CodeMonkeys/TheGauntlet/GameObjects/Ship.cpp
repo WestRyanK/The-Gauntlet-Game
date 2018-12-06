@@ -11,9 +11,7 @@ using namespace CodeMonkeys::TheGauntlet;
 using namespace CodeMonkeys::TheGauntlet::Weapons;
 
 const float maxVerticalAngle = 45.0f;
-const float maxLateralAccleration = 1.0f;
-
-Ship::Ship(Model3D* model, std::string name,
+const float maxLateralAccleration = 1.0f; Ship::Ship(Model3D* model, std::string name,
     unsigned int initial_health,
     unsigned int max_health, 
 
@@ -25,7 +23,8 @@ Ship::Ship(Model3D* model, std::string name,
     float min_z_velocity,
 
     Weapon* primary_weapon,
-    Weapon* secondary_weapon) : 
+    Weapon* secondary_weapon,
+    RocketEngine* rocket_engine) : 
 
         PhysicalObject3D(model, name), 
         IDamageable(initial_health, max_health), 
@@ -39,6 +38,9 @@ Ship::Ship(Model3D* model, std::string name,
 {
     this->primary_weapon = primary_weapon;
     this->secondary_weapon = secondary_weapon;
+    this->rocket_engine = rocket_engine;
+    if (this->rocket_engine != NULL)
+        this->rocket_engine->play();
     this->acclerating_vertically = false;
     this->acclerating_laterally = false;
 
@@ -58,11 +60,18 @@ Ship::Ship(Model3D* model, std::string name,
 
 void Ship::on_death()
 {
+    if (this->rocket_engine != NULL)
+        this->rocket_engine->stop();
     throw NotImplementedException("Ship::on_death");
 }
 
 void Ship::update(float dt)
 {
+    if (this->rocket_engine != NULL)
+        this->rocket_engine->update(dt);
+    if (this->rocket_engine != NULL)
+        this->rocket_engine->set_is_accelerating(false);
+
     // this->update_vertical(dt);
     // this->update_lateral(dt);
     
@@ -151,6 +160,11 @@ void Ship::dampen_vertical(float dt)
 
 void Ship::control(std::string control_name, float value, float dt)
 {
+    if ((control_name == "move_x" || control_name == "move_y") && value != 0)
+    {
+        if (this->rocket_engine != NULL)
+            this->rocket_engine->set_is_accelerating(true);
+    }
     // printf("%f %f %f\n", this->position.x, this->position.y, this->position.z);
     const float velocity = 100.0f;
     vec3 forward = vec3(0, 0, 1);

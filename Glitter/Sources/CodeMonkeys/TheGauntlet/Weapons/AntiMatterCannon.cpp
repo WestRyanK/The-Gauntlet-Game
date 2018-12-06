@@ -23,5 +23,6 @@ AntiMatterCannon::AntiMatterCannon(ShaderProgram* shader, ParticleEmitter* proje
     this->sound_buffer = new sf::SoundBuffer();
     if (!this->sound_buffer->loadFromFile("Assets/Projectiles/AntiMatterCannon/anti_matter_cannon.wav"))
         printf("Could not load 'anti_matter_cannon.wav' file!\n");
+    this->sound->setVolume(65.0f);
     this->sound->setBuffer(*this->sound_buffer);
 }

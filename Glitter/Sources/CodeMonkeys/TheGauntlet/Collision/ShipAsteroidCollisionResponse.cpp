@@ -15,6 +15,7 @@ ShipAsteroidCollisionResponse::ShipAsteroidCollisionResponse(CodeMonkeys::Engine
     if (!this->sound_buffer->loadFromFile("Assets/Explosions/Explosion_01/explosion_01.wav"))
         printf("Could not load 'explosion_01.wav' file!\n");
     this->sound = new sf::Sound();
+    this->sound->setVolume(100.0f);
     this->sound->setBuffer(*this->sound_buffer);
 }
 

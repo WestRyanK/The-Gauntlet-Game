@@ -20,8 +20,8 @@ int main(int argc, char * argv[]) {
 
     const float virtual_reality_ratio = 0.375f;
     const float normal_ratio = 0.7;
-    // const GLuint WIDTH = 1920;
-    const GLuint WIDTH = 1080;
+    const GLuint WIDTH = 1920;
+    // const GLuint WIDTH = 1080;
     const GLuint HEIGHT = (int)(WIDTH * normal_ratio);
     // const GLuint HEIGHT = (int)(WIDTH * virtual_reality_ratio);
 
