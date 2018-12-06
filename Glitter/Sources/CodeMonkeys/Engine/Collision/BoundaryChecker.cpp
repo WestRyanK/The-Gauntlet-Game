@@ -6,14 +6,15 @@ void BoundaryChecker::check_boundary(Object3D* obj)
 {
     if (obj == nullptr) return;
     // TODO: Dynamic casts are extremely expensive at runtime, consider doing object type enums instead
-    // auto phys_obj = dynamic_cast<PhysicalObject3D*> (obj);
-    // if (phys_obj != NULL)
-    //     check_boundary(phys_obj);
+     auto phys_obj = dynamic_cast<PhysicalObject3D*> (obj);
+     if (phys_obj != NULL)
+         check_boundary(phys_obj);
 }
 
 void BoundaryChecker::check_boundary(PhysicalObject3D* obj)
 {
-    if (obj->get_name() == "laser_turret_particle")
+    std::set<string> valid_objects = {"asteroid", "ship"};
+    if (valid_objects.count(obj->get_name()) == 0)
         return;
 
     vec3 position = obj->get_transformed_position();

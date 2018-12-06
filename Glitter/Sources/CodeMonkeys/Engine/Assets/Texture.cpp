@@ -78,4 +78,5 @@ Texture* Texture::clone()
     texture_clone->channel_count = this->channel_count;
     texture_clone->texture_id = this->texture_id;
     texture_clone->texture_path = this->texture_path;
+    return texture_clone;
 }
