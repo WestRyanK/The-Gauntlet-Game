@@ -66,6 +66,7 @@ Ship* ShipFactory::create_crayon_ship()
                           MAX_Z_VELOCITY,
                           MIN_Z_VELOCITY,
                           crayon_launcher,
+                          NULL,
                           NULL);
 
     ShipFactory::add_explosion_particles(ship);
@@ -107,6 +108,20 @@ Ship* ShipFactory::create_x_wing_ship()
     laser_turret->set_position(vec3(3.7f,-2.4f,0));
     Weapon* laser_cannon = new LaserCannon(ShipFactory::projectile_shader, ShipFactory::projectile_emitter);
 
+    AnimatedTexture* rocket_texture = new AnimatedTexture("Assets/Ships/XWingShip/rocket", "png", 10);
+    RocketEngine* rocket_engine = new RocketEngine(rocket_texture, 20, 20, "Assets/Ships/XWingShip/engine.wav");
+    rocket_engine->set_position(vec3(0,0,0));
+
+    rocket_engine->set_acceleration_volume(60);
+    rocket_engine->set_deceleration_volume(30);
+    rocket_engine->set_max_volume(45);
+    rocket_engine->set_min_volume(20);
+
+    rocket_engine->set_acceleration_pitch(1.0f);
+    rocket_engine->set_deceleration_pitch(0.5f);
+    rocket_engine->set_max_pitch(1.0f);
+    rocket_engine->set_min_pitch(0.4f);
+
     Ship* ship = new Ship(model, "ship",
                           INTITIAL_HEALTH, MAX_HEALTH,
                           XY_ACCELERATION,
@@ -116,8 +131,10 @@ Ship* ShipFactory::create_x_wing_ship()
                           MAX_Z_VELOCITY,
                           MIN_Z_VELOCITY,
                           laser_turret,
-                          laser_cannon);
+                          laser_cannon,
+                          rocket_engine);
 
+    ship->add_child(rocket_engine);
     ShipFactory::add_explosion_particles(ship);
 
     return ship;
@@ -145,6 +162,23 @@ Ship* ShipFactory::create_jet_fighter()
     beam_gun->set_position(vec3(5,-1,0));
     Weapon* antimatter_cannon = new AntiMatterCannon(ShipFactory::projectile_shader, ShipFactory::projectile_emitter);
 
+    AnimatedTexture* rocket_texture = new AnimatedTexture("Assets/Ships/JetFighter/rocket", "png", 8);
+    RocketEngine* rocket_engine = new RocketEngine(rocket_texture, 12, 12, "Assets/Ships/JetFighter/engine.wav");
+    rocket_engine->set_position(vec3(0,-1.28,18));
+
+    rocket_engine->set_acceleration_volume(80);
+    rocket_engine->set_deceleration_volume(20);
+    rocket_engine->set_max_volume(50);
+    rocket_engine->set_min_volume(30);
+
+    rocket_engine->set_acceleration_pitch(1.2f);
+    rocket_engine->set_deceleration_pitch(0.3f);
+    rocket_engine->set_max_pitch(1.1f);
+    rocket_engine->set_min_pitch(0.4f);
+
+    rocket_engine->set_acceleration_frame(20);
+    rocket_engine->set_deceleration_frame(5);
+
     Ship* ship = new Ship(model, "ship",
                           INTITIAL_HEALTH, MAX_HEALTH,
                           XY_ACCELERATION,
@@ -154,8 +188,10 @@ Ship* ShipFactory::create_jet_fighter()
                           MAX_Z_VELOCITY,
                           MIN_Z_VELOCITY,
                           beam_gun,
-                          antimatter_cannon);
+                          antimatter_cannon,
+                          rocket_engine);
 
+    ship->add_child(rocket_engine);
     ShipFactory::add_explosion_particles(ship);
 
     return ship;

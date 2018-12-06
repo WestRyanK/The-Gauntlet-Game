@@ -42,6 +42,7 @@ void Asteroid::init(Object3D* world_root)
     if (!Asteroid::sound_buffer->loadFromFile("Assets/Explosions/Explosion_02/explosion_02.wav"))
         printf("Could not load 'explosion_02.wav' file!\n");
     Asteroid::sound->setBuffer(*Asteroid::sound_buffer);
+    Asteroid::sound->setVolume(100.0f);
 }
 
 void Asteroid::update(float dt)

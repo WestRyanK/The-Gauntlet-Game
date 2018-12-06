@@ -40,5 +40,6 @@ LaserTurret::LaserTurret(ShaderProgram* shader, ParticleEmitter* projectile_emit
     this->sound_buffer = new sf::SoundBuffer();
     if (!this->sound_buffer->loadFromFile("Assets/Projectiles/LaserTurret/laser_turret.wav"))
         printf("Could not load 'laser_turret.wav' file!\n");
+    this->sound->setVolume(60.0f);
     this->sound->setBuffer(*this->sound_buffer);
 }

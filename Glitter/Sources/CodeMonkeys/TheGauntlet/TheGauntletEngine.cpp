@@ -82,6 +82,13 @@ void TheGauntletEngine::init_light_and_camera(Object3D* camera_parent)
 
 void TheGauntletEngine::init()
 {
+    sf::Music* music = new sf::Music();
+    if (!music->openFromFile("Assets/Music/system_shock.wav"))
+        printf("Could not load 'system_shock.wav' file!\n");
+    music->setLoop(true);
+    music->setVolume(30.0f);
+    music->play();
+
     this->set_collision_detector(new GridCollisionDetector(vec3(1000), vec3(-1000), 50)); // this->set_collision_detector(new SimpleCollisionDetector());
 
     ShaderProgram* shader = new ShaderProgram("Assets/Shaders/basic.vert", "Assets/Shaders/basic.frag");
@@ -113,7 +120,6 @@ void TheGauntletEngine::init()
     if (ship->get_secondary_weapon() != NULL)
     {
         RechargeBar* recharge_bar = new RechargeBar(ship->get_secondary_weapon(), -1, 0.45f, 0.75f, 0.40f);
-        // RechargeBar* recharge_bar = new RechargeBar(ship->get_secondary_weapon(), -1, 0.65, 0.75f, 0.40f);
         this->quads.insert(recharge_bar);
     }
 
@@ -166,10 +172,4 @@ void TheGauntletEngine::setup_course() {
     auto portal = CodeMonkeys::TheGauntlet::GameObjects::PortalFactory::create_portal();
     portal->set_position(vec3(0, 0, -S));
     this->world_root->add_child(portal);
-
-    sf::Music* music = new sf::Music();
-    if (!music->openFromFile("Assets/Music/system_shock.wav"))
-        printf("Could not load 'system_shock.wav' file!\n");
-    music->setLoop(true);
-    music->play();
 }

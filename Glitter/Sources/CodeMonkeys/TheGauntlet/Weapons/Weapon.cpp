@@ -12,6 +12,7 @@ Weapon::Weapon(string name, ShaderProgram* shader, ParticleEmitter* projectile_e
     this->shader = shader;
 
     this->sound = new sf::Sound();
+    this->sound->setVolume(80.0f);
 }
 
 void Weapon::on_fire()
