@@ -162,9 +162,10 @@ Ship* ShipFactory::create_jet_fighter()
     beam_gun->set_position(vec3(3,-1,0));
     Weapon* antimatter_cannon = new AntiMatterCannon(ShipFactory::projectile_shader, ShipFactory::projectile_emitter);
 
-    AnimatedTexture* rocket_texture = new AnimatedTexture("Assets/Ships/JetFighter/rocket", "png", 8);
-    RocketEngine* rocket_engine = new RocketEngine(rocket_texture, 12, 12, "Assets/Ships/JetFighter/engine.wav");
-    rocket_engine->set_position(vec3(0,-1.28,18));
+    auto rocket_texture = new AnimatedTexture("Assets/Ships/JetFighter/rocket", "png", 8);
+    auto rocket_engine = new RocketEngine(rocket_texture, 12, 12, "Assets/Ships/JetFighter/engine.wav");
+    rocket_engine->set_position(vec3(0,-1.6,12.4));
+    rocket_engine->set_scale(rocket_engine->get_scale() * 1.2f);
 
     rocket_engine->set_acceleration_volume(80);
     rocket_engine->set_deceleration_volume(20);

@@ -13,7 +13,7 @@ mat4 SpringArm::get_transform()
 void SpringArm::update(float dt)
 {
 
-    PhysicalObject3D* physical_parent = dynamic_cast<PhysicalObject3D*>(this->parent);
+    auto physical_parent = dynamic_cast<PhysicalObject3D*>(this->parent);
     if (physical_parent != NULL)
     {
         this->acceleration = physical_parent->get_acceleration();

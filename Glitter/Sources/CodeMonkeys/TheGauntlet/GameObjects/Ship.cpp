@@ -10,7 +10,6 @@ using CodeMonkeys::TheGauntlet::GameObjects::Ship;
 using namespace CodeMonkeys::TheGauntlet;
 using namespace CodeMonkeys::TheGauntlet::Weapons;
 
-const float maxVerticalAngle = 45.0f;
 const float maxLateralVelocity = 200.0f;
 Ship::Ship(Model3D* model, std::string name,
     unsigned int initial_health,
@@ -97,8 +96,7 @@ void Ship::update_lateral(float dt)
     if (this->velocity.x < -maxLateralVelocity)
         this->velocity.x = -maxLateralVelocity;
 
-     this->rotation.z = this->velocity.x / maxLateralVelocity * glm::radians(40.0f);
-     printf("{%f, %f, %f}\n", this->rotation.x, this->rotation.y, this->rotation.z);
+     this->rotation.z = -this->velocity.x / maxLateralVelocity * 40.0f;
 }
 
 void Ship::update_vertical(float dt)
@@ -112,7 +110,7 @@ void Ship::update_vertical(float dt)
     if (this->velocity.y < -maxLateralVelocity)
         this->velocity.y = -maxLateralVelocity;
 
-    this->rotation.x = this->velocity.y / maxLateralVelocity * glm::radians(80.0f);
+    this->rotation.x = this->velocity.y / maxLateralVelocity * 20.0f;
 }
 
 void Ship::dampen_lateral(float dt)
