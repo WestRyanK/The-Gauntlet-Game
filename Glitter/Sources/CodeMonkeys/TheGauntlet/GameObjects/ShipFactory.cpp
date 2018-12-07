@@ -104,13 +104,14 @@ Ship* ShipFactory::create_x_wing_ship()
     const float MIN_Z_VELOCITY = 0;
     // const float MIN_Z_VELOCITY = 5;
 
+
     Weapon* laser_turret = new LaserTurret(ShipFactory::projectile_shader, ShipFactory::projectile_emitter);
     laser_turret->set_position(vec3(3.7f,-2.4f,0));
     Weapon* laser_cannon = new LaserCannon(ShipFactory::projectile_shader, ShipFactory::projectile_emitter);
 
-    AnimatedTexture* rocket_texture = new AnimatedTexture("Assets/Ships/XWingShip/rocket", "png", 10);
-    RocketEngine* rocket_engine = new RocketEngine(rocket_texture, 20, 20, "Assets/Ships/XWingShip/engine.wav");
-    rocket_engine->set_position(vec3(0,0,0));
+    AnimatedTexture* rocket_texture = new AnimatedTexture("Assets/Ships/XWingShip/rocket", "png", 8);
+    RocketEngine* rocket_engine = new RocketEngine(rocket_texture, 16, 16, "Assets/Ships/XWingShip/engine.wav");
+    rocket_engine->set_position(vec3(0,0,10));
 
     rocket_engine->set_acceleration_volume(60);
     rocket_engine->set_deceleration_volume(30);
@@ -121,6 +122,9 @@ Ship* ShipFactory::create_x_wing_ship()
     rocket_engine->set_deceleration_pitch(0.5f);
     rocket_engine->set_max_pitch(1.0f);
     rocket_engine->set_min_pitch(0.4f);
+
+    rocket_engine->set_acceleration_frame(20);
+    rocket_engine->set_deceleration_frame(7);
 
     Ship* ship = new Ship(model, "ship",
                           INTITIAL_HEALTH, MAX_HEALTH,
