@@ -12,9 +12,6 @@ void DrawObjectsIterator::visit_object(Object3D* object)
     }
     this->transform_stack.push(transform);
 
-    if (object->get_name() == "ship")
-        printf("stop here");
-
     object->draw(transform, current_shader);
 }
 

@@ -193,8 +193,6 @@ Asteroid* AsteroidFactory::create_asteroid_random_size()
         size = Asteroid::LARGE;
     }
 
-    size = Asteroid::LARGE;
-
     return AsteroidFactory::create_asteroid(size);
 }
 

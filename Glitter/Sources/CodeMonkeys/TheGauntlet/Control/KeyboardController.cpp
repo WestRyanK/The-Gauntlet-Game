@@ -25,15 +25,15 @@ void KeyboardController::handle_input(float dt)
     glfwPollEvents();
     if (glfwGetKey(this->window, GLFW_KEY_S) == GLFW_PRESS)
     {
-        this->controllable->control("boost", 1.0f, dt);
+        this->controllable->control("move_z", 1.0f, dt);
     }
     if (w_pressed)
     {
-        this->controllable->control("boost", -1.0f, dt);
+        this->controllable->control("move_z", -1.0f, dt);
     }
     if (glfwGetKey(this->window, GLFW_KEY_W) == GLFW_RELEASE && glfwGetKey(this->window, GLFW_KEY_S) == GLFW_RELEASE)
     {
-        this->controllable->control("boost", 0.0f, dt);
+        this->controllable->control("move_z", 0.0f, dt);
     }
     if (glfwGetKey(this->window, GLFW_KEY_A) == GLFW_PRESS)
     {
@@ -56,18 +56,6 @@ void KeyboardController::handle_input(float dt)
     {
         this->controllable->control("move_y", -1.0f, dt);
     }
-
-
-    if (glfwGetKey(this->window, GLFW_KEY_F) == GLFW_PRESS)
-    {
-        this->controllable->control("move_z", 1.0f, dt);
-    }
-    if (glfwGetKey(this->window, GLFW_KEY_R) == GLFW_PRESS)
-    {
-        this->controllable->control("move_z", -1.0f, dt);
-    }
-
-
 
     if (glfwGetKey(this->window, GLFW_KEY_SPACE) == GLFW_PRESS)
     {

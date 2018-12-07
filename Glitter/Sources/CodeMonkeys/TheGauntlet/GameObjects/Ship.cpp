@@ -156,7 +156,7 @@ void Ship::control(std::string control_name, float value, float dt)
         this->velocity.y += value * dt * 200;
     }
 
-    if (control_name == "boost")
+    if (control_name == "move_z")
     {
         this->position += forward * dt * value * velocity * 2.0f;
     }

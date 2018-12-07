@@ -34,7 +34,6 @@ BeamGun::BeamGun(ShaderProgram* shader, ParticleEmitter* projectile_emitter) : A
     bounding_multisphere->add_sphere(new BoundingSphere(vec3(0.0f, 0.0f, -20.0f), r));
     bounding_multisphere->add_sphere(new BoundingSphere(vec3(0.0f, 0.0f, 5.0f), r));
     this->projectile_prototype->set_collision_region(bounding_multisphere);
-    this->projectile_prototype->set_velocity(this->projectile_prototype->get_velocity() * 2.0f);
 
     this->sound_buffer = new sf::SoundBuffer();
     if (!this->sound_buffer->loadFromFile("Assets/Projectiles/BeamGun/beam_gun.wav"))
