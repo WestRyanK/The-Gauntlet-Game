@@ -11,7 +11,7 @@ using namespace CodeMonkeys::Engine::Objects;
 using namespace CodeMonkeys::Engine::Collision;
 using CodeMonkeys::TheGauntlet::Weapons::BeamGun;
 
-BeamGun::BeamGun(ShaderProgram* shader, ParticleEmitter* projectile_emitter) : AlternatingWeapon("beam_gun", shader, projectile_emitter, 180, 0.4f, true)
+BeamGun::BeamGun(ShaderProgram* shader, ParticleEmitter* projectile_emitter) : AlternatingWeapon("beam_gun", shader, projectile_emitter, 360, 0.2f, true)
 {
     Material* projectile_material = new ColorMaterial(shader, true, 10.0f, vec3(0.8f), vec3(1.0f, 1.0f, 1.0f));
     vector<Material*> projectile_materials;
