@@ -56,6 +56,7 @@ void Billboard::draw(mat4 transform, ShaderProgram* shader)
 {
     if (Billboard::billboard_shader == shader)
     {
+        glDepthMask(GL_FALSE);
         Billboard::billboard_shader->setUniform("object_transform", transform);
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, this->billboard_texture->get_texture_id());
@@ -67,6 +68,7 @@ void Billboard::draw(mat4 transform, ShaderProgram* shader)
         glBindVertexArray(*Billboard::billboard_vao);
         glDrawArrays(GL_TRIANGLES, 0, 6);
         glBindVertexArray(0);
+        glDepthMask(GL_TRUE);
     }
 }
 
