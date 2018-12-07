@@ -51,8 +51,7 @@ void TheGauntletEngine::update_frame(float dt)
 
 void TheGauntletEngine::init_skybox()
 {
-    ShaderProgram* skybox_shader = new ShaderProgram("Assets/Shaders/skybox.vert", "Assets/Shaders/skybox.frag");
-    // create skybox
+    auto skybox_shader = new ShaderProgram("Assets/Shaders/skybox.vert", "Assets/Shaders/skybox.frag");
     std::vector<std::string> skybox_faces
     {
         "Assets/Skybox/right.png",
@@ -67,22 +66,22 @@ void TheGauntletEngine::init_skybox()
 
 void TheGauntletEngine::init_light_and_camera(Object3D* camera_parent)
 {
-    SpringArm* spring_arm = new SpringArm(10.0f, 1.0f, 1.0f);
+    auto spring_arm = new SpringArm(10.0f, 1.0f, 1.0f);
     this->camera = new Camera3D();
     camera_parent->add_child(spring_arm);
     spring_arm->add_child(this->camera);
     this->camera->set_look_at(camera_parent);
 
-    AmbientLight* ambient = new AmbientLight(vec3(1.0f, 1.0f, 1.0f), 0.3f);
+    auto ambient = new AmbientLight(vec3(1.0f, 1.0f, 1.0f), 0.3f);
     this->lights.insert(ambient);
 
-    DirectionalLight* directional = new DirectionalLight(vec3(1.0f, 1.0f, 1.0f), 0.6f, vec3(-1, -1, 0));
+    auto directional = new DirectionalLight(vec3(1.0f, 1.0f, 1.0f), 0.6f, vec3(-1, -1, 0));
     this->lights.insert(directional);
 }
 
 void TheGauntletEngine::init()
 {
-    sf::Music* music = new sf::Music();
+    auto music = new sf::Music();
     if (!music->openFromFile("Assets/Music/system_shock.wav"))
         printf("Could not load 'system_shock.wav' file!\n");
     music->setLoop(true);
@@ -91,20 +90,24 @@ void TheGauntletEngine::init()
 
     this->set_collision_detector(new GridCollisionDetector(vec3(1000), vec3(-1000), 50)); // this->set_collision_detector(new SimpleCollisionDetector());
 
-    ShaderProgram* shader = new ShaderProgram("Assets/Shaders/basic.vert", "Assets/Shaders/basic.frag");
-    ShaderProgram* projectile_shader = new ShaderProgram("Assets/Shaders/basic.vert", "Assets/Shaders/self_illuminated.frag");
+    auto shader = new ShaderProgram("Assets/Shaders/basic.vert", "Assets/Shaders/basic.frag");
+    auto projectile_shader = new ShaderProgram("Assets/Shaders/basic.vert", "Assets/Shaders/self_illuminated.frag");
+
+    CodeMonkeys::TheGauntlet::GameObjects::AsteroidFactory::init_asteroid_factory(0, shader);
+    CodeMonkeys::TheGauntlet::GameObjects::Asteroid::init(this->world_root);
+    CodeMonkeys::TheGauntlet::GameObjects::PortalFactory::init(shader);
+
+    ParticleEmitter* projectile_emitter = new ParticleEmitter("projectile_emitter");
+    this->world_root->add_child(projectile_emitter);
+    CodeMonkeys::TheGauntlet::GameObjects::ShipFactory::init(shader, projectile_emitter, projectile_shader);
+
     // Make sure that every shader used in the scene is added to the engine's list of shaders so
     // that lighting can be calculated.
     this->shaders.insert(shader);
     this->shaders.insert(projectile_shader);
     Billboard::init_billboard_class();
     this->shaders.insert(Billboard::get_shader());
-    CodeMonkeys::TheGauntlet::GameObjects::AsteroidFactory::init_asteroid_factory(0, shader);
-    CodeMonkeys::TheGauntlet::GameObjects::Asteroid::init(this->world_root);
-    CodeMonkeys::TheGauntlet::GameObjects::PortalFactory::init(shader);
-    ParticleEmitter* projectile_emitter = new ParticleEmitter("projectile_emitter");
-    this->world_root->add_child(projectile_emitter);
-    CodeMonkeys::TheGauntlet::GameObjects::ShipFactory::init(shader, projectile_emitter, projectile_shader);
+
     this->init_skybox();
 
     // auto ship = CodeMonkeys::TheGauntlet::GameObjects::ShipFactory::create_jet_fighter();
@@ -114,30 +117,16 @@ void TheGauntletEngine::init()
 
     setup_course();
 
-    HealthBar* health_bar = new HealthBar(ship, -1, 0.65, 0.75f, 0.40f);
+    auto health_bar = new HealthBar(ship, -1, 0.65, 0.75f, 0.40f);
     this->quads.insert(health_bar);
 
     if (ship->get_secondary_weapon() != NULL)
     {
-        RechargeBar* recharge_bar = new RechargeBar(ship->get_secondary_weapon(), -1, 0.45f, 0.75f, 0.40f);
+        auto recharge_bar = new RechargeBar(ship->get_secondary_weapon(), -1, 0.45f, 0.75f, 0.40f);
         this->quads.insert(recharge_bar);
     }
 
-//    Asteroid* asteroid = CodeMonkeys::TheGauntlet::GameObjects::AsteroidFactory::create_asteroid(2);
-//    this->world_root->add_child(asteroid);
-//    asteroid->set_position(vec3(40, 40, 40));
-//    asteroid->set_angular_velocity(vec3(40));
-//
-//    Asteroid* asteroi2 = CodeMonkeys::TheGauntlet::GameObjects::AsteroidFactory::create_asteroid(3);
-//    this->world_root->add_child(asteroi2);
-//    asteroi2->set_position(vec3(-40, 0, -40));
-//    asteroi2->set_velocity(vec3(0, 1, 0));
-//    asteroi2->set_angular_velocity(vec3(-40));
-
-
-
     this->init_light_and_camera(ship);
-    // auto keyboard_controller = new CodeMonkeys::TheGauntlet::Control::KeyboardController(this->camera, this->get_window());
     auto keyboard_controller = new CodeMonkeys::TheGauntlet::Control::KeyboardController(ship, this->get_window());
     this->controllers.insert(keyboard_controller);
 
@@ -147,16 +136,16 @@ void TheGauntletEngine::init()
     this->collision_responses.insert(new ShipPortalCollisionResponse(this));
 
     // this->renderer = new Renderer(this->get_window(), this->get_width(), this->get_height());
-    this->renderer = new FrameBufferRenderer(this->get_window(), this->get_width(), this->get_height());
+    this->renderer = new FrameBufferRenderer(this->get_window(), this->get_width() * 2, this->get_height() * 2);
     // this->renderer = new Renderer3D(this->get_window(), this->get_width(), this->get_height(), 2);
 }
 
 void TheGauntletEngine::setup_course() {
-    const int S = 1000;
-    const int T = 800;
-    const int V = 25;
+    const int S = 4000;
+    const int T = 400;
+    const int V = 100;
     const int A = 60;
-    for (int i = 0; i < 200; i++)
+    for (int i = 0; i < 500; i++)
     {
         Asteroid* asteroid = CodeMonkeys::TheGauntlet::GameObjects::AsteroidFactory::create_asteroid_random_size();
         this->world_root->add_child(asteroid);

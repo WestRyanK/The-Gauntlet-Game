@@ -81,9 +81,9 @@ mat4 Object3D::get_transform()
 {
     mat4 transform;
     transform = glm::translate(transform, this->position);
+    transform = glm::rotate(transform, glm::radians(this->rotation.x), vec3(1, 0, 0));
     transform = glm::rotate(transform, glm::radians(this->rotation.y), vec3(0, 1, 0));
     transform = glm::rotate(transform, glm::radians(this->rotation.z), vec3(0, 0, 1));
-    transform = glm::rotate(transform, glm::radians(this->rotation.x), vec3(1, 0, 0));
     transform = glm::scale(transform, this->scale);
     // transform = position * rotation * scale * transform;
     return transform;

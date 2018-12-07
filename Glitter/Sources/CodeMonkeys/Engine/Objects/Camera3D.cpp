@@ -76,6 +76,9 @@ mat4 Camera3D::get_view_transform()
         // transformed_look_at = vec3(hierarchical_transform * vec4(this->look_at, 1));
     }
     vec3 transformed_position = vec3(hierarchical_transform * vec4(0,0,0, 1));
+
+    // We want to look over the ship rather than straight at it
+    transformed_look_at.y += 15;
     
     return glm::lookAt(transformed_position, transformed_look_at, this->up);
 }
