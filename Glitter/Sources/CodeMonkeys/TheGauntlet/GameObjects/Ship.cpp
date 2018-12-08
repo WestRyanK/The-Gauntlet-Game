@@ -99,7 +99,6 @@ void Ship::update(float dt)
 void Ship::update_forward(float dt)
 {
     float dampen_factor = 10;
-    printf("%d\n", this->accelerating_forward);
     if (!this->accelerating_forward)
     {
         this->velocity.z += dt * dampen_factor;

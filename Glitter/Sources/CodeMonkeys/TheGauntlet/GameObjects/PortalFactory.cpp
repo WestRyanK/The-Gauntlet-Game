@@ -27,12 +27,12 @@ void PortalFactory::init(ShaderProgram* shader)
     PortalFactory::materials = materials;
 }
 
-Portal* PortalFactory::create_portal()
+Portal* PortalFactory::create_portal(Ship* ship)
 {
     mlModel* ml_model = new mlModel();
     LoadModel("Assets/Portal", "portal.obj", *ml_model);
     Model3D* model = new Model3D(ml_model, PortalFactory::materials);
-    Portal* portal = new Portal(model);
+    Portal* portal = new Portal(model, ship);
 
     auto texture = new AnimatedTexture("Assets/Portal/glow_texture/glow", "png", 8);
     texture->set_animation_speed(7.5f);

@@ -15,7 +15,7 @@ namespace CodeMonkeys::TheGauntlet
         void update_frame(float dt);
         void init_skybox();
         void init_light_and_camera(Ship* camera_parent);
-        void setup_course();
+        void setup_course(Ship* ship);
         TheGauntletEngineSettings* settings = NULL;
 
     public:
