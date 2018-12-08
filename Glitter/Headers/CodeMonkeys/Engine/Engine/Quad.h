@@ -17,7 +17,7 @@ namespace CodeMonkeys::Engine::Engine
 
     public:
         Quad(float x, float y, float width, float height);
-        void draw();
+        virtual void draw();
         virtual void update(float dt);
         void set_texture(GLuint texture);
         GLuint get_texture();
