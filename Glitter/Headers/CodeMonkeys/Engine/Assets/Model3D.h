@@ -37,5 +37,6 @@ namespace CodeMonkeys::Engine::Assets
         Model3D* clone();
         // Render the Model3D using its model, textures, and shaders.
         void draw(mat4 transform, ShaderProgram* shader);
+        void update_materials(float dt);
     };
 };

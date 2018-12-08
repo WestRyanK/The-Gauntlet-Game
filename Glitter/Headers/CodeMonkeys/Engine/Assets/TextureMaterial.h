@@ -19,5 +19,6 @@ namespace CodeMonkeys::Engine::Assets
         virtual Material* clone();
         virtual void apply_material_to_shader();
         virtual int get_material_type_id() { return 2; };
+        virtual void update(float dt);
     };
 }

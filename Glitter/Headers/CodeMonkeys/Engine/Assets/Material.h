@@ -26,5 +26,6 @@ namespace CodeMonkeys::Engine::Assets
         // This must be an id unique to the Material type;
         // Lets make ColorMaterial = 1 and TextureMaterial = 2;
         virtual int get_material_type_id() = 0;
+        virtual void update(float dt);
     };
 }

@@ -10,7 +10,8 @@ namespace CodeMonkeys::Engine::Assets
         Texture** frames;
         int frame_count = 0;
         int current_frame = 0;
-        int animation_speed = 1;
+        float current_time = 0; 
+        float animation_speed = 30;
     public:
         AnimatedTexture(const char* filename, const char* extension, int count);
         void set_current_frame(int frame);
@@ -22,7 +23,7 @@ namespace CodeMonkeys::Engine::Assets
         int get_channel_count();
         unsigned int get_texture_id();
         const char* get_texture_path();
-        void set_animation_speed(int animation_speed);
+        void set_animation_speed(float animation_speed);
         virtual void update(float dt);
         virtual void reset();
         virtual Texture* clone();
