@@ -111,7 +111,7 @@ Ship* ShipFactory::create_x_wing_ship()
 
     AnimatedTexture* rocket_texture = new AnimatedTexture("Assets/Ships/XWingShip/rocket", "png", 8);
     RocketEngine* rocket_engine = new RocketEngine(rocket_texture, 16, 16, "Assets/Ships/XWingShip/engine.wav");
-    rocket_engine->set_position(vec3(0,0,10));
+    rocket_engine->set_position(vec3(0, 0, 8.85f));
 
     rocket_engine->set_acceleration_volume(60);
     rocket_engine->set_deceleration_volume(30);
@@ -183,6 +183,7 @@ Ship* ShipFactory::create_jet_fighter()
 
     rocket_engine->set_acceleration_frame(20);
     rocket_engine->set_deceleration_frame(5);
+    rocket_engine->set_twitch_frame(true);
 
     Ship* ship = new Ship(model, "ship",
                           INTITIAL_HEALTH, MAX_HEALTH,
