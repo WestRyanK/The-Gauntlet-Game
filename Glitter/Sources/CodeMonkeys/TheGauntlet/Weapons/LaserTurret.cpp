@@ -11,7 +11,7 @@ using namespace CodeMonkeys::Engine::Objects;
 using namespace CodeMonkeys::Engine::Collision;
 using CodeMonkeys::TheGauntlet::Weapons::LaserTurret;
 
-LaserTurret::LaserTurret(ShaderProgram* shader, ParticleEmitter* projectile_emitter) : AlternatingWeapon("laser_turret", shader, projectile_emitter, 300, 0.35f, true)
+LaserTurret::LaserTurret(ShaderProgram* shader, ParticleEmitter* projectile_emitter) : AlternatingWeapon("laser_turret", shader, projectile_emitter, 300, 0.25f, true)
 {
     Material* projectile_material = new ColorMaterial(shader, true, 10.0f, vec3(0.8f), vec3(1.0f, 1.0f, 1.0f));
     vector<Material*> projectile_materials;

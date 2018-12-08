@@ -47,7 +47,7 @@ Ship* ShipFactory::create_crayon_ship()
     Model3D* model = new Model3D(ml_model, materials);
 
     const unsigned int INTITIAL_HEALTH = 50;
-    const unsigned int MAX_HEALTH =50;
+    const unsigned int MAX_HEALTH =80;
     const float XY_ACCELERATION = 50;
     const float BOOST_ACCELERATION = 10;
     const float BRAKE_ACCELERATION = 2;

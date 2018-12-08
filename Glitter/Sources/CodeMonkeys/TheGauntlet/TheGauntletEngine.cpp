@@ -20,6 +20,7 @@
 #include "CodeMonkeys/Engine/Collision/SimpleCollisionDetector.h"
 #include "CodeMonkeys/TheGauntlet/Collision/ShipAsteroidCollisionResponse.h"
 #include "CodeMonkeys/TheGauntlet/Collision/ShipPortalCollisionResponse.h"
+#include "CodeMonkeys/TheGauntlet/Collision/ShipHealthCollisionResponse.h"
 #include "CodeMonkeys/TheGauntlet/Collision/ProjectileAsteroidCollisionResponse.h"
 #include "CodeMonkeys/TheGauntlet/Collision/AsteroidAsteroidCollisionResponse.h"
 #include "CodeMonkeys/TheGauntlet/UI/HealthBar.h"
@@ -29,6 +30,7 @@
 #include "CodeMonkeys/Engine/Objects/Particle.h"
 #include "CodeMonkeys/Engine/Assets/AnimatedTexture.h"
 #include "CodeMonkeys/TheGauntlet/TheGauntletEngineSettings.h"
+#include "CodeMonkeys/TheGauntlet/GameObjects/Health.h"
 
 using namespace std;
 using CodeMonkeys::TheGauntlet::TheGauntletEngine;
@@ -134,7 +136,7 @@ void TheGauntletEngine::init()
     }
     this->world_root->add_child(ship);
 
-    setup_course();
+    setup_course(ship);
 
     auto health_bar = new HealthBar(ship, -1, 0.65, 0.75f, 0.40f);
     health_bar->set_alarm_percent(0.35f);
@@ -153,6 +155,7 @@ void TheGauntletEngine::init()
     this->controllers.insert(mouse_controller);
 
     this->collision_responses.insert(new ShipAsteroidCollisionResponse(this));
+    this->collision_responses.insert(new ShipHealthCollisionResponse(this));
     this->collision_responses.insert(new AsteroidAsteroidCollisionResponse(this));
     this->collision_responses.insert(new ProjectileAsteroidCollisionResponse(this));
     this->collision_responses.insert(new ShipPortalCollisionResponse(this));
@@ -171,19 +174,33 @@ void TheGauntletEngine::init()
     }
 }
 
-void TheGauntletEngine::setup_course() {
+void TheGauntletEngine::setup_course(Ship* ship) {
     const int S = 4000;
     const int T = 200;
     const int V = 100;
     const int A = 60;
     for (int i = 0; i < 500; i++)
     {
-        Asteroid* asteroid = CodeMonkeys::TheGauntlet::GameObjects::AsteroidFactory::create_asteroid_random_size();
-        this->world_root->add_child(asteroid);
-        asteroid->set_position(vec3(rand() % T - T / 2, rand() % T - T / 2, rand() % S - S));
-        asteroid->set_velocity(vec3(rand() % V - V / 2, rand() % V - V / 2, rand() % V - V / 2));
-        asteroid->set_angular_velocity(vec3(rand() % A - A / 2, rand() % A - A / 2, rand() % A - A / 2));
+        if (rand() % 100 < 5)
+        {
+            int healing_value = rand() % 30 + 10;
+            Health* health = new Health(healing_value);
+            this->world_root->add_child(health);
+            health->set_position(vec3(rand() % T - T / 2, rand() % T - T / 2, rand() % S - S));
+            health->set_velocity(vec3(rand() % V - V / 2, rand() % V - V / 2, rand() % V - V / 2));
+            // health->set_angular_velocity(vec3(rand() % A - A / 2, rand() % A - A / 2, rand() % A - A / 2));
+        }
+        else
+        {
+            Asteroid* asteroid = CodeMonkeys::TheGauntlet::GameObjects::AsteroidFactory::create_asteroid_random_size();
+            this->world_root->add_child(asteroid);
+            asteroid->set_position(vec3(rand() % T - T / 2, rand() % T - T / 2, rand() % S - S));
+            asteroid->set_velocity(vec3(rand() % V - V / 2, rand() % V - V / 2, rand() % V - V / 2));
+            asteroid->set_angular_velocity(vec3(rand() % A - A / 2, rand() % A - A / 2, rand() % A - A / 2));
+        }
     }
+
+    ship->set_position(vec3(0,0, S));
 
     auto checker = new BoundaryChecker(vec3(T, T, 0), vec3(-T, -T, -S - 20));
     this->set_boundary_checker(checker);
@@ -191,7 +208,7 @@ void TheGauntletEngine::setup_course() {
     this->set_collision_detector(new GridCollisionDetector(vec3(T, T, 0), vec3(-T, -T, -S), 100)); // this->set_collision_detector(new SimpleCollisionDetector());
 
     // Draw Portal
-    auto portal = CodeMonkeys::TheGauntlet::GameObjects::PortalFactory::create_portal();
+    auto portal = CodeMonkeys::TheGauntlet::GameObjects::PortalFactory::create_portal(ship);
     portal->set_position(vec3(0, 0, -S));
     this->world_root->add_child(portal);
 }
