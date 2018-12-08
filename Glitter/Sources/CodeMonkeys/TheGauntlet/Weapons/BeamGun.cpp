@@ -24,15 +24,11 @@ BeamGun::BeamGun(ShaderProgram* shader, ParticleEmitter* projectile_emitter) : A
     this->projectile_prototype = new Projectile(model, projectile_billboard, "beam_gun_particle", 5, projectile_emitter, 2);
 
     BoundingMultiSphere* bounding_multisphere = new BoundingMultiSphere(vec3(), vec3());
-    float r = 6;
-    bounding_multisphere->add_sphere(new BoundingSphere(vec3(0.0f, 0.0f, 0.0f), r));
-    bounding_multisphere->add_sphere(new BoundingSphere(vec3(0.0f, 0.0f, -5.0f), r));
-    bounding_multisphere->add_sphere(new BoundingSphere(vec3(0.0f, 0.0f, -10.0f), r));
-    bounding_multisphere->add_sphere(new BoundingSphere(vec3(0.0f, 0.0f, 15.0f), r));
-    bounding_multisphere->add_sphere(new BoundingSphere(vec3(0.0f, 0.0f, 20.0f), r));
-    bounding_multisphere->add_sphere(new BoundingSphere(vec3(0.0f, 0.0f, -15.0f), r));
-    bounding_multisphere->add_sphere(new BoundingSphere(vec3(0.0f, 0.0f, -20.0f), r));
-    bounding_multisphere->add_sphere(new BoundingSphere(vec3(0.0f, 0.0f, 5.0f), r));
+    float r = 8;
+    for(int i = -5; i < 10; i++)
+    {
+        bounding_multisphere->add_sphere(new BoundingSphere(vec3(0, 0, i * -5.0f), r));
+    }
     this->projectile_prototype->set_collision_region(bounding_multisphere);
 
     this->sound_buffer = new sf::SoundBuffer();

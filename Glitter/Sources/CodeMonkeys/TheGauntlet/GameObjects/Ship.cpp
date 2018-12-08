@@ -135,7 +135,7 @@ void Ship::dampen_vertical(float dt)
 
 void Ship::control(std::string control_name, float value, float dt)
 {
-    if ((control_name == "move_x" || control_name == "boost" || control_name == "move_y") && value != 0)
+    if ((control_name == "move_x" || control_name == "move_z" || control_name == "move_y") && value != 0)
     {
         if (this->rocket_engine != NULL)
             this->rocket_engine->set_is_accelerating(true);

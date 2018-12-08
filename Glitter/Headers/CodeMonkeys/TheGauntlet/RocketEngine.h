@@ -31,6 +31,7 @@ namespace CodeMonkeys::TheGauntlet
         float current_frame = 0;
         float acceleration_frame = 1;
         float deceleration_frame = 1;
+        bool twitch_frame = false;
 
     protected:
         void update_billboard(float dt);
@@ -64,5 +65,8 @@ namespace CodeMonkeys::TheGauntlet
         void set_deceleration_frame(float deceleration_frame);
         float get_acceleration_frame();
         float get_deceleration_frame();
+        
+        void set_twitch_frame(bool twitch_frame);
+        bool get_twitch_frame();
     };
 }

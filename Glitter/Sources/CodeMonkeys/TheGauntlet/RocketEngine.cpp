@@ -1,4 +1,5 @@
 #include "CodeMonkeys/TheGauntlet/RocketEngine.h"
+#include <stdlib.h>
 
 using CodeMonkeys::TheGauntlet::RocketEngine;
 
@@ -38,6 +39,9 @@ void RocketEngine::update_billboard(float dt)
         this->current_frame = texture->get_frame_count();
     if (this->current_frame < 0)
         this->current_frame = 0;
+
+    if (this->twitch_frame && this->current_frame > texture->get_frame_count() / 2 && std::rand() % 8 == 0)
+        this->current_frame -= 1;
 
     texture->set_current_frame(floor(this->current_frame));
 }
@@ -185,4 +189,14 @@ float RocketEngine::get_acceleration_frame()
 float RocketEngine::get_deceleration_frame()
 {
     return this->deceleration_frame;
+}
+
+void RocketEngine::set_twitch_frame(bool twitch_frame)
+{
+    this->twitch_frame = twitch_frame;
+}
+
+bool RocketEngine::get_twitch_frame()
+{
+    return this->twitch_frame;
 }

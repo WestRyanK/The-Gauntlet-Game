@@ -11,7 +11,7 @@ using namespace CodeMonkeys::Engine::Objects;
 using namespace CodeMonkeys::Engine::Collision;
 using CodeMonkeys::TheGauntlet::Weapons::LaserTurret;
 
-LaserTurret::LaserTurret(ShaderProgram* shader, ParticleEmitter* projectile_emitter) : AlternatingWeapon("laser_turret", shader, projectile_emitter, 190, 0.35f, true)
+LaserTurret::LaserTurret(ShaderProgram* shader, ParticleEmitter* projectile_emitter) : AlternatingWeapon("laser_turret", shader, projectile_emitter, 300, 0.35f, true)
 {
     Material* projectile_material = new ColorMaterial(shader, true, 10.0f, vec3(0.8f), vec3(1.0f, 1.0f, 1.0f));
     vector<Material*> projectile_materials;
@@ -24,15 +24,11 @@ LaserTurret::LaserTurret(ShaderProgram* shader, ParticleEmitter* projectile_emit
     this->projectile_prototype = new Projectile(model, projectile_billboard, "laser_turret_particle", 5, projectile_emitter, 1);
 
     BoundingMultiSphere* bounding_multisphere = new BoundingMultiSphere(vec3(), vec3());
-    float r = 6;
-    bounding_multisphere->add_sphere(new BoundingSphere(vec3(0.0f, 0.0f, 0.0f), r));
-    bounding_multisphere->add_sphere(new BoundingSphere(vec3(0.0f, 0.0f, -5.0f), r));
-    bounding_multisphere->add_sphere(new BoundingSphere(vec3(0.0f, 0.0f, -10.0f), r));
-    bounding_multisphere->add_sphere(new BoundingSphere(vec3(0.0f, 0.0f, 15.0f), r));
-    bounding_multisphere->add_sphere(new BoundingSphere(vec3(0.0f, 0.0f, 20.0f), r));
-    bounding_multisphere->add_sphere(new BoundingSphere(vec3(0.0f, 0.0f, -15.0f), r));
-    bounding_multisphere->add_sphere(new BoundingSphere(vec3(0.0f, 0.0f, -20.0f), r));
-    bounding_multisphere->add_sphere(new BoundingSphere(vec3(0.0f, 0.0f, 5.0f), r));
+    float r = 8;
+    for(int i = -5; i < 10; i++)
+    {
+        bounding_multisphere->add_sphere(new BoundingSphere(vec3(0, 0, i * -5.0f), r));
+    }
     this->projectile_prototype->set_collision_region(bounding_multisphere);
 
 
