@@ -68,10 +68,11 @@ const char* AnimatedTexture::get_texture_path()
 
 void AnimatedTexture::update(float dt)
 {
-    this->set_current_frame((this->current_frame + this->animation_speed) % this->frame_count);
+    this->current_time += this->animation_speed * dt;
+    this->set_current_frame(((int)this->current_time) % this->frame_count);
 }
 
-void AnimatedTexture::set_animation_speed(int animation_speed)
+void AnimatedTexture::set_animation_speed(float animation_speed)
 {
     this->animation_speed = animation_speed;
 }

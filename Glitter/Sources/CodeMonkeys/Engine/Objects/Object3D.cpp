@@ -124,6 +124,10 @@ void Object3D::set_parent(Object3D* parent)
 
 void Object3D::update(float dt)
 {
+    if (this->model != NULL)
+    {
+        this->model->update_materials(dt);
+    }
 }
 
 void Object3D::draw(mat4 total_transform, ShaderProgram* shader)

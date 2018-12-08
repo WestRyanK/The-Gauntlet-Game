@@ -84,3 +84,11 @@ Model3D* Model3D::clone()
     model_clone->ebo_sizes = this->ebo_sizes;
     return model_clone;
 }
+
+void Model3D::update_materials(float dt)
+{
+    for (int i = 0; i < this->materials.size(); i++)
+    {
+        this->materials[i]->update(dt);
+    }
+}

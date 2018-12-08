@@ -29,3 +29,11 @@ Material* TextureMaterial::clone()
     Material* material_clone = new TextureMaterial(this->shader, this->use_phong_highlight, this->phong_exponent, this->phong_color, this->color, this->texture->clone());
     return material_clone;
 }
+
+void TextureMaterial::update(float dt)
+{
+    if (this->texture != NULL)
+    {
+        this->texture->update(dt);
+    }
+}

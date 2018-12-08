@@ -48,4 +48,5 @@ void PhysicalObject3D::update(float dt)
     this->rotation.x += dt * this->angular_velocity.x;
     this->rotation.y += dt * this->angular_velocity.y;
     this->rotation.z += dt * this->angular_velocity.z;
+    Object3D::update(dt);
 }

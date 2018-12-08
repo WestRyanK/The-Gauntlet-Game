@@ -39,3 +39,8 @@ void Material::apply_material_to_shader()
     this->shader->setUniform("phong_exponent", this->phong_exponent);
     this->shader->setUniform("use_phong_highlight", this->use_phong_highlight);
 }
+
+void Material::update(float dt)
+{
+    
+}
