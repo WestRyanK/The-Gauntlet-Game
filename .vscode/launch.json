@@ -9,7 +9,7 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/Build/Glitter/Glitter",
-            "args": ["xwing", "3d", "noretina"],
+            "args": ["jet", "frame", "noretina"],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}/Build/Glitter",
             "environment": [],

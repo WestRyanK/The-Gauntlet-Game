@@ -39,9 +39,10 @@ void ShipPortalCollisionResponse::respond(Object3D* object_a, Object3D* object_b
             ship = dynamic_cast<Ship*> (object_a);
         }
 
+        printf("inside\n");
         if (ship->get_transformed_position().z <= portal->get_transformed_position().z)
         {
-            printf("You Win!");
+            printf("You Win!\n");
             exit(0);
         }
     }

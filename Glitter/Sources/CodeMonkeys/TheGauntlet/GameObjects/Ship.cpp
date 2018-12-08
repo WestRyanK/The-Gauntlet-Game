@@ -10,7 +10,9 @@ using CodeMonkeys::TheGauntlet::GameObjects::Ship;
 using namespace CodeMonkeys::TheGauntlet;
 using namespace CodeMonkeys::TheGauntlet::Weapons;
 
-const float maxLateralVelocity = 200.0f;
+const float max_lateral_velocity = 200.0f;
+const float min_forward_velocity = 100;
+const float max_forward_velocity = 200;
 Ship::Ship(Model3D* model, std::string name,
     unsigned int initial_health,
     unsigned int max_health, 
@@ -24,7 +26,8 @@ Ship::Ship(Model3D* model, std::string name,
 
     Weapon* primary_weapon,
     Weapon* secondary_weapon,
-    RocketEngine* rocket_engine) : 
+    RocketEngine* rocket_engine,
+    Crosshairs* crosshairs) : 
 
         PhysicalObject3D(model, name), 
         IDamageable(initial_health, max_health), 
@@ -39,6 +42,7 @@ Ship::Ship(Model3D* model, std::string name,
     this->primary_weapon = primary_weapon;
     this->secondary_weapon = secondary_weapon;
     this->rocket_engine = rocket_engine;
+    this->crosshairs = crosshairs;
     if (this->rocket_engine != NULL)
         this->rocket_engine->play();
     this->acclerating_vertically = false;
@@ -75,14 +79,35 @@ void Ship::update(float dt)
 
     this->update_vertical(dt);
     this->update_lateral(dt);
+    this->update_forward(dt);
 
     PhysicalObject3D::update(dt);
     
     this->acclerating_vertically = false;
     this->acclerating_laterally = false;
+    this->accelerating_forward = false;
 
     this->bounding_multisphere->set_center(this->position);
     this->bounding_multisphere->set_rotation(this->rotation);
+
+    if (this->primary_weapon != NULL)
+        this->primary_weapon->set_fire_direction(glm::normalize(this->crosshairs->get_aim_vector()));
+    if (this->secondary_weapon != NULL)
+        this->secondary_weapon->set_fire_direction(glm::normalize(this->crosshairs->get_aim_vector()));
+}
+
+void Ship::update_forward(float dt)
+{
+    float dampen_factor = 10;
+    printf("%d\n", this->accelerating_forward);
+    if (!this->accelerating_forward)
+    {
+        this->velocity.z += dt * dampen_factor;
+    }
+    if (abs(this->velocity.z) < min_forward_velocity)
+        this->velocity.z = -min_forward_velocity;
+    if (abs(this->velocity.z) > max_forward_velocity)
+        this->velocity.z = -max_forward_velocity;
 }
 
 void Ship::update_lateral(float dt)
@@ -90,13 +115,13 @@ void Ship::update_lateral(float dt)
     if (!this->acclerating_laterally)
         this->dampen_lateral(dt);
 
-    if (this->velocity.x > maxLateralVelocity)
-        this->velocity.x = maxLateralVelocity;
+    if (this->velocity.x > max_lateral_velocity)
+        this->velocity.x = max_lateral_velocity;
 
-    if (this->velocity.x < -maxLateralVelocity)
-        this->velocity.x = -maxLateralVelocity;
+    if (this->velocity.x < -max_lateral_velocity)
+        this->velocity.x = -max_lateral_velocity;
 
-     this->rotation.z = -this->velocity.x / maxLateralVelocity * 40.0f;
+     this->rotation.z = -this->velocity.x / max_lateral_velocity * 40.0f;
 }
 
 void Ship::update_vertical(float dt)
@@ -104,13 +129,13 @@ void Ship::update_vertical(float dt)
     if (!this->acclerating_vertically)
         this->dampen_vertical(dt);
     
-    if (this->velocity.y > maxLateralVelocity)
-        this->velocity.y = maxLateralVelocity;
+    if (this->velocity.y > max_lateral_velocity)
+        this->velocity.y = max_lateral_velocity;
 
-    if (this->velocity.y < -maxLateralVelocity)
-        this->velocity.y = -maxLateralVelocity;
+    if (this->velocity.y < -max_lateral_velocity)
+        this->velocity.y = -max_lateral_velocity;
 
-    this->rotation.x = this->velocity.y / maxLateralVelocity * 20.0f;
+    this->rotation.x = this->velocity.y / max_lateral_velocity * 20.0f;
 }
 
 void Ship::dampen_lateral(float dt)
@@ -156,9 +181,21 @@ void Ship::control(std::string control_name, float value, float dt)
         this->velocity.y += value * dt * 200;
     }
 
-    if (control_name == "move_z")
+    if (control_name == "move_z" && value == 1)
     {
-        this->position += forward * dt * value * velocity * 2.0f;
+        this->accelerating_forward = true;
+        this->velocity.z += dt * -400;
+        // this->position += forward * dt * value * velocity * 2.0f;
+    }
+
+    if (control_name == "aim_x")
+    {
+        this->crosshairs->move_crosshairs_x(value * dt);
+    }
+
+    if (control_name == "aim_y")
+    {
+        this->crosshairs->move_crosshairs_y(-value * dt);
     }
 }
 
@@ -200,4 +237,9 @@ Weapon* Ship::get_primary_weapon()
 Weapon* Ship::get_secondary_weapon()
 {
     return this->secondary_weapon;
+}
+
+Crosshairs* Ship::get_crosshairs()
+{
+    return this->crosshairs;
 }

@@ -57,6 +57,8 @@ Ship* ShipFactory::create_crayon_ship()
 
     Weapon* crayon_launcher = new CrayonLauncher(ShipFactory::ship_shader, ShipFactory::projectile_emitter);
 
+    auto crosshairs = new Crosshairs(new Texture("Assets/Ships/XWingShip/crosshairs.png"));
+
     Ship* ship = new Ship(model, "ship",
                           INTITIAL_HEALTH, MAX_HEALTH,
                           XY_ACCELERATION,
@@ -67,9 +69,11 @@ Ship* ShipFactory::create_crayon_ship()
                           MIN_Z_VELOCITY,
                           crayon_launcher,
                           NULL,
-                          NULL);
+                          NULL,
+                          crosshairs);
 
     ShipFactory::add_explosion_particles(ship);
+    ship->add_child(crosshairs);
 
     return ship;
 }
@@ -129,6 +133,9 @@ Ship* ShipFactory::create_x_wing_ship()
 
     rocket_engine->set_acceleration_frame(20);
     rocket_engine->set_deceleration_frame(7);
+    rocket_engine->set_twitch_frame(true);
+
+    auto crosshairs = new Crosshairs(new Texture("Assets/Ships/XWingShip/crosshairs.png"));
 
     Ship* ship = new Ship(model, "ship",
                           INTITIAL_HEALTH, MAX_HEALTH,
@@ -140,10 +147,12 @@ Ship* ShipFactory::create_x_wing_ship()
                           MIN_Z_VELOCITY,
                           laser_turret,
                           laser_cannon,
-                          rocket_engine);
+                          rocket_engine,
+                          crosshairs);
 
     ship->add_child(rocket_engine);
     ShipFactory::add_explosion_particles(ship);
+    ship->add_child(crosshairs);
 
     return ship;
 }
@@ -193,6 +202,8 @@ Ship* ShipFactory::create_jet_fighter()
     rocket_engine->set_deceleration_frame(5);
     rocket_engine->set_twitch_frame(true);
 
+    auto crosshairs = new Crosshairs(new Texture("Assets/Ships/JetFighter/crosshairs.png"));
+
     Ship* ship = new Ship(model, "ship",
                           INTITIAL_HEALTH, MAX_HEALTH,
                           XY_ACCELERATION,
@@ -203,9 +214,11 @@ Ship* ShipFactory::create_jet_fighter()
                           MIN_Z_VELOCITY,
                           beam_gun,
                           antimatter_cannon,
-                          rocket_engine);
+                          rocket_engine,
+                          crosshairs);
 
     ship->add_child(rocket_engine);
+    ship->add_child(crosshairs);
     ShipFactory::add_explosion_particles(ship);
 
     return ship;

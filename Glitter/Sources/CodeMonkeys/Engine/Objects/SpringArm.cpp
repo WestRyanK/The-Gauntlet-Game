@@ -27,7 +27,9 @@ void SpringArm::update(float dt)
         // m * a = k * x
         // m * a / k = x
         // vec3 stretch = this->arm_connector_mass * this->acceleration / this->spring_constant;
-        arm_unstretched_position = vec3(0, 15, 25);
+        // arm_unstretched_position = vec3(0, 0, 25);
+        // arm_unstretched_position = vec3(0, 15, 25);
+        arm_unstretched_position = vec3(0, 5, 15);
         this->arm_connector_position = arm_unstretched_position;
         // this->arm_connector_position.y = 300;
         // this->arm_connector_position = arm_unstretched_position - stretch;
