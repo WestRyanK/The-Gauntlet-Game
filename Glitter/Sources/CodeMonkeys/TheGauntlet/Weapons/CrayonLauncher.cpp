@@ -8,7 +8,7 @@
 
 using CodeMonkeys::TheGauntlet::Weapons::CrayonLauncher;
 
-CrayonLauncher::CrayonLauncher(ShaderProgram* shader, ParticleEmitter* projectile_emitter) : Weapon("crayon_launcher", shader, projectile_emitter, 160, 0.1f, true)
+CrayonLauncher::CrayonLauncher(ShaderProgram* shader, ParticleEmitter* projectile_emitter) : Weapon("crayon_launcher", shader, projectile_emitter, 280, 0.1f, true)
 {
         // TextureMaterial(ShaderProgram* shader, bool use_phong_highlight, float phong_exponent, vec3 phong_color, Texture* texture);
     Texture* crayon_texture = new Texture("Assets/Projectiles/CrayonLauncher/crayon_texture.png");
@@ -22,18 +22,19 @@ CrayonLauncher::CrayonLauncher(ShaderProgram* shader, ParticleEmitter* projectil
     this->projectile_prototype = new Projectile(model, NULL, "crayon_particle", 5, projectile_emitter, 1);
 
     BoundingMultiSphere* bounding_multisphere = new BoundingMultiSphere(vec3(), vec3());
-    float r = 6;
-    bounding_multisphere->add_sphere(new BoundingSphere(vec3(0.0f, 0.0f, 0.0f), r));
-    bounding_multisphere->add_sphere(new BoundingSphere(vec3(0.0f, 0.0f, -5.0f), r));
-    bounding_multisphere->add_sphere(new BoundingSphere(vec3(0.0f, 0.0f, -10.0f), r));
-    bounding_multisphere->add_sphere(new BoundingSphere(vec3(0.0f, 0.0f, 15.0f), r));
-    bounding_multisphere->add_sphere(new BoundingSphere(vec3(0.0f, 0.0f, 20.0f), r));
-    bounding_multisphere->add_sphere(new BoundingSphere(vec3(0.0f, 0.0f, -15.0f), r));
-    bounding_multisphere->add_sphere(new BoundingSphere(vec3(0.0f, 0.0f, -20.0f), r));
-    bounding_multisphere->add_sphere(new BoundingSphere(vec3(0.0f, 0.0f, 5.0f), r));
+    float r = 8;
+    for(int i = -5; i < 10; i++)
+    {
+        bounding_multisphere->add_sphere(new BoundingSphere(vec3(0, 0, i * -5.0f), r));
+    }
     this->projectile_prototype->set_collision_region(bounding_multisphere);
 
     srand (time(NULL));
+
+    this->sound_buffer = new sf::SoundBuffer();
+    if (!this->sound_buffer->loadFromFile("Assets/Projectiles/CrayonLauncher/crayon_launcher.wav"))
+        printf("Could not load 'beam_gun.wav' file!\n");
+    this->sound->setBuffer(*this->sound_buffer);
 }
 
 void CrayonLauncher::on_fire()
