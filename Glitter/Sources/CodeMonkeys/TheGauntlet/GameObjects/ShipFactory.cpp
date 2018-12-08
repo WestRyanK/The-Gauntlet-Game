@@ -3,6 +3,7 @@
 #include "CodeMonkeys/Engine/Assets/Model3D.h"
 #include "CodeMonkeys/Engine/Assets/ModelLoader.h"
 #include "CodeMonkeys/Engine/Assets/ColorMaterial.h"
+#include "CodeMonkeys/Engine/Assets/TextureMaterial.h"
 #include "CodeMonkeys/Engine/Objects/ParticleEmitter.h"
 #include "CodeMonkeys/Engine/Objects/Particle.h"
 #include "CodeMonkeys/Engine/Assets/AnimatedTexture.h"
@@ -24,15 +25,10 @@ using namespace CodeMonkeys::TheGauntlet::Weapons;
 
 ParticleEmitter* ShipFactory::projectile_emitter = NULL;
 ShaderProgram* ShipFactory::projectile_shader = NULL;
-vector<Material*> ShipFactory::ship_materials = vector<Material*>();
 ShaderProgram* ShipFactory::ship_shader = NULL;
 
 void ShipFactory::init(ShaderProgram* shader, ParticleEmitter* projectile_emitter, ShaderProgram* projectile_shader)
 {
-    Material* ship_material = new ColorMaterial(shader, true, 10.0f, vec3(0.8f), vec3(0.9f, 0.9f, 0.9f));
-    vector<Material*> materials;
-    materials.push_back(ship_material);
-    ShipFactory::ship_materials = materials;
     ShipFactory::projectile_emitter = projectile_emitter;
     ShipFactory::projectile_shader = projectile_shader;
     ShipFactory::ship_shader = shader;
@@ -40,11 +36,15 @@ void ShipFactory::init(ShaderProgram* shader, ParticleEmitter* projectile_emitte
 
 Ship* ShipFactory::create_crayon_ship()
 {
+    Texture* texture = new Texture("Assets/Ships/CrayonBox/box_texture.png");
+    Material* ship_material = new TextureMaterial(ShipFactory::ship_shader, true, 10.0f, vec3(0.8f), vec3(1), texture);
+    vector<Material*> materials;
+    materials.push_back(ship_material);
+
     mlModel* ml_model = new mlModel();
     LoadModel("Assets/Ships/CrayonBox", "box.obj", *ml_model);
 
-
-    Model3D* model = new Model3D(ml_model, ShipFactory::ship_materials);
+    Model3D* model = new Model3D(ml_model, materials);
 
     const unsigned int INTITIAL_HEALTH = 50;
     const unsigned int MAX_HEALTH =50;
@@ -88,10 +88,14 @@ void ShipFactory::add_explosion_particles(Ship* ship)
 
 Ship* ShipFactory::create_x_wing_ship()
 {
+    Material* ship_material = new ColorMaterial(ShipFactory::ship_shader, true, 10.0f, vec3(0.8f), vec3(0.2f, 0.4f, 0.9f));
+    vector<Material*> materials;
+    materials.push_back(ship_material);
+
     mlModel* ml_model = new mlModel();
     LoadModel("Assets/Ships/XWingShip", "x_wing_ship.obj", *ml_model);
 
-    Model3D* model = new Model3D(ml_model, ShipFactory::ship_materials);
+    Model3D* model = new Model3D(ml_model, materials);
 
     const unsigned int INTITIAL_HEALTH = 100;
     const unsigned int MAX_HEALTH =100;
@@ -146,10 +150,14 @@ Ship* ShipFactory::create_x_wing_ship()
 
 Ship* ShipFactory::create_jet_fighter()
 {
+    Material* ship_material = new ColorMaterial(ShipFactory::ship_shader, true, 10.0f, vec3(0.8f), vec3(0.2f, 0.4f, 0.9f));
+    vector<Material*> materials;
+    materials.push_back(ship_material);
+
     mlModel* ml_model = new mlModel();
     LoadModel("Assets/Ships/JetFighter", "jet_fighter.obj", *ml_model);
 
-    Model3D* model = new Model3D(ml_model, ShipFactory::ship_materials);
+    Model3D* model = new Model3D(ml_model, materials);
 
     const unsigned int INTITIAL_HEALTH = 125;
     const unsigned int MAX_HEALTH =125;
