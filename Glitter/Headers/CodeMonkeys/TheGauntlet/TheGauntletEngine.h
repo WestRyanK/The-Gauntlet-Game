@@ -2,8 +2,10 @@
 
 #include "CodeMonkeys/Engine/Engine/GameEngine.h"
 #include "CodeMonkeys/TheGauntlet/TheGauntletEngineSettings.h"
+#include "CodeMonkeys/TheGauntlet/GameObjects/Ship.h"
 
 using namespace CodeMonkeys::Engine::Engine;
+using namespace CodeMonkeys::TheGauntlet::GameObjects;
 
 namespace CodeMonkeys::TheGauntlet
 {
@@ -12,7 +14,7 @@ namespace CodeMonkeys::TheGauntlet
     private:
         void update_frame(float dt);
         void init_skybox();
-        void init_light_and_camera(Object3D* camera_parent);
+        void init_light_and_camera(Ship* camera_parent);
         void setup_course();
         TheGauntletEngineSettings* settings = NULL;
 

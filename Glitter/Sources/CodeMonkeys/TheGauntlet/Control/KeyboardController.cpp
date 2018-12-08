@@ -2,21 +2,8 @@
 
 using CodeMonkeys::TheGauntlet::Control::KeyboardController;
 
-KeyboardController* KeyboardController::instance = NULL;
-
-void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
-{
-    if (key == GLFW_KEY_W)
-    {
-        KeyboardController::instance->w_pressed = (action == GLFW_PRESS || action == GLFW_REPEAT);
-        printf("%d\n", KeyboardController::instance->w_pressed);
-    }
-}
-
 KeyboardController::KeyboardController(IControllable* controllable, GLFWwindow* window) : Controller(controllable, window) 
 { 
-    instance = this;
-    glfwSetKeyCallback(window, key_callback);
 }
 
 
@@ -27,13 +14,13 @@ void KeyboardController::handle_input(float dt)
     {
         this->controllable->control("move_y", -1.0f, dt);
     }
-    if (w_pressed)
+    if (glfwGetKey(this->window, GLFW_KEY_W) == GLFW_PRESS)
     {
         this->controllable->control("move_y", 1.0f, dt);
     }
     if (glfwGetKey(this->window, GLFW_KEY_W) == GLFW_RELEASE && glfwGetKey(this->window, GLFW_KEY_S) == GLFW_RELEASE)
     {
-        this->controllable->control("move_z", 0.0f, dt);
+        this->controllable->control("move_y", 0.0f, dt);
     }
     if (glfwGetKey(this->window, GLFW_KEY_A) == GLFW_PRESS)
     {
@@ -50,11 +37,11 @@ void KeyboardController::handle_input(float dt)
 
     if (glfwGetKey(this->window, GLFW_KEY_UP) == GLFW_PRESS)
     {
-        this->controllable->control("move_z", -1.0f, dt);
+        this->controllable->control("move_z", 1.0f, dt);
     }
     if (glfwGetKey(this->window, GLFW_KEY_DOWN) == GLFW_PRESS)
     {
-        this->controllable->control("move_z", 1.0f, dt);
+        this->controllable->control("move_z", -1.0f, dt);
     }
 
     if (glfwGetKey(this->window, GLFW_KEY_SPACE) == GLFW_PRESS)

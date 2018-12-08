@@ -15,6 +15,7 @@ namespace CodeMonkeys::TheGauntlet::Weapons
     class Weapon : public ITriggerable, public PhysicalObject3D
     {
     protected:
+        vec3 fire_direction;
         virtual void on_fire();
         Projectile* projectile_prototype = NULL;
         ParticleEmitter* projectile_emitter = NULL;
@@ -25,5 +26,6 @@ namespace CodeMonkeys::TheGauntlet::Weapons
     
     public:
         Weapon(string name, ShaderProgram* shader, ParticleEmitter* projectile_emitter, float initial_velocity, float recharge_delay, bool is_automatic_fire);
+        void set_fire_direction(vec3 fire_direction);
     };
 }

@@ -71,13 +71,15 @@ void TheGauntletEngine::init_skybox()
     this->skybox = new Skybox(skybox_faces, skybox_shader);
 }
 
-void TheGauntletEngine::init_light_and_camera(Object3D* camera_parent)
+void TheGauntletEngine::init_light_and_camera(Ship* camera_parent)
 {
     auto spring_arm = new SpringArm(10.0f, 1.0f, 1.0f);
     this->camera = new Camera3D();
     camera_parent->add_child(spring_arm);
     spring_arm->add_child(this->camera);
     this->camera->set_look_at(camera_parent);
+
+    camera_parent->get_crosshairs()->set_camera(this->camera);
 
     auto ambient = new AmbientLight(vec3(1.0f, 1.0f, 1.0f), 0.3f);
     this->lights.insert(ambient);
@@ -146,7 +148,9 @@ void TheGauntletEngine::init()
 
     this->init_light_and_camera(ship);
     auto keyboard_controller = new CodeMonkeys::TheGauntlet::Control::KeyboardController(ship, this->get_window());
+    auto mouse_controller = new CodeMonkeys::TheGauntlet::Control::MouseController(ship, this->get_window());
     this->controllers.insert(keyboard_controller);
+    this->controllers.insert(mouse_controller);
 
     this->collision_responses.insert(new ShipAsteroidCollisionResponse(this));
     this->collision_responses.insert(new AsteroidAsteroidCollisionResponse(this));
@@ -169,7 +173,7 @@ void TheGauntletEngine::init()
 
 void TheGauntletEngine::setup_course() {
     const int S = 4000;
-    const int T = 400;
+    const int T = 200;
     const int V = 100;
     const int A = 60;
     for (int i = 0; i < 500; i++)
@@ -181,10 +185,10 @@ void TheGauntletEngine::setup_course() {
         asteroid->set_angular_velocity(vec3(rand() % A - A / 2, rand() % A - A / 2, rand() % A - A / 2));
     }
 
-    auto checker = new BoundaryChecker(T, T, -S, -T, -T, 0);
+    auto checker = new BoundaryChecker(vec3(T, T, 0), vec3(-T, -T, -S - 20));
     this->set_boundary_checker(checker);
 
-    this->set_collision_detector(new GridCollisionDetector(vec3(T, T, 0), vec3(-T, -T, -S), 50)); // this->set_collision_detector(new SimpleCollisionDetector());
+    this->set_collision_detector(new GridCollisionDetector(vec3(T, T, 0), vec3(-T, -T, -S), 100)); // this->set_collision_detector(new SimpleCollisionDetector());
 
     // Draw Portal
     auto portal = CodeMonkeys::TheGauntlet::GameObjects::PortalFactory::create_portal();
