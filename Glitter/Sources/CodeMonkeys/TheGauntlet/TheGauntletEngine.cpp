@@ -28,6 +28,7 @@
 #include "CodeMonkeys/Engine/Objects/ParticleEmitter.h"
 #include "CodeMonkeys/Engine/Objects/Particle.h"
 #include "CodeMonkeys/Engine/Assets/AnimatedTexture.h"
+#include "CodeMonkeys/TheGauntlet/TheGauntletEngineSettings.h"
 
 using namespace std;
 using CodeMonkeys::TheGauntlet::TheGauntletEngine;
@@ -35,9 +36,15 @@ using namespace CodeMonkeys::TheGauntlet::GameObjects;
 using namespace CodeMonkeys::TheGauntlet::Collision;
 using namespace CodeMonkeys::Engine::Objects;
 using namespace CodeMonkeys::Engine::Assets;
+using namespace CodeMonkeys::Engine::Engine;
 
-TheGauntletEngine::TheGauntletEngine(GLFWwindow* window, GLuint width, GLuint height) : GameEngine(window, width, height)
+namespace CodeMonkeys::Engine::Engine { class Renderer3D; }
+namespace CodeMonkeys::Engine::Engine { class Renderer; }
+
+TheGauntletEngine::TheGauntletEngine(GLFWwindow* window, GLuint width, GLuint height, TheGauntletEngineSettings* settings) : GameEngine(window, width, height)
+// TheGauntletEngine::TheGauntletEngine(GLFWwindow* window, GLuint width, GLuint height) : GameEngine(window, width, height)
 {
+    this->settings = settings;
 }
 
 void TheGauntletEngine::update_frame(float dt)
@@ -109,9 +116,20 @@ void TheGauntletEngine::init()
 
     this->init_skybox();
 
-    auto ship = CodeMonkeys::TheGauntlet::GameObjects::ShipFactory::create_jet_fighter();
-    // auto ship = CodeMonkeys::TheGauntlet::GameObjects::ShipFactory::create_x_wing_ship();
-    // auto ship = CodeMonkeys::TheGauntlet::GameObjects::ShipFactory::create_crayon_ship();
+    Ship* ship;
+    switch (this->settings->get_ship_selection())
+    {
+        case ShipSelection::SelectionCrayonBox:
+            ship = CodeMonkeys::TheGauntlet::GameObjects::ShipFactory::create_crayon_ship();
+            break;
+        case ShipSelection::SelectionXWingShip:
+            ship = CodeMonkeys::TheGauntlet::GameObjects::ShipFactory::create_x_wing_ship();
+            break;
+        case ShipSelection::SelectionJetFighter:
+        default:
+            ship = CodeMonkeys::TheGauntlet::GameObjects::ShipFactory::create_jet_fighter();
+            break;
+    }
     this->world_root->add_child(ship);
 
     setup_course();
@@ -134,9 +152,18 @@ void TheGauntletEngine::init()
     this->collision_responses.insert(new ProjectileAsteroidCollisionResponse(this));
     this->collision_responses.insert(new ShipPortalCollisionResponse(this));
 
-    this->renderer = new Renderer(this->get_window(), this->get_width(), this->get_height());
-    // this->renderer = new FrameBufferRenderer(this->get_window(), this->get_width() * 2, this->get_height() * 2);
-    // this->renderer = new Renderer3D(this->get_window(), this->get_width(), this->get_height(), 2);
+    switch (this->settings->get_renderer_selection())
+    {
+        case RendererSelection::Selection3DRenderer:
+            this->renderer = new Renderer3D(this->get_window(), this->get_width(), this->get_height(), 2);
+            break;
+        case RendererSelection::SelectionFrameRenderer:
+            this->renderer = new FrameBufferRenderer(this->get_window(), this->get_width(), this->get_height());
+            break;
+        default:
+            this->renderer = new Renderer(this->get_window(), this->get_width(), this->get_height());
+            break;
+    }
 }
 
 void TheGauntletEngine::setup_course() {
