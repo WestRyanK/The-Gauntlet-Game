@@ -97,20 +97,20 @@ void TheGauntletEngine::init()
 
 
     auto shader = new ShaderProgram("Assets/Shaders/basic.vert", "Assets/Shaders/basic.frag");
-    auto projectile_shader = new ShaderProgram("Assets/Shaders/basic.vert", "Assets/Shaders/self_illuminated.frag");
+    auto self_illuminated_shader = new ShaderProgram("Assets/Shaders/basic.vert", "Assets/Shaders/self_illuminated.frag");
 
     CodeMonkeys::TheGauntlet::GameObjects::AsteroidFactory::init_asteroid_factory(0, shader);
     CodeMonkeys::TheGauntlet::GameObjects::Asteroid::init(this->world_root);
-    CodeMonkeys::TheGauntlet::GameObjects::PortalFactory::init(shader);
+    CodeMonkeys::TheGauntlet::GameObjects::PortalFactory::init(self_illuminated_shader);
 
     ParticleEmitter* projectile_emitter = new ParticleEmitter("projectile_emitter");
     this->world_root->add_child(projectile_emitter);
-    CodeMonkeys::TheGauntlet::GameObjects::ShipFactory::init(shader, projectile_emitter, projectile_shader);
+    CodeMonkeys::TheGauntlet::GameObjects::ShipFactory::init(shader, projectile_emitter, self_illuminated_shader);
 
     // Make sure that every shader used in the scene is added to the engine's list of shaders so
     // that lighting can be calculated.
     this->shaders.insert(shader);
-    this->shaders.insert(projectile_shader);
+    this->shaders.insert(self_illuminated_shader);
     Billboard::init_billboard_class();
     this->shaders.insert(Billboard::get_shader());
 
@@ -135,6 +135,7 @@ void TheGauntletEngine::init()
     setup_course();
 
     auto health_bar = new HealthBar(ship, -1, 0.65, 0.75f, 0.40f);
+    health_bar->set_alarm_percent(0.35f);
     this->quads.insert(health_bar);
 
     if (ship->get_secondary_weapon() != NULL)
