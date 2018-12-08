@@ -88,7 +88,6 @@ void TheGauntletEngine::init()
     music->setVolume(30.0f);
     music->play();
 
-    this->set_collision_detector(new GridCollisionDetector(vec3(1000), vec3(-1000), 50)); // this->set_collision_detector(new SimpleCollisionDetector());
 
     auto shader = new ShaderProgram("Assets/Shaders/basic.vert", "Assets/Shaders/basic.frag");
     auto projectile_shader = new ShaderProgram("Assets/Shaders/basic.vert", "Assets/Shaders/self_illuminated.frag");
@@ -110,8 +109,8 @@ void TheGauntletEngine::init()
 
     this->init_skybox();
 
-    // auto ship = CodeMonkeys::TheGauntlet::GameObjects::ShipFactory::create_jet_fighter();
-    auto ship = CodeMonkeys::TheGauntlet::GameObjects::ShipFactory::create_x_wing_ship();
+    auto ship = CodeMonkeys::TheGauntlet::GameObjects::ShipFactory::create_jet_fighter();
+    // auto ship = CodeMonkeys::TheGauntlet::GameObjects::ShipFactory::create_x_wing_ship();
     // auto ship = CodeMonkeys::TheGauntlet::GameObjects::ShipFactory::create_crayon_ship();
     this->world_root->add_child(ship);
 
@@ -135,8 +134,8 @@ void TheGauntletEngine::init()
     this->collision_responses.insert(new ProjectileAsteroidCollisionResponse(this));
     this->collision_responses.insert(new ShipPortalCollisionResponse(this));
 
-    // this->renderer = new Renderer(this->get_window(), this->get_width(), this->get_height());
-    this->renderer = new FrameBufferRenderer(this->get_window(), this->get_width() * 2, this->get_height() * 2);
+    this->renderer = new Renderer(this->get_window(), this->get_width(), this->get_height());
+    // this->renderer = new FrameBufferRenderer(this->get_window(), this->get_width() * 2, this->get_height() * 2);
     // this->renderer = new Renderer3D(this->get_window(), this->get_width(), this->get_height(), 2);
 }
 
@@ -156,6 +155,8 @@ void TheGauntletEngine::setup_course() {
 
     auto checker = new BoundaryChecker(T, T, -S, -T, -T, 0);
     this->set_boundary_checker(checker);
+
+    this->set_collision_detector(new GridCollisionDetector(vec3(T, T, 0), vec3(-T, -T, -S), 50)); // this->set_collision_detector(new SimpleCollisionDetector());
 
     // Draw Portal
     auto portal = CodeMonkeys::TheGauntlet::GameObjects::PortalFactory::create_portal();
