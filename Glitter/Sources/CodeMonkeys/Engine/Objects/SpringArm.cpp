@@ -16,10 +16,10 @@ void SpringArm::update(float dt)
     auto physical_parent = dynamic_cast<PhysicalObject3D*>(this->parent);
     if (physical_parent != NULL)
     {
-        this->acceleration = physical_parent->get_acceleration();
-        vec3 adjusted_velocity = physical_parent->get_velocity();
-        adjusted_velocity.z = -100;
-        vec3 arm_unstretched_position = -this->arm_length * glm::normalize(adjusted_velocity);
+        // this->acceleration = physical_parent->get_acceleration();
+        // vec3 adjusted_velocity = physical_parent->get_velocity();
+        // adjusted_velocity.z = -100;
+        // vec3 arm_unstretched_position = -this->arm_length * glm::normalize(adjusted_velocity);
         // vec3 arm_unstretched_position = -this->arm_length * glm::normalize(physical_parent->get_velocity()) - (physical_parent->get_velocity() * 0.025f * this->arm_length);
 
         // f = m * a
@@ -27,7 +27,7 @@ void SpringArm::update(float dt)
         // m * a = k * x
         // m * a / k = x
         // vec3 stretch = this->arm_connector_mass * this->acceleration / this->spring_constant;
-        arm_unstretched_position = vec3(0, 15, 25);
+        vec3 arm_unstretched_position = vec3(0, 15, 25);
         this->arm_connector_position = arm_unstretched_position;
         // this->arm_connector_position.y = 300;
         // this->arm_connector_position = arm_unstretched_position - stretch;
