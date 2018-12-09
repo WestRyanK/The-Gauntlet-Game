@@ -2,8 +2,8 @@
 
 using CodeMonkeys::TheGauntlet::HealthBar;
 
-HealthBar::HealthBar(IDamageable* measured_damageable, float x, float y, float width, float height) 
-    : ProgressBar(new AnimatedTexture("Assets/UI/HealthBar/health_bar", "png", 13),x, y, width, height)
+HealthBar::HealthBar(IDamageable* measured_damageable, vec2 position, vec2 size) 
+    : ProgressBar(new AnimatedTexture("Assets/UI/HealthBar/health_bar", "png", 13), position, size)
 {
     this->measured_damageable = measured_damageable;
 

@@ -31,6 +31,7 @@
 #include "CodeMonkeys/Engine/Assets/AnimatedTexture.h"
 #include "CodeMonkeys/TheGauntlet/TheGauntletEngineSettings.h"
 #include "CodeMonkeys/TheGauntlet/GameObjects/Health.h"
+#include "CodeMonkeys/Engine/UI/Text.h"
 
 using namespace std;
 using CodeMonkeys::TheGauntlet::TheGauntletEngine;
@@ -38,6 +39,7 @@ using namespace CodeMonkeys::TheGauntlet::GameObjects;
 using namespace CodeMonkeys::TheGauntlet::Collision;
 using namespace CodeMonkeys::Engine::Objects;
 using namespace CodeMonkeys::Engine::Assets;
+using namespace CodeMonkeys::Engine::UI;
 using namespace CodeMonkeys::Engine::Engine;
 
 namespace CodeMonkeys::Engine::Engine { class Renderer3D; }
@@ -138,15 +140,20 @@ void TheGauntletEngine::init()
 
     setup_course(ship);
 
-    auto health_bar = new HealthBar(ship, -1, 0.65, 0.75f, 0.40f);
+    auto health_bar = new HealthBar(ship, vec2(-1, 0.65), vec2(0.75f, 0.40f));
     health_bar->set_alarm_percent(0.35f);
     this->quads.insert(health_bar);
 
     if (ship->get_secondary_weapon() != NULL)
     {
-        auto recharge_bar = new RechargeBar(ship->get_secondary_weapon(), -1, 0.45f, 0.75f, 0.40f);
+        auto recharge_bar = new RechargeBar(ship->get_secondary_weapon(), vec2(-1, 0.45f), vec2(0.75f, 0.40f));
         this->quads.insert(recharge_bar);
     }
+
+    Text* text = new Text("abcdefg\nhijklmnop\nqrstuvwxyz\n0123456789\n!:-?", vec2(-1, 0.5f), 0.3f);
+    text->set_character_spacing(0.4f);
+    text->set_line_spacing(0.8f);
+    this->quads.insert(text);
 
     this->init_light_and_camera(ship);
     auto keyboard_controller = new CodeMonkeys::TheGauntlet::Control::KeyboardController(ship, this->get_window());

@@ -17,7 +17,7 @@ namespace CodeMonkeys::TheGauntlet
         sf::SoundBuffer* sound_buffer = NULL;
         float alarm_percent = 0.0f;
     public:
-        HealthBar(IDamageable* measured_damageable, float x, float y, float width, float height);
+        HealthBar(IDamageable* measured_damageable, vec2 position, vec2 size);
         virtual void update(float dt);
         void set_alarm_percent(float alarm_percent);
         float get_alarm_percent();
