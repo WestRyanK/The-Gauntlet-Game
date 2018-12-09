@@ -12,12 +12,17 @@ namespace CodeMonkeys::Engine::Engine
     {
     private:
         static ShaderProgram* quad_shader;
-        GLuint quad_vao;
+        static GLuint quad_vao;
+        static void init();
+
+    protected:
         GLuint quad_texture_id;
+        vec2 position;
+        vec2 size;
 
     public:
-        Quad(float x, float y, float width, float height);
-        void draw();
+        Quad(vec2 position, vec2 size);
+        virtual void draw();
         virtual void update(float dt);
         void set_texture(GLuint texture);
         GLuint get_texture();

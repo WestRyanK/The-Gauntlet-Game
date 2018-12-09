@@ -9,7 +9,7 @@ using namespace CodeMonkeys::TheGauntlet::Weapons;
 
 using CodeMonkeys::TheGauntlet::GameObjects::Health;
 
-Health::Health(int healing_value) :  Billboard("health", new Texture("Assets/Health/health.png"), 15, 15), IInflicter(-healing_value)
+Health::Health(int healing_value) :  Billboard("health", new Texture("Assets/Health/health.png"), 15, 15), IInflicter(healing_value)
 {
     this->bounding_sphere = new BoundingSphere(this->position, 10);
 }

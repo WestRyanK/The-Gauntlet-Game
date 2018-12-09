@@ -13,7 +13,7 @@ namespace CodeMonkeys::TheGauntlet
     private:
         ITriggerable* measured_triggerable = NULL;
     public:
-        RechargeBar(ITriggerable* measured_triggerable, float x, float y, float width, float height);
+        RechargeBar(ITriggerable* measured_triggerable, vec2 position, vec2 size);
         virtual void update(float dt);
     };
 }

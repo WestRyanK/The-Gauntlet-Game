@@ -2,7 +2,7 @@
 
 using CodeMonkeys::Engine::UI::ProgressBar;
 
-ProgressBar::ProgressBar(AnimatedTexture* texture, float x, float y, float width, float height) : Quad(x, y, width, height)
+ProgressBar::ProgressBar(AnimatedTexture* texture, vec2 position, vec2 size) : Quad(position, size)
 {
     this->texture = texture;
     this->set_texture(this->texture->get_texture_id());

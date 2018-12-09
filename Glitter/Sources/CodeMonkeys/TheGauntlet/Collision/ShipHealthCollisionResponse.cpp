@@ -22,7 +22,7 @@ ShipHealthCollisionResponse::ShipHealthCollisionResponse(CodeMonkeys::Engine::En
     if (!this->sound_buffer->loadFromFile("Assets/Health/heal.wav"))
         printf("Could not load 'heal' file!\n");
     this->sound = new sf::Sound();
-    this->sound->setVolume(65.0f);
+    this->sound->setVolume(50.0f);
     this->sound->setBuffer(*this->sound_buffer);
 }
 
@@ -52,7 +52,7 @@ void ShipHealthCollisionResponse::respond(Object3D* object_a, Object3D* object_b
     {
         this->sound->play();
 
-        health->inflict_damage(ship);
+        ship->heal_health(health->get_inflict_amount());
         health->get_parent()->remove_child(health);
     }
 }

@@ -6,10 +6,8 @@ using CodeMonkeys::Engine::Engine::FrameBufferRenderer;
 FrameBufferRenderer::FrameBufferRenderer(GLFWwindow* window, GLuint width, GLuint height) : Renderer(window, width, height)
 {
     this->create_frame_buffer(this->get_width(), this->get_height(), this->frame_buffer, this->rendered_texture);
-    this->quad = new Quad(-1.0f, -1.0f, 2.0f, 2.0f);
-    // tex = new Texture("Assets/Lab04/crayon_texture.png");
+    this->quad = new Quad(vec2(-1.0f, -1.0f), vec2(2.0f, 2.0f));
 }
-
 
 void FrameBufferRenderer::draw_frame_buffer(GLuint rendered_texture)
 { 
@@ -94,8 +92,6 @@ void FrameBufferRenderer::render(set<ShaderProgram*> shaders, set<ILight3D*> lig
         this->draw_objects(world_root, quads, shader);
     }
 
-
-    // this->draw_frame_buffer(tex->get_texture_id());
     this->draw_frame_buffer(this->rendered_texture);
     this->quad->set_texture(this->rendered_texture);
     this->quad->draw();

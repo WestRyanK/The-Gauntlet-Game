@@ -7,8 +7,8 @@ Renderer3D::Renderer3D(GLFWwindow* window, int width, int height, float camera_s
     this->camera_spacing = camera_spacing;
     this->create_frame_buffer(this->get_width() / 2, this->get_height(), this->frame_buffers[0], this->rendered_textures[0]);
     this->create_frame_buffer(this->get_width() / 2, this->get_height(), this->frame_buffers[1], this->rendered_textures[1]);
-    this->quads[0] = new Quad(-1.0f, -1.0f, 1.0f, 2.0f);
-    this->quads[1] = new Quad(0.0f, -1.0f, 1.0f, 2.0f);
+    this->quads[0] = new Quad(vec2(-1.0f, -1.0f), vec2(1.0f, 2.0f));
+    this->quads[1] = new Quad(vec2(0.0f, -1.0f), vec2(1.0f, 2.0f));
 }
 
 vector<Camera3D*> Renderer3D::create_3d_cameras(Camera3D* camera)
@@ -27,7 +27,6 @@ vector<Camera3D*> Renderer3D::create_3d_cameras(Camera3D* camera)
         cameras[i]->set_position(camera->get_position());
         cameras[i]->set_position(camera->get_position() - 2.0f * offset * (float)i + offset );
     }
-    // second_camera->set_look_at(camera->get_look_at());
 
     return cameras;
 }
