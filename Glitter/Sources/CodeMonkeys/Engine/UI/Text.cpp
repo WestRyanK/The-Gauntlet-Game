@@ -118,6 +118,9 @@ void Text::draw()
 
 void Text::draw_character(char character, vec2 character_position)
 {
+    if (character == ' ')
+        return;
+
     this->position = character_position;
     this->set_texture(Text::characters[character]->get_texture_id());
     Quad::draw();
