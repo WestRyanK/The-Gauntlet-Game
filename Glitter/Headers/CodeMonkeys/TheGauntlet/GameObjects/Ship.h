@@ -32,14 +32,6 @@ namespace CodeMonkeys::TheGauntlet::GameObjects
         void control(std::string control_name, float value, float dt);
         void control(std::string control_name, int value, float dt);
         void update(float dt);
-        void update_vertical(float dt);
-        void update_lateral(float dt);
-        void update_forward(float dt);
-        void dampen_lateral(float dt);
-        void dampen_vertical(float dt);
-        bool acclerating_vertically;
-        bool acclerating_laterally;
-        bool accelerating_forward;
         bool dead;
         BoundingMultiSphere* bounding_multisphere;
 
@@ -47,12 +39,15 @@ namespace CodeMonkeys::TheGauntlet::GameObjects
         Ship(Model3D* model, std::string name,
             unsigned int initial_health,
             unsigned int max_health, 
-            float xy_acceleration, 
-            float boost_acceleration,
-            float brake_acceleration,
+
+            float xy_acceleration,
+            float xy_dampen,
             float max_xy_velocity,
+            float z_acceleration,
+            float z_dampen,
             float max_z_velocity,
             float min_z_velocity,
+
             Weapon* primary_weapon,
             Weapon* secondary_weapon,
             RocketEngine* rocket_engine,

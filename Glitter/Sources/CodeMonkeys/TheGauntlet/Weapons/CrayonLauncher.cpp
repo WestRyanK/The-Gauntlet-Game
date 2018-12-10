@@ -8,7 +8,7 @@
 
 using CodeMonkeys::TheGauntlet::Weapons::CrayonLauncher;
 
-CrayonLauncher::CrayonLauncher(ShaderProgram* shader, ParticleEmitter* projectile_emitter) : Weapon("crayon_launcher", shader, projectile_emitter, 280, 0.1f, true)
+CrayonLauncher::CrayonLauncher(ShaderProgram* shader, ParticleEmitter* projectile_emitter) : Weapon("crayon_launcher", shader, projectile_emitter, 300, 0.1f, true)
 {
         // TextureMaterial(ShaderProgram* shader, bool use_phong_highlight, float phong_exponent, vec3 phong_color, Texture* texture);
     Texture* crayon_texture = new Texture("Assets/Projectiles/CrayonLauncher/crayon_texture.png");

@@ -31,6 +31,7 @@ namespace CodeMonkeys::Engine::Objects
         void set_position(vec3 position);
         vec3 get_rotation();
         void set_rotation(vec3 rotation);
+        void set_rotation(int axis, float value);
         vec3 get_scale();
         void set_scale(vec3 scale);
         void set_scale(float scale);

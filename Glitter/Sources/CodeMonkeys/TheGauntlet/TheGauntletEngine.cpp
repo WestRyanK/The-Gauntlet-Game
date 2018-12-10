@@ -199,7 +199,7 @@ void TheGauntletEngine::setup_course(Ship* ship) {
             Asteroid* asteroid = CodeMonkeys::TheGauntlet::GameObjects::AsteroidFactory::create_asteroid_random_size();
             this->world_root->add_child(asteroid);
             asteroid->set_position(vec3(rand() % T - T / 2, rand() % T - T / 2, rand() % S - S));
-            asteroid->set_velocity(vec3(rand() % V - V / 2, rand() % V - V / 2, rand() % V - V / 2));
+            // asteroid->set_velocity(vec3(rand() % V - V / 2, rand() % V - V / 2, rand() % V - V / 2));
             asteroid->set_angular_velocity(vec3(rand() % A - A / 2, rand() % A - A / 2, rand() % A - A / 2));
         }
     }

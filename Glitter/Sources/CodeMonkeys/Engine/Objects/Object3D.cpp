@@ -39,6 +39,11 @@ void Object3D::set_rotation(vec3 rotation)
     this->rotation = rotation;
 }
 
+void Object3D::set_rotation(int axis, float value)
+{
+    this->rotation[axis] = value;
+}
+
 vec3 Object3D::get_scale()
 {
     return this->scale;
