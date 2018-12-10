@@ -18,7 +18,12 @@ HealthBar::HealthBar(IDamageable* measured_damageable, vec2 position, vec2 size)
 void HealthBar::update(float dt)
 {
     float percent = this->measured_damageable->get_health() / (float)this->measured_damageable->get_max_health();
-    if (percent < this->alarm_percent && this->sound->getStatus() != sf::Sound::Playing)
+    if (percent <= 0.0f)
+    {
+        if (this->sound->getStatus() == sf::Sound::Playing)
+            this->sound->stop();
+    }
+    else if (percent < this->alarm_percent && this->sound->getStatus() != sf::Sound::Playing)
         this->sound->play();
     else if (percent > this->alarm_percent && this->sound->getStatus() == sf::Sound::Playing)
         this->sound->stop();

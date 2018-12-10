@@ -40,6 +40,7 @@ namespace CodeMonkeys::TheGauntlet::GameObjects
         bool acclerating_vertically;
         bool acclerating_laterally;
         bool accelerating_forward;
+        bool dead;
         BoundingMultiSphere* bounding_multisphere;
 
     public:
@@ -61,5 +62,8 @@ namespace CodeMonkeys::TheGauntlet::GameObjects
         Weapon* get_primary_weapon();
         Weapon* get_secondary_weapon();
         Crosshairs* get_crosshairs();
+        bool is_dead();
+        void draw(mat4 total_transform, ShaderProgram* shader);
+        void hide_ship();
     };
 }

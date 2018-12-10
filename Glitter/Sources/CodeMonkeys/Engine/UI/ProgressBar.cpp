@@ -1,4 +1,5 @@
 #include "CodeMonkeys/Engine/UI/ProgressBar.h"
+#include <algorithm>
 
 using CodeMonkeys::Engine::UI::ProgressBar;
 
@@ -15,6 +16,7 @@ void ProgressBar::update(float dt)
 
 void ProgressBar::update(float current_value, float total, bool reverse)
 {
+    current_value = std::max(0.0f, current_value);
     float percent_progress = current_value / (float)total;
     int frame = ceil(percent_progress * (this->texture->get_frame_count() - 1));
     if (reverse)

@@ -1,6 +1,7 @@
 #include "CodeMonkeys/TheGauntlet/Collision/ShipPortalCollisionResponse.h"
 #include "CodeMonkeys/TheGauntlet/GameObjects/Portal.h"
 #include "CodeMonkeys/TheGauntlet/GameObjects/Ship.h"
+#include "CodeMonkeys/Engine/Events/EventDispatcher.h"
 #include "glitter.hpp"
 
 using CodeMonkeys::TheGauntlet::Collision::ShipPortalCollisionResponse;
@@ -39,11 +40,9 @@ void ShipPortalCollisionResponse::respond(Object3D* object_a, Object3D* object_b
             ship = dynamic_cast<Ship*> (object_a);
         }
 
-        printf("inside\n");
         if (ship->get_transformed_position().z <= portal->get_transformed_position().z)
         {
-            printf("You Win!\n");
-            exit(0);
+            CodeMonkeys::Engine::Events::EventDispatcher::get_instance().report_event("next_level");
         }
     }
 }

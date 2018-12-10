@@ -41,7 +41,7 @@ void ShipAsteroidCollisionResponse::respond(Object3D* object_a, Object3D* object
         asteroid = dynamic_cast<Asteroid*> (object_b);
     }
 
-    if (asteroid != NULL && asteroid->get_parent() != NULL)
+    if (ship != NULL && asteroid != NULL && ship->get_parent() != NULL && !ship->is_dead() && asteroid->get_parent() != NULL)
     {
         this->sound->play();
 
