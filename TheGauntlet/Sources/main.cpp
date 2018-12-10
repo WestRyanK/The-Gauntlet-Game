@@ -33,6 +33,9 @@ TheGauntletEngineSettings* parse_settings(int argc, char * argv[])
     ShipSelection ship_selection = ShipSelection::SelectionJetFighter;
     RendererSelection renderer_selection = RendererSelection::SelectionFrameRenderer;
     RetinaDisplaySelection retina_display = RetinaDisplaySelection::NoRetinaDisplay;
+    DifficultyLevel difficulty = DifficultyLevel::MediumDifficulty;
+    bool fullscreen = false;
+
     if (args.count("xwing") > 0)
         ship_selection = ShipSelection::SelectionXWingShip;
     else if (args.count("box") > 0)
@@ -52,7 +55,17 @@ TheGauntletEngineSettings* parse_settings(int argc, char * argv[])
     else
         retina_display = RetinaDisplaySelection::NoRetinaDisplay;
 
-    settings = new TheGauntletEngineSettings(ship_selection, renderer_selection, retina_display);
+    if (args.count("fullscreen") > 0)
+        fullscreen = true;
+
+    if (args.count("easy") > 0)
+        difficulty = DifficultyLevel::EasyDifficulty;
+    else if (args.count("hard") > 0)
+        difficulty = DifficultyLevel::HardDifficulty;
+    else
+        difficulty = DifficultyLevel::MediumDifficulty;
+
+    settings = new TheGauntletEngineSettings(ship_selection, renderer_selection, retina_display, fullscreen, difficulty);
     
     return settings;
 }
@@ -62,8 +75,8 @@ int main(int argc, char * argv[]) {
 
     const float virtual_reality_ratio = 0.375f;
     const float normal_ratio = 0.7;
-    //const GLuint WIDTH = 1920;
-    GLuint WIDTH = 1080;
+    GLuint WIDTH = 1920;
+    // GLuint WIDTH = 1080;
     GLuint HEIGHT = 0;
     if (settings->get_renderer_selection() == RendererSelection::Selection3DRenderer)
         HEIGHT = (int)(WIDTH * virtual_reality_ratio);
@@ -76,9 +89,8 @@ int main(int argc, char * argv[]) {
         WIDTH *= 2;
     }
 
-    TheGauntletWindow gauntlet_window = TheGauntletWindow(WIDTH, HEIGHT);
-    TheGauntletEngine gauntlet_engine = TheGauntletEngine(gauntlet_window.get_window(), WIDTH, HEIGHT, settings);
-    // TheGauntletEngine gauntlet_engine = TheGauntletEngine(gauntlet_window.get_window(), WIDTH, HEIGHT);
+    TheGauntletWindow gauntlet_window = TheGauntletWindow(WIDTH, HEIGHT, settings->get_fullscreen());
+    TheGauntletEngine gauntlet_engine = TheGauntletEngine(gauntlet_window.get_window(), gauntlet_window.get_width(), gauntlet_window.get_height(), settings);
 
     gauntlet_engine.init();
     gauntlet_engine.run();
