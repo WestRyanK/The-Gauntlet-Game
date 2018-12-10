@@ -11,7 +11,7 @@
             "program": "${workspaceFolder}/Build/Glitter/Glitter",
             "args": ["jet", "fullscreen", "3d", "noretina", "hard"],
             "stopAtEntry": false,
-            "cwd": "${workspaceFolder}/Build/Glitter",
+            "cwd": "${workspaceFolder}/Build/TheGauntlet",
             "environment": [],
             "externalConsole": false,
             "MIMode": "gdb",
