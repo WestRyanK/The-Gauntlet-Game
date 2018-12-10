@@ -37,7 +37,14 @@ vec3 Crosshairs::get_aim_vector()
     vec3 crosshairs_position = this->get_transformed_position();
     vec3 camera_position = this->camera->get_transformed_position();
     vec3 parent_position = this->parent->get_transformed_position();
-    return normalize(crosshairs_position - parent_position);
+    // return normalize(crosshairs_position - parent_position);
+
+    float NEAR_INFINITY = 500;
+
+    vec3 camera_to_crosshairs = normalize(crosshairs_position - camera_position);
+    vec3 crosshairs_at_infinity = camera_to_crosshairs * NEAR_INFINITY + camera_position;
+    vec3 parent_to_infinity_crosshairs = normalize(crosshairs_at_infinity - parent_position);
+    return parent_to_infinity_crosshairs;
 }
 
 void Crosshairs::update_crosshairs()
@@ -89,4 +96,9 @@ vec2 Crosshairs::get_boundary()
 void Crosshairs::set_camera(Camera3D* camera)
 {
     this->camera = camera;
+}
+
+void Crosshairs::draw(mat4 transform, ShaderProgram* shader)
+{
+    Billboard::draw(transform, shader);
 }

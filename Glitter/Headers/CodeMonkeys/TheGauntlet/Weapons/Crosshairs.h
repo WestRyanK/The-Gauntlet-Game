@@ -10,9 +10,9 @@ namespace CodeMonkeys::TheGauntlet::Weapons
     class Crosshairs : public Billboard
     {
     private:
-        float distance = 40;
+        float distance = 1;
         float speed = 2;
-        vec2 boundary = vec2(15);
+        vec2 boundary = vec2(30);
         Camera3D* camera = NULL;
         void update_crosshairs();
     public:
@@ -31,5 +31,7 @@ namespace CodeMonkeys::TheGauntlet::Weapons
         void move_crosshairs_y(float delta_y);
 
         vec3 get_aim_vector();
+
+        virtual void draw(mat4 transform, ShaderProgram* shader);
     };
 }
