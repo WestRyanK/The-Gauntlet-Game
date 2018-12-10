@@ -33,6 +33,7 @@ TheGauntletEngineSettings* parse_settings(int argc, char * argv[])
     ShipSelection ship_selection = ShipSelection::SelectionJetFighter;
     RendererSelection renderer_selection = RendererSelection::SelectionFrameRenderer;
     RetinaDisplaySelection retina_display = RetinaDisplaySelection::NoRetinaDisplay;
+    bool fullscreen = false;
     if (args.count("xwing") > 0)
         ship_selection = ShipSelection::SelectionXWingShip;
     else if (args.count("box") > 0)
@@ -52,7 +53,10 @@ TheGauntletEngineSettings* parse_settings(int argc, char * argv[])
     else
         retina_display = RetinaDisplaySelection::NoRetinaDisplay;
 
-    settings = new TheGauntletEngineSettings(ship_selection, renderer_selection, retina_display);
+    if (args.count("fullscreen") > 0)
+        fullscreen = true;
+
+    settings = new TheGauntletEngineSettings(ship_selection, renderer_selection, retina_display, fullscreen);
     
     return settings;
 }
@@ -76,7 +80,7 @@ int main(int argc, char * argv[]) {
         WIDTH *= 2;
     }
 
-    TheGauntletWindow gauntlet_window = TheGauntletWindow(WIDTH, HEIGHT);
+    TheGauntletWindow gauntlet_window = TheGauntletWindow(WIDTH, HEIGHT, settings->get_fullscreen());
     TheGauntletEngine gauntlet_engine = TheGauntletEngine(gauntlet_window.get_window(), WIDTH, HEIGHT, settings);
     // TheGauntletEngine gauntlet_engine = TheGauntletEngine(gauntlet_window.get_window(), WIDTH, HEIGHT);
 

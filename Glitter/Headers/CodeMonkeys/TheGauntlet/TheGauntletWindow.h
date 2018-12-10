@@ -10,7 +10,7 @@ namespace CodeMonkeys::TheGauntlet
         GLFWwindow* window;
 
     public:
-        TheGauntletWindow(int width, int height);
+        TheGauntletWindow(int width, int height, bool fullscreen);
         GLFWwindow* get_window();
     };
 }

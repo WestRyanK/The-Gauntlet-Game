@@ -2,7 +2,7 @@
 
 using CodeMonkeys::TheGauntlet::TheGauntletWindow;
 
-TheGauntletWindow::TheGauntletWindow(int width, int height)
+TheGauntletWindow::TheGauntletWindow(int width, int height, bool fullscreen)
 {
     // Load GLFW and Create a Window
     glfwInit();

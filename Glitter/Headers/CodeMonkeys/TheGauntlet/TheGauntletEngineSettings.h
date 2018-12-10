@@ -24,13 +24,15 @@ namespace CodeMonkeys::TheGauntlet
     class TheGauntletEngineSettings
     {
     public:
-        TheGauntletEngineSettings(ShipSelection ship_selection, RendererSelection renderer_selection, RetinaDisplaySelection retina_display);
+        TheGauntletEngineSettings(ShipSelection ship_selection, RendererSelection renderer_selection, RetinaDisplaySelection retina_display, bool fullscreen);
         ShipSelection get_ship_selection();
         RendererSelection get_renderer_selection();
         RetinaDisplaySelection get_retina_display();
+        bool get_fullscreen();
     private:
         ShipSelection ship_selection;
         RendererSelection renderer_selection;
         RetinaDisplaySelection retina_display;
+        bool fullscreen;
     };
 }
