@@ -50,3 +50,8 @@ void PhysicalObject3D::update(float dt)
     this->rotation.z += dt * this->angular_velocity.z;
     Object3D::update(dt);
 }
+
+void PhysicalObject3D::set_velocity(int axis, float value)
+{
+    this->velocity[axis] = value;
+}

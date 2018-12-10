@@ -26,5 +26,7 @@ namespace CodeMonkeys::Engine::Objects
         vec3 get_angular_velocity();
         void set_angular_velocity(vec3 angular_velocity);
         virtual void update(float dt);
+
+        void set_velocity(int axis, float value);
     };
 }

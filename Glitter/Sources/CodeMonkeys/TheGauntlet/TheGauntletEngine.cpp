@@ -183,7 +183,7 @@ void TheGauntletEngine::setup_course(Ship* ship) {
     const int T = 200;
     const int V = 100;
     const int A = 60;
-    for (int i = 0; i < 500; i++)
+    for (int i = 0; i < 750; i++)
     {
         if (rand() % 100 < 5)
         {

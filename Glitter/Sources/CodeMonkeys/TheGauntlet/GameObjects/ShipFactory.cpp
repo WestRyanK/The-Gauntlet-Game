@@ -48,12 +48,14 @@ Ship* ShipFactory::create_crayon_ship()
 
     const unsigned int INTITIAL_HEALTH = 80;
     const unsigned int MAX_HEALTH =80;
-    const float XY_ACCELERATION = 50;
-    const float BOOST_ACCELERATION = 10;
-    const float BRAKE_ACCELERATION = 2;
-    const float MAX_XY_VELOCITY = 10;
-    const float MAX_Z_VELOCITY = 0;
-    const float MIN_Z_VELOCITY = 0;
+
+    const float XY_ACCELERATION = 300;
+    const float XY_DAMPEN = 150;
+    const float MAX_XY_VELOCITY = 250;
+    const float Z_ACCELERATION = 600;
+    const float Z_DAMPEN = 150;
+    const float MAX_Z_VELOCITY = 250;
+    const float MIN_Z_VELOCITY = 100;
 
     Weapon* crayon_launcher = new CrayonLauncher(ShipFactory::ship_shader, ShipFactory::projectile_emitter);
 
@@ -61,12 +63,15 @@ Ship* ShipFactory::create_crayon_ship()
 
     Ship* ship = new Ship(model, "ship",
                           INTITIAL_HEALTH, MAX_HEALTH,
+
                           XY_ACCELERATION,
-                          BOOST_ACCELERATION,
-                          BRAKE_ACCELERATION,
+                          XY_DAMPEN,
                           MAX_XY_VELOCITY,
+                          Z_ACCELERATION,
+                          Z_DAMPEN,
                           MAX_Z_VELOCITY,
                           MIN_Z_VELOCITY,
+
                           crayon_launcher,
                           NULL,
                           NULL,
@@ -103,14 +108,14 @@ Ship* ShipFactory::create_x_wing_ship()
 
     const unsigned int INTITIAL_HEALTH = 100;
     const unsigned int MAX_HEALTH =100;
-    const float XY_ACCELERATION = 50;
-    const float BOOST_ACCELERATION = 10;
-    const float BRAKE_ACCELERATION = 2;
-    const float MAX_XY_VELOCITY = 10;
-    const float MAX_Z_VELOCITY = 0;
-    // const float MAX_Z_VELOCITY = 20;
-    const float MIN_Z_VELOCITY = 0;
-    // const float MIN_Z_VELOCITY = 5;
+
+    const float XY_ACCELERATION = 300;
+    const float XY_DAMPEN = 150;
+    const float MAX_XY_VELOCITY = 250;
+    const float Z_ACCELERATION = 350;
+    const float Z_DAMPEN = 150;
+    const float MAX_Z_VELOCITY = 250;
+    const float MIN_Z_VELOCITY = 150;
 
 
     Weapon* laser_turret = new LaserTurret(ShipFactory::projectile_shader, ShipFactory::projectile_emitter);
@@ -139,12 +144,15 @@ Ship* ShipFactory::create_x_wing_ship()
 
     Ship* ship = new Ship(model, "ship",
                           INTITIAL_HEALTH, MAX_HEALTH,
+
                           XY_ACCELERATION,
-                          BOOST_ACCELERATION,
-                          BRAKE_ACCELERATION,
+                          XY_DAMPEN,
                           MAX_XY_VELOCITY,
+                          Z_ACCELERATION,
+                          Z_DAMPEN,
                           MAX_Z_VELOCITY,
                           MIN_Z_VELOCITY,
+
                           laser_turret,
                           laser_cannon,
                           rocket_engine,
@@ -170,14 +178,14 @@ Ship* ShipFactory::create_jet_fighter()
 
     const unsigned int INTITIAL_HEALTH = 125;
     const unsigned int MAX_HEALTH =125;
-    const float XY_ACCELERATION = 50;
-    const float BOOST_ACCELERATION = 10;
-    const float BRAKE_ACCELERATION = 2;
-    const float MAX_XY_VELOCITY = 10;
-    const float MAX_Z_VELOCITY = 0;
-    // const float MAX_Z_VELOCITY = 20;
-    const float MIN_Z_VELOCITY = 0;
-    // const float MIN_Z_VELOCITY = 5;
+
+    const float XY_ACCELERATION = 200;
+    const float XY_DAMPEN = 100;
+    const float MAX_XY_VELOCITY = 200;
+    const float Z_ACCELERATION = 400;
+    const float Z_DAMPEN = 150;
+    const float MAX_Z_VELOCITY = 300;
+    const float MIN_Z_VELOCITY = 100;
 
     Weapon* beam_gun = new BeamGun(ShipFactory::projectile_shader, ShipFactory::projectile_emitter);
     beam_gun->set_position(vec3(3,-1,0));
@@ -206,12 +214,15 @@ Ship* ShipFactory::create_jet_fighter()
 
     Ship* ship = new Ship(model, "ship",
                           INTITIAL_HEALTH, MAX_HEALTH,
+
                           XY_ACCELERATION,
-                          BOOST_ACCELERATION,
-                          BRAKE_ACCELERATION,
+                          XY_DAMPEN,
                           MAX_XY_VELOCITY,
+                          Z_ACCELERATION,
+                          Z_DAMPEN,
                           MAX_Z_VELOCITY,
                           MIN_Z_VELOCITY,
+
                           beam_gun,
                           antimatter_cannon,
                           rocket_engine,

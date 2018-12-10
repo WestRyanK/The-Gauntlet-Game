@@ -6,7 +6,7 @@
 
 using CodeMonkeys::TheGauntlet::Weapons::AntiMatterCannon;
 
-AntiMatterCannon::AntiMatterCannon(ShaderProgram* shader, ParticleEmitter* projectile_emitter) : Weapon("antimatter_cannon", shader, projectile_emitter, 360, 2.5f, false)
+AntiMatterCannon::AntiMatterCannon(ShaderProgram* shader, ParticleEmitter* projectile_emitter) : Weapon("antimatter_cannon", shader, projectile_emitter, 380, 2.5f, false)
 {
     Material* projectile_material = new ColorMaterial(shader, true, 10.0f, vec3(0.8f), vec3(0.9f, 0.0f, 0.9f));
     vector<Material*> projectile_materials;

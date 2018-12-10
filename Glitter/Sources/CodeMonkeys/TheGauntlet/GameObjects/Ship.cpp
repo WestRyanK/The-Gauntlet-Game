@@ -11,17 +11,15 @@ using CodeMonkeys::TheGauntlet::GameObjects::Ship;
 using namespace CodeMonkeys::TheGauntlet;
 using namespace CodeMonkeys::TheGauntlet::Weapons;
 
-const float max_lateral_velocity = 200.0f;
-const float min_forward_velocity = 100;
-const float max_forward_velocity = 200;
 Ship::Ship(Model3D* model, std::string name,
     unsigned int initial_health,
     unsigned int max_health, 
 
-    float xy_acceleration, 
-    float boost_acceleration,
-    float brake_acceleration,
+    float xy_acceleration,
+    float xy_dampen,
     float max_xy_velocity,
+    float z_acceleration,
+    float z_dampen,
     float max_z_velocity,
     float min_z_velocity,
 
@@ -33,12 +31,14 @@ Ship::Ship(Model3D* model, std::string name,
         PhysicalObject3D(model, name), 
         IDamageable(initial_health, max_health), 
         IControllable(), 
-        IFlyable(xy_acceleration, 
-            boost_acceleration,
-            brake_acceleration,
+        IFlyable( xy_acceleration,
+            xy_dampen,
             max_xy_velocity,
+            z_acceleration,
+            z_dampen,
             max_z_velocity,
-            min_z_velocity)
+            min_z_velocity,
+            this)
 {
     this->primary_weapon = primary_weapon;
     this->secondary_weapon = secondary_weapon;
@@ -46,8 +46,6 @@ Ship::Ship(Model3D* model, std::string name,
     this->crosshairs = crosshairs;
     if (this->rocket_engine != NULL)
         this->rocket_engine->play();
-    this->acclerating_vertically = false;
-    this->acclerating_laterally = false;
     this->dead = false;
 
     this->bounding_multisphere = new BoundingMultiSphere(this->position, vec3());
@@ -96,15 +94,9 @@ void Ship::update(float dt)
         this->rocket_engine->set_is_accelerating(false);
     }
 
-    this->update_vertical(dt);
-    this->update_lateral(dt);
-    this->update_forward(dt);
-
+    IFlyable::update_movement(dt);
     PhysicalObject3D::update(dt);
     
-    this->acclerating_vertically = false;
-    this->acclerating_laterally = false;
-    this->accelerating_forward = false;
 
     this->bounding_multisphere->set_center(this->position);
     this->bounding_multisphere->set_rotation(this->rotation);
@@ -115,66 +107,6 @@ void Ship::update(float dt)
         this->secondary_weapon->set_fire_direction(glm::normalize(this->crosshairs->get_aim_vector()));
 }
 
-void Ship::update_forward(float dt)
-{
-    float dampen_factor = 10;
-    if (!this->accelerating_forward)
-    {
-        this->velocity.z += dt * dampen_factor;
-    }
-    if (abs(this->velocity.z) < min_forward_velocity)
-        this->velocity.z = -min_forward_velocity;
-    if (abs(this->velocity.z) > max_forward_velocity)
-        this->velocity.z = -max_forward_velocity;
-}
-
-void Ship::update_lateral(float dt)
-{
-    if (!this->acclerating_laterally)
-        this->dampen_lateral(dt);
-
-    if (this->velocity.x > max_lateral_velocity)
-        this->velocity.x = max_lateral_velocity;
-
-    if (this->velocity.x < -max_lateral_velocity)
-        this->velocity.x = -max_lateral_velocity;
-
-     this->rotation.z = -this->velocity.x / max_lateral_velocity * 40.0f;
-}
-
-void Ship::update_vertical(float dt)
-{
-    if (!this->acclerating_vertically)
-        this->dampen_vertical(dt);
-    
-    if (this->velocity.y > max_lateral_velocity)
-        this->velocity.y = max_lateral_velocity;
-
-    if (this->velocity.y < -max_lateral_velocity)
-        this->velocity.y = -max_lateral_velocity;
-
-    this->rotation.x = this->velocity.y / max_lateral_velocity * 20.0f;
-}
-
-void Ship::dampen_lateral(float dt)
-{
-    float dampen_factor = 100 * dt;
-    if (this->velocity.x > 0.0f)
-        this->velocity.x = std::max(this->velocity.x - dampen_factor, 0.0f);
-
-    if (this->velocity.x < 0.0f)
-        this->velocity.x = std::min(this->velocity.x + dampen_factor, 0.0f);
-}
-
-void Ship::dampen_vertical(float dt)
-{
-    float dampen_factor = 100 * dt;
-    if (this->velocity.y > 0.0f)
-        this->velocity.y = std::max(this->velocity.y - dampen_factor, 0.0f);
-
-    if (this->velocity.y < 0.0f)
-        this->velocity.y = std::min(this->velocity.y + dampen_factor, 0.0f);
-}
 
 void Ship::control(std::string control_name, float value, float dt)
 {
@@ -186,26 +118,24 @@ void Ship::control(std::string control_name, float value, float dt)
         if (this->rocket_engine != NULL)
             this->rocket_engine->set_is_accelerating(true);
     }
-    const float velocity = 100.0f;
-    vec3 forward = vec3(0, 0, 1);
 
     if (control_name == "move_x")
     {
         if (value != 0.0f)
-            this->acclerating_laterally = true;
-        this->velocity.x += value * dt * 200;
+            this->accelerating_x = true;
+        this->velocity.x += value * dt * this->xy_acceleration;
     }
     if (control_name == "move_y")
     {
         if (value != 0.0f)
-            this->acclerating_vertically = true;
-        this->velocity.y += value * dt * 200;
+            this->accelerating_y = true;
+        this->velocity.y += value * dt * this->xy_acceleration;
     }
 
     if (control_name == "move_z" && value == 1)
     {
-        this->accelerating_forward = true;
-        this->velocity.z += dt * -400;
+        this->accelerating_z = true;
+        this->velocity.z -= dt * this->z_acceleration;
         // this->position += forward * dt * value * velocity * 2.0f;
     }
 
