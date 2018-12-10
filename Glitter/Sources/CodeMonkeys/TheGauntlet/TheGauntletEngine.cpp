@@ -25,6 +25,7 @@
 #include "CodeMonkeys/TheGauntlet/Collision/AsteroidAsteroidCollisionResponse.h"
 #include "CodeMonkeys/TheGauntlet/UI/HealthBar.h"
 #include "CodeMonkeys/TheGauntlet/UI/ScoreDisplay.h"
+#include "CodeMonkeys/TheGauntlet/UI/TimeDisplay.h"
 #include "CodeMonkeys/TheGauntlet/UI/RechargeBar.h"
 #include "CodeMonkeys/Engine/Objects/Billboard.h"
 #include "CodeMonkeys/Engine/Objects/ParticleEmitter.h"
@@ -150,6 +151,10 @@ void TheGauntletEngine::init()
     score_display->set_character_spacing(0.5f);
     this->quads.insert(score_display);
 
+    auto time_display = new TimeDisplay(music, 10, 0.02f, 30, vec2(-0.3, 0.75f), 0.2);
+    time_display->set_character_spacing(0.5f);
+    this->quads.insert(time_display);
+
     if (ship->get_secondary_weapon() != NULL)
     {
         auto recharge_bar = new RechargeBar(ship->get_secondary_weapon(), vec2(-1, 0.45f), vec2(0.75f, 0.40f));
@@ -256,6 +261,28 @@ void TheGauntletEngine::register_game_events()
                                                        this->quads.clear();
 
                                                        Text* text = new Text("you lose", vec2(-0.77f, -0.2f), 0.4f);
+                                                       text->set_character_spacing(0.4f);
+                                                       text->set_line_spacing(0.8f);
+                                                       this->quads.insert(text);
+
+                                                       auto score_display = new ScoreDisplay(this, "score:", vec2(-0.65, -0.40f), 0.25);
+                                                       score_display->set_character_spacing(0.5f);
+                                                       this->quads.insert(score_display);
+
+                                                       ship->hide_ship();
+                                                       this->game_over = true;
+                                                   }
+    );
+
+    EventDispatcher::get_instance().register_event("time_up",
+                                                   [this] ()
+                                                   {
+                                                       if (game_over)
+                                                           return;
+
+                                                       this->quads.clear();
+
+                                                       Text* text = new Text("times up", vec2(-0.77f, -0.2f), 0.4f);
                                                        text->set_character_spacing(0.4f);
                                                        text->set_line_spacing(0.8f);
                                                        this->quads.insert(text);
