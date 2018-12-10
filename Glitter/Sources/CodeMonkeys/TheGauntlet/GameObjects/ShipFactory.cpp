@@ -198,8 +198,8 @@ Ship* ShipFactory::create_jet_fighter()
 
     rocket_engine->set_acceleration_volume(80);
     rocket_engine->set_deceleration_volume(20);
-    rocket_engine->set_max_volume(50);
-    rocket_engine->set_min_volume(30);
+    rocket_engine->set_max_volume(100);
+    rocket_engine->set_min_volume(40);
 
     rocket_engine->set_acceleration_pitch(1.2f);
     rocket_engine->set_deceleration_pitch(0.3f);

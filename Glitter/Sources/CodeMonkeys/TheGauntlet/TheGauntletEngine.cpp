@@ -190,13 +190,31 @@ void TheGauntletEngine::init()
 }
 
 void TheGauntletEngine::setup_course(Ship* ship) {
+    int asteroid_count = 0;
+    int percent_healths = 0;
+    switch (this->settings->get_difficulty())
+    {
+        case DifficultyLevel::EasyDifficulty:
+            asteroid_count = 450;
+            percent_healths = 10;
+            break;
+        case DifficultyLevel::HardDifficulty:
+            asteroid_count = 750;
+            percent_healths = 5;
+            break;
+        case DifficultyLevel::MediumDifficulty:
+            default:
+            asteroid_count = 600;
+            percent_healths = 8;
+            break;
+    }
     const int S = 4000;
     const int T = 200;
     const int V = 100;
     const int A = 60;
-    for (int i = 0; i < 700; i++)
+    for (int i = 0; i < asteroid_count; i++)
     {
-        if (rand() % 100 < 5)
+        if (rand() % 100 < percent_healths)
         {
             int healing_value = rand() % 30 + 10;
             Health* health = new Health(healing_value);
