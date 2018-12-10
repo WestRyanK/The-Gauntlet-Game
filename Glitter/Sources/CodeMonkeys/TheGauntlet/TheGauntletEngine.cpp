@@ -224,7 +224,7 @@ void TheGauntletEngine::register_game_events()
                                                    {
                                                        if (game_over)
                                                            return;
-                                                       Text* text = new Text("you-win!", vec2(-0.77f, -0.2f), 0.4f);
+                                                       Text* text = new Text("you win!", vec2(-0.77f, -0.2f), 0.4f);
                                                        text->set_character_spacing(0.4f);
                                                        text->set_line_spacing(0.8f);
                                                        this->quads.insert(text);
@@ -239,7 +239,7 @@ void TheGauntletEngine::register_game_events()
                                                    {
                                                        if (game_over)
                                                            return;
-                                                       Text* text = new Text("you-lose", vec2(-0.77f, -0.2f), 0.4f);
+                                                       Text* text = new Text("you lose", vec2(-0.77f, -0.2f), 0.4f);
                                                        text->set_character_spacing(0.4f);
                                                        text->set_line_spacing(0.8f);
                                                        this->quads.insert(text);
