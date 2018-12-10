@@ -37,6 +37,7 @@ void Text::init()
     available_characters.push_back(':');
     available_characters.push_back('?');
     available_characters.push_back('!');
+    available_characters.push_back('.');
 
     for (int i = 0; i < available_characters.size(); i++)
     {
