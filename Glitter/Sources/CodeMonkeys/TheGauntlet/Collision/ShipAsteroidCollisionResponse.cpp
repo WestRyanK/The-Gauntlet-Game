@@ -9,8 +9,10 @@ using namespace CodeMonkeys::TheGauntlet::GameObjects;
 using namespace CodeMonkeys::Engine::Engine;
 using namespace CodeMonkeys::Engine::Objects;
 
-ShipAsteroidCollisionResponse::ShipAsteroidCollisionResponse(CodeMonkeys::Engine::Engine::GameEngine* engine) : ICollisionResponse(engine) 
+ShipAsteroidCollisionResponse::ShipAsteroidCollisionResponse(CodeMonkeys::Engine::Engine::GameEngine* engine, IScoreKeeper* score_keeper) : ICollisionResponse(engine) 
 {
+    this->score_keeper = score_keeper;
+
     this->sound_buffer = new sf::SoundBuffer();
     if (!this->sound_buffer->loadFromFile("Assets/Explosions/Explosion_01/explosion_01.wav"))
         printf("Could not load 'explosion_01.wav' file!\n");
@@ -44,6 +46,8 @@ void ShipAsteroidCollisionResponse::respond(Object3D* object_a, Object3D* object
     if (ship != NULL && asteroid != NULL && ship->get_parent() != NULL && !ship->is_dead() && asteroid->get_parent() != NULL)
     {
         this->sound->play();
+
+        this->score_keeper->subtract_points(50);
 
         asteroid->inflict_damage(ship);
         asteroid->get_parent()->remove_child(asteroid);

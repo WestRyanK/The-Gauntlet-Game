@@ -10,13 +10,9 @@ using namespace CodeMonkeys::TheGauntlet;
 using namespace CodeMonkeys::Engine::Engine;
 using namespace CodeMonkeys::Engine::Objects;
 
-ShipHealthCollisionResponse::ShipHealthCollisionResponse(CodeMonkeys::Engine::Engine::GameEngine* engine) : ICollisionResponse(engine) 
+ShipHealthCollisionResponse::ShipHealthCollisionResponse(CodeMonkeys::Engine::Engine::GameEngine* engine, IScoreKeeper* score_keeper) : ICollisionResponse(engine) 
 {
-    // AnimatedTexture* explosion_animation = new AnimatedTexture("Assets/Explosions/Explosion_03/explosion", "png", 64);
-    // Billboard* explosion_billboard = new Billboard("projectile_impact_billboard", explosion_animation, 80, 80);
-    // Particle* explosion_particle = new Particle(NULL, explosion_billboard, "projectile_impact_particle", 1, this->projectile_impact_emitter);
-    // projectile_impact_emitter->set_particle(explosion_particle);
-
+    this->score_keeper = score_keeper;
 
     this->sound_buffer = new sf::SoundBuffer();
     if (!this->sound_buffer->loadFromFile("Assets/Health/heal.wav"))
@@ -54,5 +50,6 @@ void ShipHealthCollisionResponse::respond(Object3D* object_a, Object3D* object_b
 
         ship->heal_health(health->get_inflict_amount());
         health->get_parent()->remove_child(health);
+        score_keeper->add_points(35);
     }
 }
