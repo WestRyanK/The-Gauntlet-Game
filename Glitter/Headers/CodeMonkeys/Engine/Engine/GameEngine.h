@@ -13,6 +13,7 @@
 #include "CodeMonkeys/Engine/Engine/UpdateObjectsIterator.h"
 #include "CodeMonkeys/Engine/Engine/Renderer.h"
 #include "CodeMonkeys/Engine/Objects/Skybox.h"
+#include "CodeMonkeys/Engine/Events/EventDispatcher.h"
 
 namespace CodeMonkeys::Engine::Collision { class ICollisionResponse; }
 

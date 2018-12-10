@@ -1,5 +1,6 @@
 #include "CodeMonkeys/TheGauntlet/GameObjects/Ship.h"
 #include "CodeMonkeys/TheGauntlet/Weapons/IDamageable.h"
+#include "CodeMonkeys/Engine/Events/EventDispatcher.h"
 #include <string>
 #include "CodeMonkeys/TheGauntlet/IFlyable.h"
 #include "CodeMonkeys/Engine/Control/IControllable.h"
@@ -47,6 +48,7 @@ Ship::Ship(Model3D* model, std::string name,
         this->rocket_engine->play();
     this->acclerating_vertically = false;
     this->acclerating_laterally = false;
+    this->dead = false;
 
     this->bounding_multisphere = new BoundingMultiSphere(this->position, vec3());
     this->bounding_multisphere->add_sphere(new BoundingSphere(vec3(0.0f, 0.0f, -10.0f), 3.0f));
@@ -64,13 +66,30 @@ Ship::Ship(Model3D* model, std::string name,
 
 void Ship::on_death()
 {
+    hide_ship();
+    CodeMonkeys::Engine::Events::EventDispatcher::get_instance().report_event("player_died");
+}
+
+void Ship::hide_ship()
+{
     if (this->rocket_engine != NULL)
         this->rocket_engine->stop();
-    throw NotImplementedException("Ship::on_death");
+    this->dead = true;
+    this->remove_child(this->rocket_engine);
+    this->remove_child(this->crosshairs);
+}
+
+void Ship::draw(mat4 total_transform, ShaderProgram* shader)
+{
+    if (!dead)
+        Object3D::draw(total_transform, shader);
 }
 
 void Ship::update(float dt)
 {
+    if (dead)
+        return;
+
     if (this->rocket_engine != NULL)
     {
         this->rocket_engine->update(dt);
@@ -159,6 +178,9 @@ void Ship::dampen_vertical(float dt)
 
 void Ship::control(std::string control_name, float value, float dt)
 {
+    if (this->dead)
+        return;
+
     if ((control_name == "move_x" || control_name == "move_z" || control_name == "move_y") && value != 0)
     {
         if (this->rocket_engine != NULL)
@@ -200,6 +222,9 @@ void Ship::control(std::string control_name, float value, float dt)
 
 void Ship::control(std::string control_name, int value, float dt)
 {
+    if (this->dead)
+        return;
+
     Weapon* weapon = NULL;
     if (control_name == "fire_primary")
     {
@@ -241,4 +266,8 @@ Weapon* Ship::get_secondary_weapon()
 Crosshairs* Ship::get_crosshairs()
 {
     return this->crosshairs;
+}
+bool Ship::is_dead()
+{
+    return this->dead;
 }

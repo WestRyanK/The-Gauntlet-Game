@@ -41,6 +41,7 @@ using namespace CodeMonkeys::Engine::Objects;
 using namespace CodeMonkeys::Engine::Assets;
 using namespace CodeMonkeys::Engine::UI;
 using namespace CodeMonkeys::Engine::Engine;
+using namespace CodeMonkeys::Engine::Events;
 
 namespace CodeMonkeys::Engine::Engine { class Renderer3D; }
 namespace CodeMonkeys::Engine::Engine { class Renderer; }
@@ -49,6 +50,7 @@ TheGauntletEngine::TheGauntletEngine(GLFWwindow* window, GLuint width, GLuint he
 // TheGauntletEngine::TheGauntletEngine(GLFWwindow* window, GLuint width, GLuint height) : GameEngine(window, width, height)
 {
     this->settings = settings;
+    this->game_over = false;
 }
 
 void TheGauntletEngine::update_frame(float dt)
@@ -57,7 +59,6 @@ void TheGauntletEngine::update_frame(float dt)
     this->update_objects(dt);
     this->handle_collisions(dt);
     this->draw();
-    printf("\n");
 }
 
 void TheGauntletEngine::init_skybox()
@@ -122,18 +123,17 @@ void TheGauntletEngine::init()
 
     this->init_skybox();
 
-    Ship* ship;
     switch (this->settings->get_ship_selection())
     {
         case ShipSelection::SelectionCrayonBox:
-            ship = CodeMonkeys::TheGauntlet::GameObjects::ShipFactory::create_crayon_ship();
+            this->ship = CodeMonkeys::TheGauntlet::GameObjects::ShipFactory::create_crayon_ship();
             break;
         case ShipSelection::SelectionXWingShip:
-            ship = CodeMonkeys::TheGauntlet::GameObjects::ShipFactory::create_x_wing_ship();
+            this->ship = CodeMonkeys::TheGauntlet::GameObjects::ShipFactory::create_x_wing_ship();
             break;
         case ShipSelection::SelectionJetFighter:
         default:
-            ship = CodeMonkeys::TheGauntlet::GameObjects::ShipFactory::create_jet_fighter();
+            this->ship = CodeMonkeys::TheGauntlet::GameObjects::ShipFactory::create_jet_fighter();
             break;
     }
     this->world_root->add_child(ship);
@@ -149,11 +149,6 @@ void TheGauntletEngine::init()
         auto recharge_bar = new RechargeBar(ship->get_secondary_weapon(), vec2(-1, 0.45f), vec2(0.75f, 0.40f));
         this->quads.insert(recharge_bar);
     }
-
-    Text* text = new Text("abcdefg\nhijklmnop\nqrstuvwxyz\n0123456789\n!:-?", vec2(-1, 0.5f), 0.3f);
-    text->set_character_spacing(0.4f);
-    text->set_line_spacing(0.8f);
-    this->quads.insert(text);
 
     this->init_light_and_camera(ship);
     auto keyboard_controller = new CodeMonkeys::TheGauntlet::Control::KeyboardController(ship, this->get_window());
@@ -179,6 +174,8 @@ void TheGauntletEngine::init()
             this->renderer = new Renderer(this->get_window(), this->get_width(), this->get_height());
             break;
     }
+
+    this->register_game_events();
 }
 
 void TheGauntletEngine::setup_course(Ship* ship) {
@@ -218,4 +215,37 @@ void TheGauntletEngine::setup_course(Ship* ship) {
     auto portal = CodeMonkeys::TheGauntlet::GameObjects::PortalFactory::create_portal(ship);
     portal->set_position(vec3(0, 0, -S));
     this->world_root->add_child(portal);
+}
+
+void TheGauntletEngine::register_game_events()
+{
+    EventDispatcher::get_instance().register_event("next_level",
+                                                   [this] ()
+                                                   {
+                                                       if (game_over)
+                                                           return;
+                                                       Text* text = new Text("you-win!", vec2(-0.77f, -0.2f), 0.4f);
+                                                       text->set_character_spacing(0.4f);
+                                                       text->set_line_spacing(0.8f);
+                                                       this->quads.insert(text);
+
+                                                       ship->hide_ship();
+                                                       this->game_over = true;
+                                                   }
+    );
+
+    EventDispatcher::get_instance().register_event("player_died",
+                                                   [this] ()
+                                                   {
+                                                       if (game_over)
+                                                           return;
+                                                       Text* text = new Text("you-lose", vec2(-0.77f, -0.2f), 0.4f);
+                                                       text->set_character_spacing(0.4f);
+                                                       text->set_line_spacing(0.8f);
+                                                       this->quads.insert(text);
+
+                                                       ship->hide_ship();
+                                                       this->game_over = true;
+                                                   }
+    );
 }

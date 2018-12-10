@@ -16,7 +16,12 @@ namespace CodeMonkeys::TheGauntlet
         void init_skybox();
         void init_light_and_camera(Ship* camera_parent);
         void setup_course(Ship* ship);
+        void register_game_events();
+
+        Ship* ship;
+
         TheGauntletEngineSettings* settings = NULL;
+        bool game_over;
 
     public:
         TheGauntletEngine(GLFWwindow* window, GLuint width, GLuint height, TheGauntletEngineSettings* settings);

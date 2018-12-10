@@ -125,6 +125,7 @@ void GameEngine::run()
             this->is_running = false;
 
         this->update_frame(dt);
+        CodeMonkeys::Engine::Events::EventDispatcher::get_instance().dispatch();
         glfwPollEvents();
     }
 }
