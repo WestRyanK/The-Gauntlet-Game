@@ -115,7 +115,7 @@ Ship* ShipFactory::create_x_wing_ship()
     const float Z_ACCELERATION = 350;
     const float Z_DAMPEN = 150;
     const float MAX_Z_VELOCITY = 250;
-    const float MIN_Z_VELOCITY = 150;
+    const float MIN_Z_VELOCITY = 100;
 
 
     Weapon* laser_turret = new LaserTurret(ShipFactory::projectile_shader, ShipFactory::projectile_emitter);
