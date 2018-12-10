@@ -13,24 +13,29 @@ float AsteroidFactory::ratio_asteroids_large = 1;
 float AsteroidFactory::ratio_asteroids_medium = 1;
 float AsteroidFactory::ratio_asteroids_small = 1;
 vector<Material*> AsteroidFactory::asteroid_materials = vector<Material*>();
+IScoreKeeper* AsteroidFactory::score_keeper = NULL;
 
 Asteroid* AsteroidFactory::create_asteroid(int size_class)
 {
     unsigned int health = 0;
     unsigned int inflict_amount = 0;
+    float points = 0;
     if (size_class == Asteroid::SMALL)
     {
         health = Asteroid::SMALL_HEALTH;
         inflict_amount = Asteroid::SMALL_INFLICT;
+        points = Asteroid::SMALL_POINTS;
     } else if (size_class == Asteroid::MEDIUM)
     {
         health = Asteroid::MEDIUM_HEALTH;
         inflict_amount = Asteroid::MEDIUM_INFLICT;
+        points = Asteroid::MEDIUM_POINTS;
     } 
     else if (size_class == Asteroid::LARGE)
     {
         health = Asteroid::LARGE_HEALTH;
         inflict_amount = Asteroid::LARGE_INFLICT;
+        points = Asteroid::LARGE_POINTS;
     }
 
     const int SCALE = 4;
@@ -38,7 +43,7 @@ Asteroid* AsteroidFactory::create_asteroid(int size_class)
     AsteroidFactory::add_noise_to_model(ml_model, size_class * SCALE, 1, true);
     Model3D* model = AsteroidFactory::create_asteroid_model(ml_model);
 
-    Asteroid* asteroid = new Asteroid(model, size_class, health, size_class * SCALE, inflict_amount);
+    Asteroid* asteroid = new Asteroid(model, size_class, health, size_class * SCALE, inflict_amount, points, AsteroidFactory::score_keeper);
 
     return asteroid;
 }
@@ -46,26 +51,6 @@ Asteroid* AsteroidFactory::create_asteroid(int size_class)
 mlModel* AsteroidFactory::load_asteroid_model(float scale)
 {
     float one_over_sqrt_2 = 1/sqrt(2.0);
-
-    // Geometric definition of a tetrahedron.
-    // mlMesh* mesh = new mlMesh();
-    // vector<mlVertex> vertices;
-    // mlVertex a;
-    // a.position = vec3(scale * 1.0f, 0.0f, scale * -one_over_sqrt_2);
-    // vertices.push_back(a);
-    // mlVertex b;
-    // b.position = vec3(scale * -1.0f, 0.0f, scale * -one_over_sqrt_2);
-    // vertices.push_back(b);
-    // mlVertex c;
-    // c.position = vec3(0.0f, scale * 1.0f, scale * one_over_sqrt_2);
-    // vertices.push_back(c);
-    // mlVertex d;
-    // d.position = vec3(0.0f, scale * -1.0f, scale * one_over_sqrt_2);
-    // vertices.push_back(d);
-    // vector<unsigned int> indices = { 0, 1, 2, 1, 2, 3, 0, 2, 3, 0, 1, 3 };
-    // mesh->vertices = vertices;
-    // mesh->indices = indices;
-
 
     // Geometric definition of cube
     mlMesh* mesh = new mlMesh();
@@ -196,7 +181,7 @@ Asteroid* AsteroidFactory::create_asteroid_random_size()
     return AsteroidFactory::create_asteroid(size);
 }
 
-void AsteroidFactory::init_asteroid_factory(unsigned int seed, ShaderProgram* shader)
+void AsteroidFactory::init_asteroid_factory(unsigned int seed, ShaderProgram* shader, IScoreKeeper* score_keeper)
 {
     if (seed == 0)
     {
@@ -212,4 +197,6 @@ void AsteroidFactory::init_asteroid_factory(unsigned int seed, ShaderProgram* sh
     materials.push_back(asteroid_material);
 
     AsteroidFactory::asteroid_materials = materials;
+
+    AsteroidFactory::score_keeper = score_keeper;
 }

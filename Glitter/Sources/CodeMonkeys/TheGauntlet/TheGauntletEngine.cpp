@@ -24,6 +24,7 @@
 #include "CodeMonkeys/TheGauntlet/Collision/ProjectileAsteroidCollisionResponse.h"
 #include "CodeMonkeys/TheGauntlet/Collision/AsteroidAsteroidCollisionResponse.h"
 #include "CodeMonkeys/TheGauntlet/UI/HealthBar.h"
+#include "CodeMonkeys/TheGauntlet/UI/ScoreDisplay.h"
 #include "CodeMonkeys/TheGauntlet/UI/RechargeBar.h"
 #include "CodeMonkeys/Engine/Objects/Billboard.h"
 #include "CodeMonkeys/Engine/Objects/ParticleEmitter.h"
@@ -37,6 +38,7 @@ using namespace std;
 using CodeMonkeys::TheGauntlet::TheGauntletEngine;
 using namespace CodeMonkeys::TheGauntlet::GameObjects;
 using namespace CodeMonkeys::TheGauntlet::Collision;
+using namespace CodeMonkeys::TheGauntlet::UI;
 using namespace CodeMonkeys::Engine::Objects;
 using namespace CodeMonkeys::Engine::Assets;
 using namespace CodeMonkeys::Engine::UI;
@@ -106,7 +108,7 @@ void TheGauntletEngine::init()
     auto shader = new ShaderProgram("Assets/Shaders/basic.vert", "Assets/Shaders/basic.frag");
     auto self_illuminated_shader = new ShaderProgram("Assets/Shaders/basic.vert", "Assets/Shaders/self_illuminated.frag");
 
-    CodeMonkeys::TheGauntlet::GameObjects::AsteroidFactory::init_asteroid_factory(0, shader);
+    CodeMonkeys::TheGauntlet::GameObjects::AsteroidFactory::init_asteroid_factory(0, shader, this);
     CodeMonkeys::TheGauntlet::GameObjects::Asteroid::init(this->world_root);
     CodeMonkeys::TheGauntlet::GameObjects::PortalFactory::init(self_illuminated_shader);
 
@@ -144,6 +146,10 @@ void TheGauntletEngine::init()
     health_bar->set_alarm_percent(0.35f);
     this->quads.insert(health_bar);
 
+    auto score_display = new ScoreDisplay(this, "score:", vec2(0.45, 0.80f), 0.1);
+    score_display->set_character_spacing(0.5f);
+    this->quads.insert(score_display);
+
     if (ship->get_secondary_weapon() != NULL)
     {
         auto recharge_bar = new RechargeBar(ship->get_secondary_weapon(), vec2(-1, 0.45f), vec2(0.75f, 0.40f));
@@ -156,8 +162,8 @@ void TheGauntletEngine::init()
     this->controllers.insert(keyboard_controller);
     this->controllers.insert(mouse_controller);
 
-    this->collision_responses.insert(new ShipAsteroidCollisionResponse(this));
-    this->collision_responses.insert(new ShipHealthCollisionResponse(this));
+    this->collision_responses.insert(new ShipAsteroidCollisionResponse(this, this));
+    this->collision_responses.insert(new ShipHealthCollisionResponse(this, this));
     this->collision_responses.insert(new AsteroidAsteroidCollisionResponse(this));
     this->collision_responses.insert(new ProjectileAsteroidCollisionResponse(this));
     this->collision_responses.insert(new ShipPortalCollisionResponse(this));
@@ -183,7 +189,7 @@ void TheGauntletEngine::setup_course(Ship* ship) {
     const int T = 200;
     const int V = 100;
     const int A = 60;
-    for (int i = 0; i < 750; i++)
+    for (int i = 0; i < 700; i++)
     {
         if (rand() % 100 < 5)
         {
@@ -224,10 +230,17 @@ void TheGauntletEngine::register_game_events()
                                                    {
                                                        if (game_over)
                                                            return;
+
+                                                       this->quads.clear();
+
                                                        Text* text = new Text("you win!", vec2(-0.77f, -0.2f), 0.4f);
                                                        text->set_character_spacing(0.4f);
                                                        text->set_line_spacing(0.8f);
                                                        this->quads.insert(text);
+
+                                                       auto score_display = new ScoreDisplay(this, "score:", vec2(-0.65, -0.40f), 0.25);
+                                                       score_display->set_character_spacing(0.5f);
+                                                       this->quads.insert(score_display);
 
                                                        ship->hide_ship();
                                                        this->game_over = true;
@@ -239,10 +252,17 @@ void TheGauntletEngine::register_game_events()
                                                    {
                                                        if (game_over)
                                                            return;
+
+                                                       this->quads.clear();
+
                                                        Text* text = new Text("you lose", vec2(-0.77f, -0.2f), 0.4f);
                                                        text->set_character_spacing(0.4f);
                                                        text->set_line_spacing(0.8f);
                                                        this->quads.insert(text);
+
+                                                       auto score_display = new ScoreDisplay(this, "score:", vec2(-0.65, -0.40f), 0.25);
+                                                       score_display->set_character_spacing(0.5f);
+                                                       this->quads.insert(score_display);
 
                                                        ship->hide_ship();
                                                        this->game_over = true;

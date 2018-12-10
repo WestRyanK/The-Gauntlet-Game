@@ -19,10 +19,16 @@ Billboard* Asteroid::asteroid_death_billboard = NULL;
 sf::SoundBuffer* Asteroid::sound_buffer = NULL;
 sf::Sound* Asteroid::sound = NULL;
 
-Asteroid::Asteroid(Model3D* model, unsigned int size_class, unsigned int health, float size, unsigned int inflict_amount) : PhysicalObject3D(model, "asteroid"), IDamageable(health, health), IInflicter(inflict_amount)
+float Asteroid::LARGE_POINTS = 50.0f;
+float Asteroid::MEDIUM_POINTS = 30.0f;
+float Asteroid::SMALL_POINTS = 10.0f;
+
+Asteroid::Asteroid(Model3D* model, unsigned int size_class, unsigned int health, float size, unsigned int inflict_amount, float points, IScoreKeeper* score_keeper) : PhysicalObject3D(model, "asteroid"), IDamageable(health, health), IInflicter(inflict_amount)
 {
     this->size_class = size_class;
     this->size = size;
+    this->score_keeper = score_keeper;
+    this->points = points;
     // TODO: Adjust size
     this->bounding_sphere = new BoundingSphere(this->position, size);
 }
@@ -84,9 +90,16 @@ void Asteroid::on_death()
     else
     {
     }
+    this->score_keeper->add_points(this->points);
+
     Asteroid::asteroid_death_billboard->set_height(this->size * 20);
     Asteroid::asteroid_death_billboard->set_width(this->size * 20);
     Asteroid::asteroid_death_emitter->emit(1.0f);
     Asteroid::asteroid_death_emitter->set_position(this->get_position());
     this->get_parent()->remove_child(this);
+}
+
+float Asteroid::get_points()
+{
+    return this->points;
 }

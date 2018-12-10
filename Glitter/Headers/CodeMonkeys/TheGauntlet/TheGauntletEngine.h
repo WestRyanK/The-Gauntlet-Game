@@ -2,6 +2,7 @@
 
 #include "CodeMonkeys/Engine/Engine/GameEngine.h"
 #include "CodeMonkeys/TheGauntlet/TheGauntletEngineSettings.h"
+#include "CodeMonkeys/TheGauntlet/IScoreKeeper.h"
 #include "CodeMonkeys/TheGauntlet/GameObjects/Ship.h"
 
 using namespace CodeMonkeys::Engine::Engine;
@@ -9,7 +10,7 @@ using namespace CodeMonkeys::TheGauntlet::GameObjects;
 
 namespace CodeMonkeys::TheGauntlet
 {
-    class TheGauntletEngine: public GameEngine
+    class TheGauntletEngine: public GameEngine, public IScoreKeeper
     {
     private:
         void update_frame(float dt);
