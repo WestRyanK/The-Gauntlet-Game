@@ -8,7 +8,7 @@
             "name": "(gdb) Launch",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/Build/Glitter/Glitter",
+            "program": "${workspaceFolder}/Build/TheGauntlet/TheGauntlet",
             "args": ["jet", "fullscreen", "3d", "noretina", "hard"],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}/Build/TheGauntlet",
