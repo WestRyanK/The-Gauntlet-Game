@@ -53,7 +53,7 @@ Ship* ShipFactory::create_crayon_ship()
     const float XY_DAMPEN = 150;
     const float MAX_XY_VELOCITY = 250;
     const float Z_ACCELERATION = 600;
-    const float Z_DAMPEN = 80;
+    const float Z_DAMPEN = 150;
     const float MAX_Z_VELOCITY = 250;
     const float MIN_Z_VELOCITY = 100;
 
@@ -113,7 +113,7 @@ Ship* ShipFactory::create_x_wing_ship()
     const float XY_DAMPEN = 150;
     const float MAX_XY_VELOCITY = 250;
     const float Z_ACCELERATION = 350;
-    const float Z_DAMPEN = 40;
+    const float Z_DAMPEN = 150;
     const float MAX_Z_VELOCITY = 250;
     const float MIN_Z_VELOCITY = 150;
 
@@ -183,7 +183,7 @@ Ship* ShipFactory::create_jet_fighter()
     const float XY_DAMPEN = 100;
     const float MAX_XY_VELOCITY = 200;
     const float Z_ACCELERATION = 400;
-    const float Z_DAMPEN = 20;
+    const float Z_DAMPEN = 150;
     const float MAX_Z_VELOCITY = 300;
     const float MIN_Z_VELOCITY = 100;
 

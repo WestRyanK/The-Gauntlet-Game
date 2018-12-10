@@ -27,7 +27,7 @@ GameEngine::GameEngine(GLFWwindow* window, GLuint width, GLuint height)
     glDepthFunc(GL_LESS);  
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
+    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 }
 
 

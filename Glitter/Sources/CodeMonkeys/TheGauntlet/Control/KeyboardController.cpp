@@ -35,31 +35,8 @@ void KeyboardController::handle_input(float dt)
         this->controllable->control("move_x", 0.0f, dt);
     }
 
-    if (glfwGetKey(this->window, GLFW_KEY_UP) == GLFW_PRESS)
-    {
-        this->controllable->control("move_z", 1.0f, dt);
-    }
-    if (glfwGetKey(this->window, GLFW_KEY_DOWN) == GLFW_PRESS)
-    {
-        this->controllable->control("move_z", -1.0f, dt);
-    }
-
     if (glfwGetKey(this->window, GLFW_KEY_SPACE) == GLFW_PRESS)
     {
-        this->controllable->control("fire_primary", 1, dt);
-    }
-    // We register firing key releases in the case that we want to make the user press the key
-    // each time they fire instead of holding it down.
-    else if (glfwGetKey(this->window, GLFW_KEY_SPACE) == GLFW_RELEASE)
-    {
-        this->controllable->control("fire_primary", 0, dt);
-    }
-    if (glfwGetKey(this->window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
-    {
-        this->controllable->control("fire_secondary", 1, dt);
-    }
-    else if (glfwGetKey(this->window, GLFW_KEY_LEFT_SHIFT) == GLFW_RELEASE)
-    {
-        this->controllable->control("fire_secondary", 0, dt);
+        this->controllable->control("move_z", 1.0f, dt);
     }
 }
