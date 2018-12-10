@@ -4,7 +4,6 @@
 #include <queue>
 #include <string>
 #include <functional>
-#include "EventHandler.h"
 
 namespace CodeMonkeys::Engine::Events
 {
