@@ -75,8 +75,8 @@ int main(int argc, char * argv[]) {
 
     const float virtual_reality_ratio = 0.375f;
     const float normal_ratio = 0.7;
-    GLuint WIDTH = 1920;
-    // GLuint WIDTH = 1080;
+    // GLuint WIDTH = 1920;
+    GLuint WIDTH = 1080;
     GLuint HEIGHT = 0;
     if (settings->get_renderer_selection() == RendererSelection::Selection3DRenderer)
         HEIGHT = (int)(WIDTH * virtual_reality_ratio);

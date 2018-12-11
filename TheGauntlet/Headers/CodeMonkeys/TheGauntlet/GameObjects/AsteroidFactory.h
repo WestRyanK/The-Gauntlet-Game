@@ -17,7 +17,8 @@ namespace CodeMonkeys::TheGauntlet::GameObjects
         static float ratio_asteroids_medium;
         static float ratio_asteroids_small;
         static IScoreKeeper* score_keeper;
-        static vector<Material*> asteroid_materials;
+        // static vector<Material*> asteroid_materials;
+        static vector<Material*>* asteroid_materials;
 
         static float rand_centered(float center, float spread_radius);
         static float rand_min_max(float min, float max);

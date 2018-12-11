@@ -12,7 +12,8 @@ namespace CodeMonkeys::TheGauntlet::GameObjects
     class Portal : public PhysicalObject3D
     {
     private:
-        sf::Music* music;
+        sf::Sound* sound;
+        sf::SoundBuffer* sound_buffer;
         Ship* ship;
         BoundingSphere* bounding_sphere;
     public:

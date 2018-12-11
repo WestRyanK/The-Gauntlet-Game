@@ -12,7 +12,7 @@ using namespace CodeMonkeys::TheGauntlet::GameObjects;
 float AsteroidFactory::ratio_asteroids_large = 1;
 float AsteroidFactory::ratio_asteroids_medium = 1;
 float AsteroidFactory::ratio_asteroids_small = 1;
-vector<Material*> AsteroidFactory::asteroid_materials = vector<Material*>();
+vector<Material*>* AsteroidFactory::asteroid_materials = new vector<Material*>();
 IScoreKeeper* AsteroidFactory::score_keeper = NULL;
 
 Asteroid* AsteroidFactory::create_asteroid(int size_class)
@@ -112,13 +112,11 @@ void AsteroidFactory::add_noise_to_model(mlModel* ml_model, int asteroid_size, i
             // Mutate along axis.
             for (int axis = 0; axis < 3; axis++)
             {
-                // float stretch_factor = AsteroidFactory::rand_min_max(0.75, 1.25f);
 
                 // Add noise
                 for (int vertex_index = 0; vertex_index < ml_model->meshes[mesh_index]->vertices.size(); vertex_index++)
                 {
                     float position = ml_model->meshes[mesh_index]->vertices[vertex_index].position[axis];
-                    // position *= stretch_factor;
                     float noise_offset = AsteroidFactory::rand_centered(0.0f, max_noise);
                     position += noise_offset;
                     ml_model->meshes[mesh_index]->vertices[vertex_index].position[axis] = position;
@@ -154,7 +152,11 @@ float AsteroidFactory::rand_min_max(float min, float max)
 
 Model3D* AsteroidFactory::create_asteroid_model(mlModel* ml_model)
 {
-    Model3D* model = new Model3D(ml_model, AsteroidFactory::asteroid_materials);
+    int color_index = rand() % AsteroidFactory::asteroid_materials->size();
+    Material* mat = (*AsteroidFactory::asteroid_materials)[color_index];
+    vector<Material*>* new_materials = new vector<Material*>();
+    new_materials->push_back(mat);
+    Model3D* model = new Model3D(ml_model, *new_materials);
     return model;
 }
 
@@ -191,12 +193,21 @@ void AsteroidFactory::init_asteroid_factory(unsigned int seed, ShaderProgram* sh
     {
         srand(seed);
     }
+    vector<vec3> asteroid_colors;
+    asteroid_colors.push_back(vec3(0.4f));
+    asteroid_colors.push_back(vec3(0.5f));
+    asteroid_colors.push_back(vec3(0.4f, 0.3f, 0.25f));
+    asteroid_colors.push_back(vec3(0.4f, 0.35f, 0.3f));
 
-    Material* asteroid_material = new ColorMaterial(shader, false, 1.0f, vec3(1.0f), vec3(0.2f));
-    vector<Material*> materials;
-    materials.push_back(asteroid_material);
+    vector<Material*>* asteroid_materials = new vector<Material*>();
+    for (int i = 0; i < asteroid_colors.size(); i++)
+    {
+        Material* asteroid_material = new ColorMaterial(shader, false, 1.0f, vec3(1.0f), asteroid_colors[i]);
+        asteroid_materials->push_back(asteroid_material);
+    }
 
-    AsteroidFactory::asteroid_materials = materials;
+    AsteroidFactory::asteroid_materials = asteroid_materials;
+    // AsteroidFactory::asteroid_materials = materials;
 
     AsteroidFactory::score_keeper = score_keeper;
 }
