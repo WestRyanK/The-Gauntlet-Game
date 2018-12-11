@@ -97,7 +97,7 @@ void ShipFactory::add_explosion_particles(Ship* ship)
 
 Ship* ShipFactory::create_x_wing_ship()
 {
-    Material* ship_material = new ColorMaterial(ShipFactory::ship_shader, true, 10.0f, vec3(0.8f), vec3(0.2f, 0.4f, 0.9f));
+    Material* ship_material = new ColorMaterial(ShipFactory::ship_shader, true, 10.0f, vec3(0.8f), vec3(0.5f, 0.6f, 0.7f));
     vector<Material*> materials;
     materials.push_back(ship_material);
 
@@ -167,7 +167,7 @@ Ship* ShipFactory::create_x_wing_ship()
 
 Ship* ShipFactory::create_jet_fighter()
 {
-    Material* ship_material = new ColorMaterial(ShipFactory::ship_shader, true, 10.0f, vec3(0.8f), vec3(0.2f, 0.4f, 0.9f));
+    Material* ship_material = new ColorMaterial(ShipFactory::ship_shader, true, 10.0f, vec3(0.8f), vec3(0.5f, 0.6f, 0.7f));
     vector<Material*> materials;
     materials.push_back(ship_material);
 

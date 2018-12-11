@@ -63,17 +63,18 @@ vec4 apply_directional(vec4 fragment_color, directional_light light)
 void main()
 {
     vec4 fragment_color;
-    // if (material_type_id == 1)
-    // {
-    fragment_color = vec4(object_color, 1.0f);
-    // }
-    if (material_type_id == 2)
+    if (material_type_id == 1)
     {
+        fragment_color = vec4(object_color, 1.0f);
+    }
+    else if (material_type_id == 2)
+    {
+        fragment_color = vec4(object_color, 1.0f);
         fragment_color = texture(texture_0, uv_2) * fragment_color;
     }
     else
     {
-        fragment_color = vec4(0.5f, 0.5f, 0.5f, 1.0f);
+        fragment_color = vec4(1.0f, 0.0f, 0.5f, 1.0f);
     }
 
     // color_out = vec3(0);
