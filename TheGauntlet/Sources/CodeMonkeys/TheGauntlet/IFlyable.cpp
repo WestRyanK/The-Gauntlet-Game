@@ -104,4 +104,10 @@ void IFlyable::update_z_movement(float dt)
 void IFlyable::dampen_z(float dt)
 {
     iflyable->set_velocity(2, iflyable->get_velocity().z + dt * this->z_dampen);
+    if (iflyable->get_velocity().z > 0)
+    {
+        vec3 velocity = iflyable->get_velocity();
+        velocity.z = 0;
+        iflyable->set_velocity(velocity);
+    }
 }

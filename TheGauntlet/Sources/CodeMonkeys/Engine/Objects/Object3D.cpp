@@ -114,7 +114,9 @@ void Object3D::remove_child(Object3D* child)
 {
     if (this->children.count(child))
         this->children.erase(child);
-    child->parent = NULL;
+    
+    if (child != NULL)
+        child->parent = NULL;
 }
 
 Object3D* Object3D::get_parent()
