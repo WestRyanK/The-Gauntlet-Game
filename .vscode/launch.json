@@ -9,7 +9,7 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/Build/TheGauntlet/TheGauntlet",
-            "args": ["jet",  "noretina", "easy"],
+            "args": ["box",  "noretina", "easy"],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}/Build/TheGauntlet",
             "environment": [],

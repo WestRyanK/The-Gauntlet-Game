@@ -50,7 +50,6 @@ namespace CodeMonkeys::Engine::Engine { class Renderer3D; }
 namespace CodeMonkeys::Engine::Engine { class Renderer; }
 
 TheGauntletEngine::TheGauntletEngine(GLFWwindow* window, GLuint width, GLuint height, TheGauntletEngineSettings* settings) : GameEngine(window, width, height)
-// TheGauntletEngine::TheGauntletEngine(GLFWwindow* window, GLuint width, GLuint height) : GameEngine(window, width, height)
 {
     this->settings = settings;
     this->game_over = false;
@@ -238,7 +237,7 @@ void TheGauntletEngine::setup_course(Ship* ship) {
     auto checker = new BoundaryChecker(vec3(T, T, 0), vec3(-T, -T, -S - 20));
     this->set_boundary_checker(checker);
 
-    this->set_collision_detector(new GridCollisionDetector(vec3(T, T, 0), vec3(-T, -T, -S), 100)); // this->set_collision_detector(new SimpleCollisionDetector());
+    this->set_collision_detector(new GridCollisionDetector(vec3(T, T, 0), vec3(-T, -T, -S), 100));
 
     // Draw Portal
     auto portal = CodeMonkeys::TheGauntlet::GameObjects::PortalFactory::create_portal(ship);
