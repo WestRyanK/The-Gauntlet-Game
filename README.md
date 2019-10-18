@@ -14,6 +14,17 @@ Watch a demo here:
 
 https://youtu.be/wViLcO2UIc8
 
+![Gameplay](Screenshots/Gameplay.png "Gameplay")
+
+![Jet Fighter](Screenshots/JetFighter.png "Jet Fighter")
+
+![X Wing](Screenshots/XWing.png "X Wing")
+
+![Billboarding and Explosions](Screenshots/BillboardingExplosions.png "Billboarding and Explosions")
+
+![Animated Textures](Screenshots/AnimatedTextures.png "Animated Textures")
+
+![Self-Illuminated Projectiles](Screenshots/SelfIlluminatedProjectiles.png "Self-Illuminated Projectiles")
 
 Noteworthy Features:
 - General Purpose Game Engine: We approached our game implementation by first 
